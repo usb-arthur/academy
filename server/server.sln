@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACADEMY.Data", "ACADEMY.Data\ACADEMY.Data.csproj", "{E40B0292-BA17-4E48-A229-60A94555DA38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACADEMY.WebApi", "ACADEMY.WebApi\ACADEMY.WebApi.csproj", "{F27B29B4-1F05-4DAC-85BC-FAF9E9AC1B1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ACADEMY.WebApi", "ACADEMY.WebApi\ACADEMY.WebApi.csproj", "{F27B29B4-1F05-4DAC-85BC-FAF9E9AC1B1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACADEMY.Data.EF", "ACADEMY.Data.EF\ACADEMY.Data.EF.csproj", "{57A76DF1-2CB1-4390-AF4A-4361BC17B769}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F27B29B4-1F05-4DAC-85BC-FAF9E9AC1B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F27B29B4-1F05-4DAC-85BC-FAF9E9AC1B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F27B29B4-1F05-4DAC-85BC-FAF9E9AC1B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A76DF1-2CB1-4390-AF4A-4361BC17B769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A76DF1-2CB1-4390-AF4A-4361BC17B769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A76DF1-2CB1-4390-AF4A-4361BC17B769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A76DF1-2CB1-4390-AF4A-4361BC17B769}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

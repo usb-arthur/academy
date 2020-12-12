@@ -14,6 +14,10 @@ namespace ACADEMY.Data.Configurations
 
             builder.Property(e => e.CourseName).IsRequired();
 
+            builder
+                .Property(e => e.DetailDescription)
+                .HasColumnType("ntext");
+
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");

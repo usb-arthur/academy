@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ACADEMY.Data.EF\ACADEMY.Data.EF.csproj" />
     <ProjectReference Include="..\ACADEMY.Data\ACADEMY.Data.csproj" />
   </ItemGroup>
 

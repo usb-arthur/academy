@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using ACADEMY.Data.Enums;
+using ACADEMY.Data.Interfaces;
 
 namespace ACADEMY.Data.Entities
 {
-    public class Course : BaseEntity
+    public class Course : BaseEntity, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
     {
         public string CourseName { get; set; }
 
@@ -25,5 +26,17 @@ namespace ACADEMY.Data.Entities
         public User Teacher { get; set; }
 
         public ICollection<WatchList> WatchLists { get; set; }
+        
+        public DateTime CreatedDate { get; set; }
+        
+        public DateTime UpdatedDate { get; set; }
+        
+        public Guid CreatedBy { get; set; }
+        
+        public Guid UpdatedBy { get; set; }
+        
+        public int SortOrder { get; set; }
+        
+        public bool IsDeleted { get; set; }
     }
 }
