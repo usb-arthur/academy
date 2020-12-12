@@ -38,7 +38,7 @@ namespace ACADEMY.DataApplication.Extensions
                 },
                 new User()
                 {
-                    Id = userId,
+                    Id = new Guid("D0042B45 - 70D9 - 448F - 998F - 42717015EE1B"),
                     Name = "Trần Văn Quang",
                     Gender = Enums.UserGender.Male,
                     Contact = "email, message, phone",
@@ -60,7 +60,7 @@ namespace ACADEMY.DataApplication.Extensions
                 },
                 new User()
                 {
-                    Id = userId,
+                    Id = new Guid("A8B995DE-EB76-4AF5-BB7B-C2F183857CD1"),
                     Name = "Phạm Thị Nhung",
                     Gender = Enums.UserGender.Female,
                     Contact = "email, message, phone",
@@ -82,7 +82,7 @@ namespace ACADEMY.DataApplication.Extensions
                 },
                 new User()
                 {
-                    Id = userId,
+                    Id = new Guid("A62B535D-7E37-47E1-B81D-1F00776B7266"),
                     Name = "Phan Thị Thủy",
                     Gender = Enums.UserGender.Female,
                     Contact = "email, message, phone",
@@ -104,7 +104,7 @@ namespace ACADEMY.DataApplication.Extensions
                 },
                 new User()
                 {
-                    Id = userId,
+                    Id = new Guid("AF495437-4193-44DE-ACDB-651E3533A772"),
                     Name = "Hồ Quang Phú",
                     Gender = Enums.UserGender.Male,
                     Contact = "email, message, phone",
@@ -127,7 +127,8 @@ namespace ACADEMY.DataApplication.Extensions
                 );
 
             modelBuilder.Entity<Category>().HasData(
-                new Category() {
+                new Category()
+                {
                     Id = 1,
                     CategoryName = "Công nghệ thông tin",
                     CreatedDate = DateTime.Now,
@@ -476,8 +477,7 @@ namespace ACADEMY.DataApplication.Extensions
                     UpdatedDate = DateTime.Now,
                     CreatedBy = userId,
                     UpdatedBy = userId
-                }
-                );
+                });
         }
     }
 }
