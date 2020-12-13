@@ -1,7 +1,7 @@
 ﻿using System;
-using ACADEMY.Data.Configurations;
+using ACADEMY.Data.EF.Configurations;
+using ACADEMY.Data.EF.Extensions;
 using ACADEMY.Data.Entities;
-using ACADEMY.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -30,15 +30,22 @@ namespace ACADEMY.Data.EF
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new WatchListConfiguration());
 
-            builder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaim");
-            builder.Entity<IdentityUserRole<Guid>>()
+            builder
+                .Entity<IdentityUserClaim<Guid>>()
+                .ToTable("UserClaim");
+            builder
+                .Entity<IdentityUserRole<Guid>>()
                 .ToTable("UserRole")
                 .HasKey(x => new {x.UserId, x.RoleId});
-            builder.Entity<IdentityUserLogin<Guid>>()
+            builder
+                .Entity<IdentityUserLogin<Guid>>()
                 .ToTable("UserLogin")
                 .HasKey(x => x.UserId);
-            builder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaim");
-            builder.Entity<IdentityUserToken<Guid>>()
+            builder
+                .Entity<IdentityRoleClaim<Guid>>()
+                .ToTable("RoleClaim");
+            builder
+                .Entity<IdentityUserToken<Guid>>()
                 .ToTable("UserToken")
                 .HasKey(x => x.UserId);
 

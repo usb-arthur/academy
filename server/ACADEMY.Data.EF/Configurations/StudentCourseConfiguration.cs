@@ -2,13 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ACADEMY.Data.Configurations
+namespace ACADEMY.Data.EF.Configurations
 {
     public class StudentCourseConfiguration : IEntityTypeConfiguration<StudentCourse>
     {
         public void Configure(EntityTypeBuilder<StudentCourse> builder)
         {
             builder.ToTable("StudentCourse").HasKey(e => new {e.StudentId, e.CourseId});
+
+            builder
+                .HasOne<User>(e => e.User)
+                .WithMany(e => e.StudentCourses)
+                .HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasOne<Course>(e => e.Course)
+                .WithMany(e => e.StudentCourses)
+                .HasForeignKey(e => e.CourseId);
         }
     }
 }

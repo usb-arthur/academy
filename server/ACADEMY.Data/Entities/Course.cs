@@ -7,6 +7,8 @@ namespace ACADEMY.Data.Entities
 {
     public class Course : BaseEntity, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
     {
+        #region Properties
+
         public string CourseName { get; set; }
 
         public double CourseFee { get; set; }
@@ -21,22 +23,30 @@ namespace ACADEMY.Data.Entities
 
         public Guid TeacherId { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
+
+        public Guid CreatedBy { get; set; }
+
+        public Guid UpdatedBy { get; set; }
+
+        public int SortOrder { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        #endregion
+
+        #region Relationship
+
         public Category Category { get; set; }
 
         public User Teacher { get; set; }
 
         public ICollection<WatchList> WatchLists { get; set; }
-        
-        public DateTime CreatedDate { get; set; }
-        
-        public DateTime UpdatedDate { get; set; }
-        
-        public Guid CreatedBy { get; set; }
-        
-        public Guid UpdatedBy { get; set; }
-        
-        public int SortOrder { get; set; }
-        
-        public bool IsDeleted { get; set; }
+
+        public ICollection<StudentCourse> StudentCourses { get; set; }
+
+        #endregion
     }
 }

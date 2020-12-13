@@ -3,7 +3,7 @@ using ACADEMY.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ACADEMY.Data.Extensions
+namespace ACADEMY.Data.EF.Extensions
 {
     public static class ModelBuilderExtension
     {
@@ -121,8 +121,7 @@ namespace ACADEMY.Data.Extensions
                     TwoFactorEnabled = false,
                     LockoutEnabled = false,
                     AccessFailedCount = 1
-                }
-                );
+                });
 
             modelBuilder.Entity<Category>().HasData(
                 new Category()
@@ -241,8 +240,8 @@ namespace ACADEMY.Data.Extensions
                     UpdatedDate = DateTime.Now,
                     CreatedBy = userId,
                     UpdatedBy = userId
-                }
-                );
+                });
+            
             modelBuilder.Entity<Course>().HasData(
                 new Course()
                 {
@@ -363,8 +362,8 @@ namespace ACADEMY.Data.Extensions
                     UpdatedDate = DateTime.Now,
                     CreatedBy = userId,
                     UpdatedBy = userId
-                }
-                );
+                });
+            
             modelBuilder.Entity<StudentCourse>().HasData(
                 new StudentCourse()
                 {
@@ -390,8 +389,8 @@ namespace ACADEMY.Data.Extensions
                 {
                     StudentId = userId,
                     CourseId = 5
-                }
-                );
+                });
+            
             modelBuilder.Entity<WatchList>().HasData(
                 new WatchList()
                 {
@@ -437,8 +436,8 @@ namespace ACADEMY.Data.Extensions
                     UpdatedDate = DateTime.Now,
                     CreatedBy = userId,
                     UpdatedBy = userId
-                }
-                );
+                });
+            
             modelBuilder.Entity<Feedback>().HasData(
                 new Feedback()
                 {
@@ -475,8 +474,7 @@ namespace ACADEMY.Data.Extensions
                     UpdatedDate = DateTime.Now,
                     CreatedBy = userId,
                     UpdatedBy = userId
-                }
-                );
+                });
         }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ACADEMY.Data.Configurations
+namespace ACADEMY.Data.EF.Configurations
 {
     public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
     {
