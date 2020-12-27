@@ -21,7 +21,7 @@ namespace ACADEMY.WebApi.Controllers
             _userService = userService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] GetUserRequest request)
         {

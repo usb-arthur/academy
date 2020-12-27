@@ -36,7 +36,12 @@ namespace ACADEMY.Data.EF
             builder
                 .Entity<IdentityUserRole<Guid>>()
                 .ToTable("UserRole")
-                .HasKey(x => new {x.UserId, x.RoleId});
+                .Property(e => e.RoleId)
+                .HasDefaultValue(new Guid("09E89E3B-00DD-4580-A403-63FC3F91AB50"));
+
+            builder.Entity<IdentityUserRole<Guid>>().HasKey(e => new {e.RoleId, e.UserId});
+
+
             builder
                 .Entity<IdentityUserLogin<Guid>>()
                 .ToTable("UserLogin")

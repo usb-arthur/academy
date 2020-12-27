@@ -12,7 +12,7 @@ namespace ACADEMY.Data.EF
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json").Build();
 
-            var connectionString = configuration.GetConnectionString("AcademyDb");
+            var connectionString = configuration.GetConnectionString("Academy");
 
             var optionsBuilder = new DbContextOptionsBuilder<AcademyDbContext>();
             

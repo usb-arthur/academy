@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ACADEMY.Data.Entities;
+using ACADEMY.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +11,52 @@ namespace ACADEMY.Data.EF.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Role>().HasData(
+                new Role()
+                {
+                    Id = new Guid("AD0E4E6A-FEE6-4CCF-91EB-5F357E04E467"),
+                    Name = "Admin",
+                    NormalizedName = "admin"
+                },
+                new Role()
+                {
+                    Id = new Guid("09E89E3B-00DD-4580-A403-63FC3F91AB50"),
+                    Name = "Teacher",
+                    NormalizedName = "teacher"
+                },
+                new Role()
+                {
+                    Id = new Guid("85BAA706-7544-477E-BA32-004D478A7200"),
+                    Name = "Student",
+                    NormalizedName = "student"
+                });
+            
             var userId = new Guid("69BD714F-9576-45BA-B5B7-F00649BE00DE");
             var hasher = new PasswordHasher<User>();
+            
             modelBuilder.Entity<User>().HasData(
+                new User()
+                {
+                    Id = new Guid("EAFEF07D-95FB-473D-B38E-57EA4A29968D"),
+                    Name = "Nguyễn Võ Nhân",
+                    Gender = UserGender.Male,
+                    Contact = "{'email': 'nhan.nguyenvo1@gmail.com'}",
+                    Status = UserStatus.Active,
+                    DateOfBirth = new DateTime(1999, 3, 15),
+                    UserName = "nhan.nguyenvo1@gmail.com",
+                    NormalizedUserName = "nhan.nguyenvo1@gmail.com",
+                    Email = "nhan.nguyenvo1@gmail.com",
+                    NormalizedEmail = "nhan.nguyenvo1@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "@dmin12345"),
+                    SecurityStamp = string.Empty,
+                    ConcurrencyStamp = string.Empty,
+                    PhoneNumber = "0348310590",
+                    PhoneNumberConfirmed = true,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = false,
+                    AccessFailedCount = 1
+                },
                 new User()
                 {
                     Id = userId,
@@ -20,7 +65,7 @@ namespace ACADEMY.Data.EF.Extensions
                     Contact = "email, message, phone",
                     Status = Enums.UserStatus.Active,
                     DateOfBirth = new DateTime(1999, 01, 31),
-                    UserName = "Nguyễn Văn Hùng",
+                    UserName = "NguyenVanHung@gmail.com",
                     NormalizedUserName = "Nguyễn Văn Hùng",
                     Email = "NguyenVanHung@gmail.com",
                     NormalizedEmail = "NguyenVanHung@gmail.com",
@@ -42,7 +87,7 @@ namespace ACADEMY.Data.EF.Extensions
                     Contact = "email, message, phone",
                     Status = Enums.UserStatus.Active,
                     DateOfBirth = new DateTime(1998, 02, 15),
-                    UserName = "Trần Văn Quang",
+                    UserName = "TranVanQuang@gmail.com",
                     NormalizedUserName = "Trần Văn Quang",
                     Email = "TranVanQuang@gmail.com",
                     NormalizedEmail = "TranVanQuang@gmail.com",
@@ -64,7 +109,7 @@ namespace ACADEMY.Data.EF.Extensions
                     Contact = "email, message, phone",
                     Status = Enums.UserStatus.Active,
                     DateOfBirth = new DateTime(2000, 02, 04),
-                    UserName = "Phạm Thị Nhung",
+                    UserName = "PhamThiNhung@gmail.com",
                     NormalizedUserName = "Phạm Thị Nhung",
                     Email = "PhamThiNhung@gmail.com",
                     NormalizedEmail = "PhamThiNhung@gmail.com",
@@ -86,7 +131,7 @@ namespace ACADEMY.Data.EF.Extensions
                     Contact = "email, message, phone",
                     Status = Enums.UserStatus.Active,
                     DateOfBirth = new DateTime(2002, 04, 06),
-                    UserName = "Phan Thị Thủy",
+                    UserName = "PhanThiThuy@gmail.com",
                     NormalizedUserName = "Phan Thị Thủy",
                     Email = "PhanThiThuy@gmail.com",
                     NormalizedEmail = "PhanThiThuy@gmail.com",
@@ -108,7 +153,7 @@ namespace ACADEMY.Data.EF.Extensions
                     Contact = "email, message, phone",
                     Status = Enums.UserStatus.Active,
                     DateOfBirth = new DateTime(2001, 05, 06),
-                    UserName = "Hồ Quang Phú",
+                    UserName = "HoQuangPhu@gmail.com",
                     NormalizedUserName = "Hồ Quang Phú",
                     Email = "HoQuangPhu@gmail.com",
                     NormalizedEmail = "HoQuangPhu@gmail.com",
@@ -123,6 +168,13 @@ namespace ACADEMY.Data.EF.Extensions
                     AccessFailedCount = 1
                 });
 
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(
+                new IdentityUserRole<Guid>()
+                {
+                    RoleId = new Guid("AD0E4E6A-FEE6-4CCF-91EB-5F357E04E467"),
+                    UserId = new Guid("EAFEF07D-95FB-473D-B38E-57EA4A29968D"),
+                });
+            
             modelBuilder.Entity<Category>().HasData(
                 new Category()
                 {
