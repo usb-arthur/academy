@@ -10,6 +10,8 @@ namespace ACADEMY.Data.EF.Configurations
         {
             builder.ToTable("User").HasKey(e => e.Id);
 
+            builder.HasIndex(e => e.Email).IsUnique();
+            
             builder.Property(e => e.Name).IsRequired().HasMaxLength(250);
 
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");

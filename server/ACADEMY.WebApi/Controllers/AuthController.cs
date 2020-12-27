@@ -52,7 +52,7 @@ namespace ACADEMY.WebApi.Controllers
             {
                 return BadRequest("Token đã hết hạn hoặc không tồn tại");
             }
-
+            
             request.RefreshToken = token;
 
             var result = await _authService.RefreshTokenAsync(request);

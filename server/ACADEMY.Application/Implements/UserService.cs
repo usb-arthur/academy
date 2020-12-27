@@ -191,7 +191,7 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user));
         }
 
-        public async Task<ApiResult<UserVm>> UpdateAsync(PutUserRequest user)
+        public async Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest user)
         {
             throw new NotImplementedException();
         }

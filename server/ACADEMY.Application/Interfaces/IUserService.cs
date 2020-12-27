@@ -18,6 +18,6 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResult<UserVm>> GetByIdAsync(Guid id);
 
-        Task<ApiResult<UserVm>> UpdateAsync(PutUserRequest user);
+        Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest user);
     }
 }
