@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Data.EF
 {
-    internal class AcademyDbContext : IdentityDbContext<User, Role, Guid>
+    public class AcademyDbContext : IdentityDbContext<User, Role, Guid>
     {
         public AcademyDbContext(DbContextOptions options) : base(options)
         {

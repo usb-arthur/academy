@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ACADEMY.Data\ACADEMY.Data.csproj" />
+    <ProjectReference Include="..\ACADEMY.Infrastructure\ACADEMY.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -27,6 +27,8 @@ namespace ACADEMY.Data.Entities
         public Guid CreatedBy { get; set; }
 
         public Guid UpdatedBy { get; set; }
+        
+        public string RefreshToken { get; set; }
 
         #endregion
 
