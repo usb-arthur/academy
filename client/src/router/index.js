@@ -1,5 +1,7 @@
-import { createRouter, createWebHistory } from "vue-router";
+//import { createRouter, createWebHistory } from "vue-router";
+
 import Home from "../views/Home.vue";
+import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
 
 const routes = [
   {
@@ -15,12 +17,38 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/admin",
+    component: AdminLayout,
+    redirect: { name: "LinhVuc" },
+    children: [
+      {
+        path: "linhvuc",
+        name: "LinhVuc",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
+          )
+      },
+      {
+        path: "khoahoc",
+        name: "KhoaHoc",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
+          )
+      },
+      {
+        path: "user",
+        name: "user",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
+          )
+      }
+    ]
   }
 ];
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
-});
-
-export default router;
+export default routes;

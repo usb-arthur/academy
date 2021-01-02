@@ -1,8 +1,15 @@
-import { createStore } from "vuex";
+import Vue from "vue";
+import Vuex from "vuex";
+import linhvuc from "./linhvuc/linhvuc.js";
+import khoahoc from "./modules/khoahoc.js";
+import user from "./modules/user.js";
 
-export default createStore({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {}
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  modules: {
+    linhvuc,
+    khoahoc,
+    user
+  }
 });
