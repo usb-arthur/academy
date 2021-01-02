@@ -8,14 +8,14 @@ const state = () => ({
     { id: 2, catalogname: "Design", active: true },
     { id: 3, catalogname: "Game", active: true },
     { id: 4, catalogname: "Database", active: true },
-    { id: 5, catalogname: "Advanced", active: true }
+    { id: 5, catalogname: "Advanced", active: false }
   ]
 });
 
 // getters
 const getters = {
   ACatalog: state => {
-    return state.items.filters(catalog => catalog.active);
+    return state.items.filter(catalog => catalog.active);
   }
 };
 

@@ -3,7 +3,7 @@
         <md-table v-model="searched" md-sort="name" md-sort-order="asc" @md-selected="onSelect" md-card md-fixed-header>
             <md-table-toolbar>
                 <div class="md-toolbar-section-start">
-                    <h1 class="md-title">LĨNH VỰC</h1>
+                    <h1 class="md-title">NGƯỜI DÙNG</h1>
                 </div>
 
                 <md-field md-clearable class="md-toolbar-section-end">

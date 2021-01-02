@@ -1,13 +1,14 @@
 //import { createRouter, createWebHistory } from "vue-router";
 
-import Home from "../views/Home.vue";
+//import Home from "../views/Home.vue";
+import HomePageLayout from "../views/Page/HomePage/HomePageLayout.vue";
 import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: HomePageLayout
   },
   {
     path: "/about",

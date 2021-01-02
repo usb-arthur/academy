@@ -3,7 +3,7 @@
         <md-table v-model="searched" md-sort="name" md-sort-order="asc" @md-selected="onSelect" md-card md-fixed-header>
             <md-table-toolbar>
                 <div class="md-toolbar-section-start">
-                    <h1 class="md-title">LĨNH VỰC</h1>
+                    <h1 class="md-title">KHÓA HỌC</h1>
                 </div>
 
                 <md-field md-clearable class="md-toolbar-section-end">
@@ -12,7 +12,7 @@
             </md-table-toolbar>
 
                   <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-                      <div class="md-toolbar-section-start">Đã chọn {{count}} lĩnh vực</div>
+                      <div class="md-toolbar-section-start">Đã chọn {{count}} khóa học</div>
 
                       <div class="md-toolbar-section-end">
                           <md-button class="md-icon-button" @click="deletekh">
@@ -22,7 +22,7 @@
                   </md-table-toolbar>
 
             <md-table-empty-state md-label="Không tìm thấy khóa học"
-                :md-description="`Không tìm thấy lĩnh vực tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`">
+                :md-description="`Không tìm thấy khóa học tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`">
                 <md-button class="md-primary md-raised" @click="newUser">Tạo khóa học mới</md-button>
             </md-table-empty-state>
 
