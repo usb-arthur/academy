@@ -1,9 +1,10 @@
 ﻿using System;
 using ACADEMY.Data.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class Feedback : BaseEntity, IDateTracking, IHasOwner<Guid>
+    public class Feedback : DomainEntity<long>, IDateTracking, IHasOwner<Guid>
     {
         #region Properties
 
@@ -27,7 +28,7 @@ namespace ACADEMY.Data.Entities
 
         #region Relationship
 
-        public StudentCourse StudentCourse { get; set; }
+        public virtual StudentCourse StudentCourse { get; set; }
         
         #endregion
     }

@@ -173,6 +173,11 @@ namespace ACADEMY.Data.EF.Extensions
                 {
                     RoleId = new Guid("AD0E4E6A-FEE6-4CCF-91EB-5F357E04E467"),
                     UserId = new Guid("EAFEF07D-95FB-473D-B38E-57EA4A29968D"),
+                },
+                new IdentityUserRole<Guid>
+                {
+                    RoleId = new Guid("09E89E3B-00DD-4580-A403-63FC3F91AB50"),
+                    UserId = new Guid("E0181BF8-FC45-4122-97B0-1C4990A4983D")
                 });
             
             modelBuilder.Entity<Category>().HasData(

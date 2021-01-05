@@ -23,9 +23,9 @@ namespace ACADEMY.Data.Entities
 
         #region Relationship
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public Course Courses { get; set; }
+        public virtual Course Courses { get; set; }
 
         #endregion
     }

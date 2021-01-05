@@ -1,4 +1,5 @@
 ﻿using ACADEMY.Data.Entities;
+using ACADEMY.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,10 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.Property(e => e.CourseName).IsRequired();
 
+            builder.Property(e => e.IsDeleted).HasDefaultValue(false);
+            
+            builder.Property(e => e.Status).HasDefaultValue(CourseStatus.Incomplete);
+            
             builder
                 .Property(e => e.DetailDescription)
                 .HasColumnType("ntext");

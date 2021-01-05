@@ -90,8 +90,8 @@ namespace ACADEMY.Application.Implements
 
             if (user != null)
             {
-                return new ApiErrorResult<UserVm>("Email đã được dùng để đăng ký tài khoản khác")
-                { StatusCode = HttpStatusCode.Conflict };
+                return new ApiErrorResult<UserVm>("Email đã được dùng để đăng ký tài khoản khác",
+                    HttpStatusCode.Conflict);
             }
 
             user = _mapper.Map<PostUserRequest, User>(request);
@@ -105,22 +105,22 @@ namespace ACADEMY.Application.Implements
             var currentUser = await _userManager.FindByEmailAsync(email.Value);
 
             user.CreatedBy = user.UpdatedBy = currentUser.Id;
-
+            user.FirstLogin = false;
             var result = await _userManager.CreateAsync(user, password);
 
             if (!result.Succeeded)
-                return new ApiErrorResult<UserVm>($"Thao tác tạo user không thành công")
-                { StatusCode = HttpStatusCode.InternalServerError };
+                return new ApiErrorResult<UserVm>($"Thao tác tạo user không thành công",
+                    HttpStatusCode.InternalServerError);
 
             result = await _userManager.AddToRoleAsync(user, "Teacher");
 
             if (result.Succeeded)
             {
-                return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user)) {StatusCode = HttpStatusCode.Created};
+                return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user)) { StatusCode = HttpStatusCode.Created };
             }
 
-            return new ApiErrorResult<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}")
-            { StatusCode = HttpStatusCode.InternalServerError };
+            return new ApiErrorResult<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}",
+                HttpStatusCode.InternalServerError);
 
         }
 
@@ -130,7 +130,7 @@ namespace ACADEMY.Application.Implements
 
             if (user == null)
             {
-                return new ApiErrorResult<bool>("User cần xoá không tồn tại") { StatusCode = HttpStatusCode.NotFound };
+                return new ApiErrorResult<bool>("User cần xoá không tồn tại", HttpStatusCode.NotFound);
             }
 
             user.Status = UserStatus.Deactivated;
@@ -142,38 +142,13 @@ namespace ACADEMY.Application.Implements
                 return new ApiSucceedResult<bool>(true);
             }
 
-            return new ApiErrorResult<bool>("Thao tác xoá user không thành công")
-                {StatusCode = HttpStatusCode.InternalServerError};
+            return new ApiErrorResult<bool>("Thao tác xoá user không thành công", HttpStatusCode.InternalServerError);
         }
 
-        public async Task<ApiResult<PagedResult<UserVm>>> GetAllPagingAsync(GetUserRequest request)
+        public async Task<ApiResult<ICollection<UserVm>>> GetAllAsync()
         {
-            var users = _userManager.Users;
-
-            if (!string.IsNullOrEmpty(request.Search))
-            {
-                users = users.Where(user =>
-                    user.Email.Contains(request.Search, StringComparison.OrdinalIgnoreCase)
-                    || user.Name.Contains(request.Search, StringComparison.OrdinalIgnoreCase)
-                    || user.PhoneNumber.Contains(request.Search, StringComparison.OrdinalIgnoreCase));
-            }
-            
-            var total = await users.CountAsync();
-
-            var result = await users.Skip((request.Page - 1) * request.Limit)
-                .Take(request.Limit)
-                .Select(user => _mapper.Map<User, UserVm>(user))
-                .ToListAsync();
-
-            var pagedResult = new PagedResult<UserVm>()
-            {
-                Content = result,
-                Limit = request.Limit,
-                Page = request.Page,
-                Total = total
-            };
-
-            return new ApiSucceedResult<PagedResult<UserVm>>(pagedResult);
+            var users = _userManager.Users.ProjectTo<UserVm>(_mapper.ConfigurationProvider);
+            return new ApiSucceedResult<ICollection<UserVm>>( await users.ToListAsync());
         }
 
         public async Task<ApiResult<UserVm>> GetByIdAsync(Guid id)
@@ -182,18 +157,31 @@ namespace ACADEMY.Application.Implements
 
             if (user == null)
             {
-                return new ApiErrorResult<UserVm>($"Không thể tìm thấy user với id là {id}")
-                {
-                    StatusCode = HttpStatusCode.NotFound
-                };
+                return new ApiErrorResult<UserVm>($"Không thể tìm thấy user với id là {id}", HttpStatusCode.NotFound);
             }
 
             return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user));
         }
 
-        public async Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest user)
+        public async Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest request)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<UserVm>($"Không thể tìm thấy user với id là {id}", HttpStatusCode.NotFound);
+            }
+            
+            user = _mapper.Map(request, user);
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user));
+            }
+
+            return new ApiErrorResult<UserVm>("Thao tác chỉnh sửa không thành công",
+                HttpStatusCode.InternalServerError);
         }
     }
 }

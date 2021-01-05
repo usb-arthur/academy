@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using ACADEMY.Data.Enums;
 using ACADEMY.Data.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class Course : BaseEntity, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
+    public class Course : DomainEntity<long>, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
     {
         #region Properties
 

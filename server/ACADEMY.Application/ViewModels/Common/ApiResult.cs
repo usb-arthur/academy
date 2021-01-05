@@ -14,7 +14,7 @@ namespace ACADEMY.Application.ViewModels.Common
 
         public string Message { get; set; }
 
-        public T Content { get; set; }
+        public T ObjResult { get; set; }
 
         [JsonIgnore]
         public HttpStatusCode StatusCode { get; set; }

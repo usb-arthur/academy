@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace ACADEMY.Infrastructure.Interfaces
 {
-    public interface IRepository<T, K> where T : class
+    public interface IRepository<T, TK> where T : class
     {
-        T FindById(K id, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> FindByIdAsync(TK id, params Expression<Func<T, object>>[] includeProperties);
 
-        T FindSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
-        IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties);
+        Task<IQueryable<T>> FindAllAsync(params Expression<Func<T, object>>[] includeProperties);
 
-        IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<IQueryable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
-        void Add(T entity);
+        Task<T> AddAsync(T entity);
 
-        void Update(T entity);
+        Task<T> UpdateAsync(T entity);
 
-        void Remove(T entity);
+        Task RemoveAsync(T entity);
 
-        void Remove(K id);
+        Task RemoveAsync(TK id);
 
-        void RemoveMultiple(List<T> entities);
+        Task RemoveMultipleAsync(IList<T> entities);
     }
 }

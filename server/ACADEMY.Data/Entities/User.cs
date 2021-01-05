@@ -27,6 +27,8 @@ namespace ACADEMY.Data.Entities
         public Guid CreatedBy { get; set; }
 
         public Guid UpdatedBy { get; set; }
+
+        public bool FirstLogin { get; set; }
         
         public string RefreshToken { get; set; }
 
@@ -34,13 +36,11 @@ namespace ACADEMY.Data.Entities
 
         #region Relationship
 
-        public ICollection<WatchList> WatchLists { get; set; }
-
-        public ICollection<Role> Roles { get; set; }
-
-        public ICollection<StudentCourse> StudentCourses { get; set; }
+        public virtual ICollection<WatchList> WatchLists { get; set; }
         
-        public ICollection<Course> Courses { get; set; }
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; }
+        
+        public virtual ICollection<Course> Courses { get; set; }
 
         #endregion
     }

@@ -14,10 +14,10 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResult<bool>> DeleteAsync(Guid id);
 
-        Task<ApiResult<PagedResult<UserVm>>> GetAllPagingAsync(GetUserRequest request);
+        Task<ApiResult<ICollection<UserVm>>> GetAllAsync();
 
         Task<ApiResult<UserVm>> GetByIdAsync(Guid id);
 
-        Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest user);
+        Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest request);
     }
 }

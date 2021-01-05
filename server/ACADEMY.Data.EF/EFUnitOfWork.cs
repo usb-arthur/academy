@@ -21,14 +21,9 @@ namespace ACADEMY.Data.EF
             _context?.Dispose();
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            _context.SaveChanges();
-        }
-
-        public Task CommitAsync()
-        {
-            return Task.FromResult(_context.SaveChangesAsync());
+            await _context.SaveChangesAsync();
         }
     }
 }

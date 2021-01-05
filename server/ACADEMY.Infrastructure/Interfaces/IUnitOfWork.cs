@@ -8,8 +8,6 @@ namespace ACADEMY.Infrastructure.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        void Commit();
-
         Task CommitAsync();
     }
 }

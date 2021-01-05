@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Data.EF
 {
-    public class EFRepository<T, K> : IRepository<T, K>, IDisposable where T : DomainEntity<K>
+    public class EFRepository<T, TK> : IRepository<T, TK>, IDisposable where T : DomainEntity<TK>
     {
         private readonly AcademyDbContext _context;
 
@@ -24,62 +24,61 @@ namespace ACADEMY.Data.EF
             _context?.Dispose();
         }
 
-        public T FindById(K id, params Expression<Func<T, object>>[] includeProperties)
+
+        public async Task<T> FindByIdAsync(TK id, params Expression<Func<T, object>>[] includeProperties)
         {
-            return FindAll(includeProperties).SingleOrDefault(x => x.Id.Equals(id));
+            var items = await FindAllAsync(includeProperties);
+            return await items.FirstOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-        public T FindSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            return FindAll(includeProperties).SingleOrDefault(predicate);
+            var items = await FindAllAsync(includeProperties);
+            return await items.FirstOrDefaultAsync(predicate);
         }
 
-        public IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties)
+        public Task<IQueryable<T>> FindAllAsync(params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> items = _context.Set<T>();
-            if (includeProperties != null)
-            {
-                items = includeProperties.Aggregate(items, (current, includeProperty) => current.Include(includeProperty));
-            }
-            return items;
+            var items = _context.Set<T>() as IQueryable<T>;
+
+            if (includeProperties == null) return Task.FromResult(items);
+            
+            items = includeProperties.Aggregate(items, (current, includeProperty) => current.Include(includeProperty));
+
+            return Task.FromResult(items);
         }
 
-        public IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IQueryable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> items = _context.Set<T>();
-
-            if (includeProperties != null)
-            {
-                items = includeProperties.Aggregate(items, (current, includeProperty) => current.Include(includeProperty));
-            }
-
-            return items.Where(predicate);
+            return (await FindAllAsync(includeProperties)).Where(predicate);
         }
 
-        public void Add(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            _context.Add(entity);
+            return (await _context.AddAsync(entity)).Entity;
         }
 
-        public void Update(T entity)
+        public Task<T> UpdateAsync(T entity)
         {
-            _context.Set<T>().Update(entity);
+            return Task.FromResult(_context.Set<T>().Update(entity).Entity);
         }
 
-        public void Remove(T entity)
+        public Task RemoveAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
+            return Task.FromResult(0);
         }
 
-        public void Remove(K id)
+        public async Task RemoveAsync(TK id)
         {
-            var entity = FindById(id);
-            Remove(entity);
+            var entity = await FindByIdAsync(id);
+            await RemoveAsync(entity);
         }
 
-        public void RemoveMultiple(List<T> entities)
+        public Task RemoveMultipleAsync(IList<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
+            return Task.FromResult(0);
         }
     }
 }

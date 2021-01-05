@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.System;
+using ACADEMY.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +30,14 @@ namespace ACADEMY.WebApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState.GetErrorMessage());
             }
 
             var authResult = await _authService.SignInAsync(request);
-            
-            SetTokenCookie(authResult.Content.RefreshToken);
+            if (authResult.Succeeded)
+            {
+                SetTokenCookie(authResult.ObjResult.RefreshToken);
+            }
 
             return StatusCode((int) authResult.StatusCode, authResult);
         }
