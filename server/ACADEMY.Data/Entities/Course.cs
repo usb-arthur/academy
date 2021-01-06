@@ -14,6 +14,10 @@ namespace ACADEMY.Data.Entities
 
         public double CourseFee { get; set; }
 
+        public double? Sale { get; set; }
+
+        public DateTime? SaleDate { get; set; }
+
         public string BriefDescription { get; set; }
 
         public string DetailDescription { get; set; }
@@ -46,7 +50,11 @@ namespace ACADEMY.Data.Entities
 
         public ICollection<WatchList> WatchLists { get; set; }
 
+        public ICollection<Feedback> Feedbacks { get; set; }
+        
         public ICollection<StudentCourse> StudentCourses { get; set; }
+
+        public ICollection<CourseDetail> CourseDetails { get; set; }
 
         #endregion
     }

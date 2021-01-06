@@ -18,6 +18,10 @@ namespace ACADEMY.Application.Requests.Catalog.Course
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Mô tả ngắn gọn không được bỏ trống")]
         public string BriefDescription { get; set; }
+
+        public long? Sale { get; set; }
+
+        public DateTime? SaleDate { get; set; }
         
         public string DetailDescription { get; set; }
         

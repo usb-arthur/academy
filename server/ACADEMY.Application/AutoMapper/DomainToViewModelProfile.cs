@@ -17,7 +17,14 @@ namespace ACADEMY.Application.AutoMapper
         {
             CreateMap<User, UserVm>();
 
-            CreateMap<Course, CourseVm>();
+            CreateMap<CourseDetail, CourseDetailVm>();
+            
+            CreateMap<Course, CourseVm>()
+                .ForMember(des => des.Rate, options => options.MapFrom(src => src.Feedbacks.Average(e => e.Rate)))
+                .ForMember(des => des.NumOfFeedback,
+                    options => options.MapFrom(src => src.Feedbacks.Count))
+                .ForMember(des => des.NumOfStudent,
+                    options => options.MapFrom(src => src.StudentCourses.Count));
 
             CreateMap<Category, CategoryVm>()
                 .ForMember(des => des.CreatedBy, options => options.MapFrom(src => src.CreatedUser.Name))

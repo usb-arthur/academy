@@ -23,6 +23,10 @@ namespace ACADEMY.Data.EF.Configurations
                 .Property(e => e.DetailDescription)
                 .HasColumnType("ntext");
 
+            builder.Property(e => e.Sale).HasDefaultValue(0.0);
+
+            builder.Property(e => e.SaleDate).HasDefaultValue(null);
+
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");
@@ -36,6 +40,12 @@ namespace ACADEMY.Data.EF.Configurations
                 .HasOne(e => e.Teacher)
                 .WithMany(e => e.Courses)
                 .HasForeignKey(e => e.TeacherId);
+
+            builder.HasMany(e => e.Feedbacks).WithOne().HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.StudentCourses).WithOne().HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

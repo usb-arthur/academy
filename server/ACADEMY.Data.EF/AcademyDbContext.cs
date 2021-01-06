@@ -29,6 +29,7 @@ namespace ACADEMY.Data.EF
             builder.ApplyConfiguration(new StudentCourseConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new WatchListConfiguration());
+            builder.ApplyConfiguration(new CourseDetailConfiguration());
 
             builder
                 .Entity<IdentityUserClaim<Guid>>()

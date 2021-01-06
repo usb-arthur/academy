@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ACADEMY.Data.Interfaces;
 using ACADEMY.Infrastructure.SharedKernel;
@@ -31,11 +32,9 @@ namespace ACADEMY.Data.Entities
         public virtual Category Parent { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
-        
-        [ForeignKey("UpdatedBy")]
+
         public virtual User UpdatedUser { get; set; }
 
-        [ForeignKey("CreatedBy")]
         public virtual User CreatedUser { get; set; }
         
         #endregion

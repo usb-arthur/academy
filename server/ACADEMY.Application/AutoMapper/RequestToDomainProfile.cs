@@ -34,6 +34,12 @@ namespace ACADEMY.Application.AutoMapper
             
             CreateMap<PutCategoryRequest, Category>()
                 .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PostCourseDetailRequest, CourseDetail>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PutCourseDetailRequest, CourseDetail>()
+                .ForAllMembers(options => options.UseDestinationValue());
         }
     }
 }

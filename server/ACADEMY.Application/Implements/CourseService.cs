@@ -39,7 +39,7 @@ namespace ACADEMY.Application.Implements
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             
-            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher);
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
             return new ApiSucceedResult<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 

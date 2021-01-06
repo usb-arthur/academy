@@ -63,7 +63,7 @@ namespace ACADEMY.WebApi
                     .AllowAnyHeader();
             }));
 
-            services.AddAutoMapper(typeof(DomainToViewModelProfile).Assembly, typeof(RequestToDomainProfile).Assembly);
+            services.AddAutoMapper(typeof(DateTimeToStringProfile).Assembly, typeof(DomainToViewModelProfile).Assembly, typeof(RequestToDomainProfile).Assembly);
 
             #region Dependcy Injection
 
@@ -80,6 +80,8 @@ namespace ACADEMY.WebApi
             services.AddTransient<ICourseService, CourseService>();
 
             services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<ICourseDetailService, CourseDetailService>();
 
             #endregion
 
