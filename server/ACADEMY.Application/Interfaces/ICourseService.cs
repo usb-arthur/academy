@@ -14,11 +14,11 @@ namespace ACADEMY.Application.Interfaces
     {
         Task<ApiResult<ICollection<CourseVm>>> GetAllAsync();
 
-        Task<ApiResult<CourseVm>> GetByIdAsync(int id);
+        Task<ApiResult<CourseVm>> GetByIdAsync(long id);
 
         Task<ApiResult<CourseVm>> CreateAsync(PostCourseRequest request);
 
-        Task<ApiResult<CourseVm>> UpdateAsync(int id, PutCourseRequest request);
+        Task<ApiResult<CourseVm>> UpdateAsync(long id, PutCourseRequest request);
 
         Task<ApiResult<bool>> DeleteAsync(int id);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ACADEMY.Application.Requests.Catalog.Category;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Data.Entities;
@@ -26,6 +27,12 @@ namespace ACADEMY.Application.AutoMapper
                 .ForAllMembers(options => options.UseDestinationValue());
             
             CreateMap<PutCourseRequest, Course>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PostCategoryRequest, Category>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PutCategoryRequest, Category>()
                 .ForAllMembers(options => options.UseDestinationValue());
         }
     }

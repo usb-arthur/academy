@@ -37,13 +37,17 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResult<ICollection<CourseVm>>> GetAllAsync()
         {
-            var courses = await _courseRepository.FindAllAsync(e => e.Category, e => e.Teacher);
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher);
             return new ApiSucceedResult<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResult<CourseVm>> GetByIdAsync(int id)
+        public async Task<ApiResult<CourseVm>> GetByIdAsync(long id)
         {
-            var course = await _courseRepository.FindByIdAsync(id, e =>  e.Category, e => e.Teacher);
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            
+            var course = await _courseRepository.FindSingleAsync(e => e.Id == id && e.TeacherId == userId, e =>  e.Category, e => e.Teacher);
 
             if (course == null)
             {
@@ -57,15 +61,14 @@ namespace ACADEMY.Application.Implements
         {
             var course = _mapper.Map<PostCourseRequest, Course>(request);
 
-            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
-            course.TeacherId =  Guid.Parse(userId);
-            
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            course.TeacherId = course.UpdatedBy = course.CreatedBy = userId;
             course = await _courseRepository.AddAsync(course);
             await _unitOfWork.CommitAsync();
             return new ApiSucceedResult<CourseVm>(_mapper.Map<Course, CourseVm>(course), HttpStatusCode.Created);
         }
 
-        public async Task<ApiResult<CourseVm>> UpdateAsync(int id, PutCourseRequest request)
+        public async Task<ApiResult<CourseVm>> UpdateAsync(long id, PutCourseRequest request)
         {
             var course = await _courseRepository.FindByIdAsync(id);
             if (course == null)
@@ -74,7 +77,8 @@ namespace ACADEMY.Application.Implements
             }
 
             course = _mapper.Map(request, course);
-
+            course.UpdatedDate = DateTime.Now;
+            course.UpdatedBy = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             course = await _courseRepository.UpdateAsync(course);
             await _unitOfWork.CommitAsync();
             return new ApiSucceedResult<CourseVm>(_mapper.Map<Course, CourseVm>(course));

@@ -79,6 +79,8 @@ namespace ACADEMY.WebApi
 
             services.AddTransient<ICourseService, CourseService>();
 
+            services.AddTransient<ICategoryService, CategoryService>();
+
             #endregion
 
             services.AddControllers();
