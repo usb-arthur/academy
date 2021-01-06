@@ -13,9 +13,16 @@ namespace ACADEMY.Application.ViewModels.Common
         {
             StatusCode = HttpStatusCode.OK;
             Succeeded = true;
-            Content = content;
+            ObjResult = content;
         }
 
+        public ApiSucceedResult(T content, HttpStatusCode statusCode)
+        {
+            StatusCode = statusCode;
+            Succeeded = true;
+            ObjResult = content;
+        }
+        
         public ApiSucceedResult()
         {
             Succeeded = true;

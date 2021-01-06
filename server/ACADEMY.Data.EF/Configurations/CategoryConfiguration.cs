@@ -12,11 +12,17 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.Property(e => e.Id).UseIdentityColumn();
 
-            builder.Property(e => e.CategoryName).IsRequired();
+            builder.Property(e => e.CategoryName).HasMaxLength(255).IsRequired();
 
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");
+
+            builder.HasOne(e => e.CreatedUser).WithMany().HasForeignKey(e => e.CreatedBy)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.HasOne(e => e.UpdatedUser).WithMany().HasForeignKey(e => e.UpdatedBy)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

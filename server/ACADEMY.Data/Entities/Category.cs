@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ACADEMY.Data.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class Category : BaseEntity, IDateTracking, IHasOwner<Guid>
+    public class Category : DomainEntity<long>, IDateTracking, IHasOwner<Guid>
     {
         #region Properties
 
@@ -24,12 +27,16 @@ namespace ACADEMY.Data.Entities
 
         #region Relationship
 
-        public ICollection<Category> Children { get; set; }
+        public virtual ICollection<Category> Children { get; set; }
 
-        public Category Parent { get; set; }
+        public virtual Category Parent { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
 
+        public virtual User UpdatedUser { get; set; }
+
+        public virtual User CreatedUser { get; set; }
+        
         #endregion
     }
 }

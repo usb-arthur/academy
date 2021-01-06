@@ -11,13 +11,13 @@ namespace ACADEMY.Data.EF.Configurations
             builder.ToTable("StudentCourse").HasKey(e => new {e.StudentId, e.CourseId});
 
             builder
-                .HasOne<User>(e => e.User)
+                .HasOne(e => e.User)
                 .WithMany(e => e.StudentCourses)
                 .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .HasOne<Course>(e => e.Course)
+                .HasOne(e => e.Course)
                 .WithMany(e => e.StudentCourses)
                 .HasForeignKey(e => e.CourseId);
         }

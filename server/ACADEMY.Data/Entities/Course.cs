@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using ACADEMY.Data.Enums;
 using ACADEMY.Data.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class Course : BaseEntity, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
+    public class Course : DomainEntity<long>, IDateTracking, IHasOwner<Guid>, ISortable, IHasSoftDelete
     {
         #region Properties
 
         public string CourseName { get; set; }
 
         public double CourseFee { get; set; }
+
+        public double? Sale { get; set; }
+
+        public DateTime? SaleDate { get; set; }
 
         public string BriefDescription { get; set; }
 
@@ -45,7 +50,11 @@ namespace ACADEMY.Data.Entities
 
         public ICollection<WatchList> WatchLists { get; set; }
 
+        public ICollection<Feedback> Feedbacks { get; set; }
+        
         public ICollection<StudentCourse> StudentCourses { get; set; }
+
+        public ICollection<CourseDetail> CourseDetails { get; set; }
 
         #endregion
     }

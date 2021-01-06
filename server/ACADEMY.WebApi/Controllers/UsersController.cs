@@ -12,7 +12,6 @@ namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,23 +20,25 @@ namespace ACADEMY.WebApi.Controllers
         {
             _userService = userService;
         }
-
+        
+        [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] GetUserRequest request)
+        public async Task<IActionResult> GetUsers()
         {
-            var result = await _userService.GetAllPagingAsync(request);
+            var result = await _userService.GetAllAsync();
 
             return StatusCode((int)result.StatusCode, result);
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             var result = await _userService.GetByIdAsync(id);
 
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] PostUserRequest request)
         {
@@ -48,10 +49,11 @@ namespace ACADEMY.WebApi.Controllers
 
             var result = await _userService.AddAsync(request);
 
-            return StatusCode((int) result.StatusCode, result);
+            return StatusCode((int)result.StatusCode, result);
         }
 
-        [HttpPut("{id}")]
+        [Authorize]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> PutUser(Guid id, [FromBody] PutUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -64,6 +66,7 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int)result.StatusCode, result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {

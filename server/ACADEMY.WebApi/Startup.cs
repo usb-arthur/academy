@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using ACADEMY.Application.AutoMapper;
 using ACADEMY.Application.Implements;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Data.EF;
 using ACADEMY.Data.Entities;
+using ACADEMY.Infrastructure.Interfaces;
 using ACADEMY.Utilities.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -61,7 +63,7 @@ namespace ACADEMY.WebApi
                     .AllowAnyHeader();
             }));
 
-            services.AddAutoMapper(typeof(DomainToViewModelProfile).Assembly, typeof(RequestToDomainProfile).Assembly);
+            services.AddAutoMapper(typeof(DateTimeToStringProfile).Assembly, typeof(DomainToViewModelProfile).Assembly, typeof(RequestToDomainProfile).Assembly);
 
             #region Dependcy Injection
 
@@ -71,7 +73,15 @@ namespace ACADEMY.WebApi
 
             services.AddTransient<IAuthService, AuthService>();
             
+            services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
             
+            services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
+
+            services.AddTransient<ICourseService, CourseService>();
+
+            services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<ICourseDetailService, CourseDetailService>();
 
             #endregion
 

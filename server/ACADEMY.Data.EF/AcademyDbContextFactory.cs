@@ -15,8 +15,8 @@ namespace ACADEMY.Data.EF
             var connectionString = configuration.GetConnectionString("Academy");
 
             var optionsBuilder = new DbContextOptionsBuilder<AcademyDbContext>();
-            
-            optionsBuilder.UseSqlServer(connectionString);
+
+            optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("ACADEMY.WebApi"));
 
             return new AcademyDbContext(optionsBuilder.Options);
         }

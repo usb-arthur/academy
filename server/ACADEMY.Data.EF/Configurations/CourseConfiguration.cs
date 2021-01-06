@@ -1,4 +1,5 @@
 ﻿using ACADEMY.Data.Entities;
+using ACADEMY.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,9 +15,17 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.Property(e => e.CourseName).IsRequired();
 
+            builder.Property(e => e.IsDeleted).HasDefaultValue(false);
+            
+            builder.Property(e => e.Status).HasDefaultValue(CourseStatus.Incomplete);
+            
             builder
                 .Property(e => e.DetailDescription)
                 .HasColumnType("ntext");
+
+            builder.Property(e => e.Sale).HasDefaultValue(0.0);
+
+            builder.Property(e => e.SaleDate).HasDefaultValue(null);
 
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
@@ -31,6 +40,12 @@ namespace ACADEMY.Data.EF.Configurations
                 .HasOne(e => e.Teacher)
                 .WithMany(e => e.Courses)
                 .HasForeignKey(e => e.TeacherId);
+
+            builder.HasMany(e => e.Feedbacks).WithOne().HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.StudentCourses).WithOne().HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
