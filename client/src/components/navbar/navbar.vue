@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto overflow-hidden" height="100vh">
+    <v-card class="mx-auto overflow-hidden" >
       <v-app-bar color="teal lighten-1" dark>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
         <v-toolbar-title>Academy</v-toolbar-title>
@@ -60,8 +60,7 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
-    group: null,
+
   }),
 };
 </script>

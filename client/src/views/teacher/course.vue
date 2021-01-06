@@ -11,8 +11,8 @@ import course from "../../components/teacher/course.vue";
 export default {
   name: "teacher",
   components: {
-    navbar,
     course,
+    navbar
   },
 };
 </script>
