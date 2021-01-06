@@ -1,5 +1,18 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h1>about</h1>
+    <v-row align="center" justify="space-around">
+      <v-btn depressed> Normal </v-btn>
+      <v-btn depressed color="primary"> Primary </v-btn>
+      <v-btn depressed color="error"> Error </v-btn>
+      <v-btn depressed disabled> Disabled </v-btn>
+    </v-row>
   </div>
 </template>
+
+<script>
+export default {};
+</script>
+
+<style>
+</style>
