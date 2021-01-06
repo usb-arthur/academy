@@ -2,7 +2,8 @@
 
 //import Home from "../views/Home.vue";
 import HomePageLayout from "../views/Page/HomePage/HomePageLayout.vue";
-import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
+//import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
+import TestAdminLayout from "../views/Page/Admin/Layout/TestAdminLayout.vue";
 
 const routes = [
   {
@@ -21,7 +22,7 @@ const routes = [
   },
   {
     path: "/admin",
-    component: AdminLayout,
+    component: TestAdminLayout,
     redirect: { name: "LinhVuc" },
     children: [
       {
@@ -49,7 +50,42 @@ const routes = [
           )
       }
     ]
-  }
+  },
+  {
+    path: "/test",
+    name: "Test",
+    component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/Layout/TestAdminLayout.vue"
+          ),
+    redirect: { name: "LinhVuct" },
+    children: [
+            {
+              path: "linhvuc",
+              name: "LinhVuct",
+              component: () =>
+                import(
+                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
+                )
+            },
+            {
+              path: "khoahoc",
+              name: "KhoaHoct",
+              component: () =>
+                import(
+                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
+                )
+            },
+            {
+              path: "user",
+              name: "usert",
+              component: () =>
+                import(
+                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
+                )
+            }
+          ]
+  },
 ];
 
 export default routes;

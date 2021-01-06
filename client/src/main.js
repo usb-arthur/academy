@@ -11,6 +11,10 @@ import "vue-material/dist/theme/default.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import BootstrapVue from "bootstrap-vue/dist/bootstrap-vue.esm";
+import vuetify from "./plugins/vuetify.js";
+
+
+
 
 Vue.use(MaterialDesignIcon);
 Vue.use(VueMaterial);
@@ -25,12 +29,13 @@ Vue.material.router.linkActiveClass = linkActiveClass;
 const router = new VueRouter({
   mode: "history",
   routes,
-  linkActiveClass
+  linkActiveClass,
 });
 
 new Vue({
   el: "#app",
   render: h => h(App),
+  vuetify,
   router,
   store: store
 });
