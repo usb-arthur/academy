@@ -8,14 +8,14 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface ICourseDetailService
     {
-        Task<ApiResult<ICollection<CourseDetailVm>>> GetAllAsync(long courseId);
+        Task<ApiResponse<ICollection<CourseDetailVm>>> GetAllAsync(long courseId);
 
-        Task<ApiResult<CourseDetailVm>> GetByIdAsync(long id);
+        Task<ApiResponse<CourseDetailVm>> GetByIdAsync(long id);
 
-        Task<ApiResult<CourseDetailVm>> CreateAsync(PostCourseDetailRequest request);
+        Task<ApiResponse<CourseDetailVm>> CreateAsync(PostCourseDetailRequest request);
 
-        Task<ApiResult<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request);
+        Task<ApiResponse<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request);
 
-        Task<ApiResult<bool>> DeleteAsync(long id);
+        Task<ApiResponse<bool>> DeleteAsync(long id);
     }
 }

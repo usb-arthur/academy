@@ -30,33 +30,33 @@ namespace ACADEMY.Application.Implements
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResult<ICollection<CourseDetailVm>>> GetAllAsync(long courseId)
+        public async Task<ApiResponse<ICollection<CourseDetailVm>>> GetAllAsync(long courseId)
         {
             var courseDetails = await _courseDetailRepository.FindAllAsync(e => e.CourseId == courseId, e => e.Course);
 
-            return new ApiSucceedResult<ICollection<CourseDetailVm>>(await courseDetails
+            return new ApiSucceedResponse<ICollection<CourseDetailVm>>(await courseDetails
                 .ProjectTo<CourseDetailVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResult<CourseDetailVm>> GetByIdAsync(long id)
+        public async Task<ApiResponse<CourseDetailVm>> GetByIdAsync(long id)
         {
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id, e => e.Course);
 
             if (courseDetail == null)
             {
-                return new ApiErrorResult<CourseDetailVm>($"Không tìm thấy video nào với id = {id}",
+                return new ApiErrorResponse<CourseDetailVm>($"Không tìm thấy video nào với id = {id}",
                     HttpStatusCode.NotFound);
             }
 
-            return new ApiSucceedResult<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
+            return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
         }
 
-        public async Task<ApiResult<CourseDetailVm>> CreateAsync(PostCourseDetailRequest request)
+        public async Task<ApiResponse<CourseDetailVm>> CreateAsync(PostCourseDetailRequest request)
         {
             var courseDetail = await _courseDetailRepository.FindSingleAsync(e => e.Content.Equals(request.Content));
             if (courseDetail != null)
             {
-                return new ApiErrorResult<CourseDetailVm>("Nội dung chương này đã tồn tại", HttpStatusCode.Conflict);
+                return new ApiErrorResponse<CourseDetailVm>("Nội dung chương này đã tồn tại", HttpStatusCode.Conflict);
             }
 
             courseDetail = _mapper.Map<PostCourseDetailRequest, CourseDetail>(request);
@@ -65,15 +65,15 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
 
-            return new ApiSucceedResult<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail), HttpStatusCode.Created);
+            return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail), HttpStatusCode.Created);
         }
 
-        public async Task<ApiResult<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request)
+        public async Task<ApiResponse<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request)
         {
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id);
             if (courseDetail == null)
             {
-                return new ApiErrorResult<CourseDetailVm>("Không tồn tại chương này", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<CourseDetailVm>("Không tồn tại chương này", HttpStatusCode.NotFound);
             }
 
             courseDetail = _mapper.Map(request, courseDetail);
@@ -82,22 +82,22 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
             
-            return new ApiSucceedResult<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
+            return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
         }
 
-        public async Task<ApiResult<bool>> DeleteAsync(long id)
+        public async Task<ApiResponse<bool>> DeleteAsync(long id)
         {
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id);
             if (courseDetail == null)
             {
-                return new ApiErrorResult<bool>("Không tồn tại chương này", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<bool>("Không tồn tại chương này", HttpStatusCode.NotFound);
             }
 
             await _courseDetailRepository.RemoveAsync(id);
 
             await _unitOfWork.CommitAsync();
             
-            return new ApiSucceedResult<bool>(true);
+            return new ApiSucceedResponse<bool>(true);
         }
     }
 }

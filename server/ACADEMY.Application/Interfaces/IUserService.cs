@@ -10,14 +10,14 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<ApiResult<UserVm>> AddAsync(PostUserRequest request);
+        Task<ApiResponse<UserVm>> AddAsync(PostUserRequest request);
 
-        Task<ApiResult<bool>> DeleteAsync(Guid id);
+        Task<ApiResponse<bool>> DeleteAsync(Guid id);
 
-        Task<ApiResult<ICollection<UserVm>>> GetAllAsync();
+        Task<ApiResponse<ICollection<UserVm>>> GetAllAsync();
 
-        Task<ApiResult<UserVm>> GetByIdAsync(Guid id);
+        Task<ApiResponse<UserVm>> GetByIdAsync(Guid id);
 
-        Task<ApiResult<UserVm>> UpdateAsync(Guid id, PutUserRequest request);
+        Task<ApiResponse<UserVm>> UpdateAsync(Guid id, PutUserRequest request);
     }
 }

@@ -8,14 +8,14 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface ICategoryService
     {
-        Task<ApiResult<ICollection<CategoryVm>>> GetAllAsync();
+        Task<ApiResponse<ICollection<CategoryVm>>> GetAllAsync();
 
-        Task<ApiResult<CategoryVm>> GetByIdAsync(long id);
+        Task<ApiResponse<CategoryVm>> GetByIdAsync(long id);
 
-        Task<ApiResult<CategoryVm>> CreateAsync(PostCategoryRequest request);
+        Task<ApiResponse<CategoryVm>> CreateAsync(PostCategoryRequest request);
 
-        Task<ApiResult<CategoryVm>> UpdateAsync(long id, PutCategoryRequest request);
+        Task<ApiResponse<CategoryVm>> UpdateAsync(long id, PutCategoryRequest request);
 
-        Task<ApiResult<bool>> DeleteAsync(long id);
+        Task<ApiResponse<bool>> DeleteAsync(long id);
     }
 }

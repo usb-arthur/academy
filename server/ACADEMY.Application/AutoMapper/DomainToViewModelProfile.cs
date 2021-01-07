@@ -18,6 +18,8 @@ namespace ACADEMY.Application.AutoMapper
             CreateMap<User, UserVm>();
 
             CreateMap<CourseDetail, CourseDetailVm>();
+
+            CreateMap<WatchList, WatchListVm>();
             
             CreateMap<Course, CourseVm>()
                 .ForMember(des => des.Rate, options => options.MapFrom(src => src.Feedbacks.Average(e => e.Rate)))

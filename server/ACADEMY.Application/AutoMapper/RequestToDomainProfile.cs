@@ -40,6 +40,12 @@ namespace ACADEMY.Application.AutoMapper
             
             CreateMap<PutCourseDetailRequest, CourseDetail>()
                 .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PostWatchListRequest, WatchList>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PutWatchListRequest, WatchList>()
+                .ForAllMembers(options => options.UseDestinationValue());
         }
     }
 }

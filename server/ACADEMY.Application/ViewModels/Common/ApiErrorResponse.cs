@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
-    public class ApiErrorResult<T> : ApiResult<T>
+    public class ApiErrorResponse<T> : ApiResponse<T>
     {
         public string[] ValidationErrors { get; set; }
 
-        public ApiErrorResult()
+        public ApiErrorResponse()
         {
             Succeeded = false;
         }
 
-        public ApiErrorResult(string message, HttpStatusCode statusCode)
+        public ApiErrorResponse(string message, HttpStatusCode statusCode)
         {
             Succeeded = false;
             Message = message;
             StatusCode = statusCode;
         }
 
-        public ApiErrorResult(string[] validationErrors)
+        public ApiErrorResponse(string[] validationErrors)
         {
             Succeeded = false;
             ValidationErrors = validationErrors;

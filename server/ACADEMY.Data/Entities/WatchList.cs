@@ -1,9 +1,10 @@
 ﻿using System;
 using ACADEMY.Data.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class WatchList: IDateTracking, IHasOwner<Guid>
+    public class WatchList: DomainEntity<long>, IDateTracking, IHasOwner<Guid>
     {
         #region Properties
 
@@ -25,7 +26,7 @@ namespace ACADEMY.Data.Entities
 
         public virtual User User { get; set; }
 
-        public virtual Course Courses { get; set; }
+        public virtual Course Course { get; set; }
 
         #endregion
     }
