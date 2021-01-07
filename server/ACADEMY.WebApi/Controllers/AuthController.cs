@@ -49,6 +49,21 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) result.StatusCode, result);
         }
 
+        [HttpPost]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessage());
+            }
+
+            var response = await _authService.ChangePasswordAsync(request);
+
+            return StatusCode((int)response.StatusCode, response);
+        }
+
         private void SetTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions

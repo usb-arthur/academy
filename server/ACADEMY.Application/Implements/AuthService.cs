@@ -11,6 +11,7 @@ using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
 using ACADEMY.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,12 +25,15 @@ namespace ACADEMY.Application.Implements
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config)
+
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request)
@@ -88,6 +92,22 @@ namespace ACADEMY.Application.Implements
                 Name = user.Name,
                 RefreshToken = user.RefreshToken
             });
+        }
+
+        public async Task<ApiResponse<bool>> ChangePasswordAsync(ChangePasswordRequest request)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return new ApiSucceedResponse<bool>(true);
+            }
+
+            return new ApiErrorResponse<bool>(result.Errors.ToString(), HttpStatusCode.BadRequest);
         }
 
         private static JwtSecurityToken DecodeToken(string token)

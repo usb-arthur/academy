@@ -10,5 +10,7 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request);
 
         Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request);
+
+        Task<ApiResponse<bool>> ChangePasswordAsync(ChangePasswordRequest request);
     }
 }
