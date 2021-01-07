@@ -43,9 +43,6 @@ namespace ACADEMY.Application.AutoMapper
             
             CreateMap<PostWatchListRequest, WatchList>()
                 .ForAllMembers(options => options.UseDestinationValue());
-            
-            CreateMap<PutWatchListRequest, WatchList>()
-                .ForAllMembers(options => options.UseDestinationValue());
         }
     }
 }
