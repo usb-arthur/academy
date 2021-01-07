@@ -15,9 +15,9 @@ namespace ACADEMY.Data.Entities
         public ICollection<Feedback> Feedbacks { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        
+
         public DateTime UpdatedDate { get; set; }
-        
+
         #endregion
 
         #region Relationship

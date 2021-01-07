@@ -26,7 +26,7 @@ namespace ACADEMY.WebApi.Controllers
 
             return StatusCode((int) response.StatusCode, response);
         }
-        
+
         [HttpGet("{id:long}")]
         public async Task<IActionResult> GetWatchList(long id)
         {
@@ -34,15 +34,12 @@ namespace ACADEMY.WebApi.Controllers
 
             return StatusCode((int) response.StatusCode, response);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> PostWatchList([FromBody] PostWatchListRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var response = await _watchListService.CreateNewAsync(request);
 
             return StatusCode((int) response.StatusCode, response);
@@ -52,7 +49,7 @@ namespace ACADEMY.WebApi.Controllers
         public async Task<IActionResult> DeleteWatchListById(long id)
         {
             var response = await _watchListService.DeleteByIdAsync(id);
-            
+
             return StatusCode((int) response.StatusCode, response);
         }
 
@@ -60,7 +57,7 @@ namespace ACADEMY.WebApi.Controllers
         public async Task<IActionResult> DeleteWatchListByCourseId(long id)
         {
             var response = await _watchListService.DeleteByCourseIdAsync(id);
-            
+
             return StatusCode((int) response.StatusCode, response);
         }
     }

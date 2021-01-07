@@ -4,7 +4,7 @@ using ACADEMY.Infrastructure.SharedKernel;
 
 namespace ACADEMY.Data.Entities
 {
-    public class WatchList: DomainEntity<long>, IDateTracking, IHasOwner<Guid>
+    public class WatchList : DomainEntity<long>, IDateTracking, IHasOwner<Guid>
     {
         #region Properties
 

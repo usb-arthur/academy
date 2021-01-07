@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using ACADEMY.Data.Interfaces;
 using ACADEMY.Infrastructure.SharedKernel;
 
@@ -14,13 +12,13 @@ namespace ACADEMY.Data.Entities
         public string CategoryName { get; set; }
 
         public long? CategoryId { get; set; }
-        
+
         public DateTime CreatedDate { get; set; }
-        
+
         public DateTime UpdatedDate { get; set; }
-        
+
         public Guid CreatedBy { get; set; }
-        
+
         public Guid UpdatedBy { get; set; }
 
         #endregion
@@ -36,7 +34,7 @@ namespace ACADEMY.Data.Entities
         public virtual User UpdatedUser { get; set; }
 
         public virtual User CreatedUser { get; set; }
-        
+
         #endregion
     }
 }

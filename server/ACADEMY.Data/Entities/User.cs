@@ -15,7 +15,7 @@ namespace ACADEMY.Data.Entities
         public UserGender Gender { get; set; }
 
         public string Contact { get; set; }
-        
+
         public UserStatus Status { get; set; }
 
         public DateTime DateOfBirth { get; set; }
@@ -29,7 +29,7 @@ namespace ACADEMY.Data.Entities
         public Guid UpdatedBy { get; set; }
 
         public bool FirstLogin { get; set; }
-        
+
         public string RefreshToken { get; set; }
 
         #endregion
@@ -37,9 +37,9 @@ namespace ACADEMY.Data.Entities
         #region Relationship
 
         public virtual ICollection<WatchList> WatchLists { get; set; }
-        
+
         public virtual ICollection<StudentCourse> StudentCourses { get; set; }
-        
+
         public virtual ICollection<Course> Courses { get; set; }
 
         #endregion

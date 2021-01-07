@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
@@ -16,7 +11,6 @@ namespace ACADEMY.Application.ViewModels.Common
 
         public T ObjResult { get; set; }
 
-        [JsonIgnore]
-        public HttpStatusCode StatusCode { get; set; }
+        [JsonIgnore] public HttpStatusCode StatusCode { get; set; }
     }
 }

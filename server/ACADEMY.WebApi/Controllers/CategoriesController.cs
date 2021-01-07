@@ -17,7 +17,7 @@ namespace ACADEMY.WebApi.Controllers
         {
             _categoryService = categoryService;
         }
-        
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetCategories()
@@ -38,10 +38,7 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PostCategory([FromBody] PostCategoryRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var result = await _categoryService.CreateAsync(request);
 
@@ -52,16 +49,13 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutCategory(int id, [FromBody] PutCategoryRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var result = await _categoryService.UpdateAsync(id, request);
 
             return StatusCode((int) result.StatusCode, result);
         }
-        
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory(int id)

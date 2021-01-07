@@ -8,12 +8,12 @@ namespace ACADEMY.Application.Requests.System
     {
         [Required(ErrorMessage = "Tên không được bỏ trống")]
         public string Name { get; set; }
-        
+
         public string Contact { get; set; }
 
         [Required(ErrorMessage = "Giới tính không được bỏ trống")]
         public UserGender Gender { get; set; }
-        
+
         public DateTime? DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Số điện thoại không được bỏ trống")]

@@ -20,13 +20,14 @@ namespace ACADEMY.Application.Implements
     {
         private readonly IRepository<Category, long> _categoryRepository;
 
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly IMapper _mapper;
-        
-        public CategoryService(IRepository<Category, long> categoryRepository, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CategoryService(IRepository<Category, long> categoryRepository, IUnitOfWork unitOfWork,
+            IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
@@ -37,7 +38,8 @@ namespace ACADEMY.Application.Implements
         public async Task<ApiResponse<ICollection<CategoryVm>>> GetAllAsync()
         {
             var categories =
-                await _categoryRepository.FindAllAsync(e => e.CategoryId == null,  e => e.UpdatedUser, e => e.CreatedUser, e => e.Children);
+                await _categoryRepository.FindAllAsync(e => e.CategoryId == null, e => e.UpdatedUser,
+                    e => e.CreatedUser, e => e.Children);
 
             return new ApiSucceedResponse<ICollection<CategoryVm>>(await categories
                 .ProjectTo<CategoryVm>(_mapper.ConfigurationProvider).ToListAsync());
@@ -48,9 +50,8 @@ namespace ACADEMY.Application.Implements
             var category =
                 await _categoryRepository.FindByIdAsync(id, e => e.UpdatedUser, e => e.CreatedUser, e => e.Children);
             if (category == null)
-            {
-                return new ApiErrorResponse<CategoryVm>($"Không tìm thấy danh mục với id là {id}", HttpStatusCode.NotFound);
-            }
+                return new ApiErrorResponse<CategoryVm>($"Không tìm thấy danh mục với id là {id}",
+                    HttpStatusCode.NotFound);
 
             return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
         }
@@ -61,15 +62,13 @@ namespace ACADEMY.Application.Implements
                 e.CategoryName.Equals(request.CategoryName) && e.CategoryId.Equals(request.CategoryId));
 
             if (category == null)
-            {
                 return new ApiErrorResponse<CategoryVm>($"Danh mục {request.CategoryName} đã tồn tại",
                     HttpStatusCode.Conflict);
-            }
-            
+
             category = _mapper.Map<PostCategoryRequest, Category>(request);
 
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-            
+
             category.CreatedBy = category.UpdatedBy = userId;
 
             category.CategoryId = request.CategoryId;
@@ -77,8 +76,9 @@ namespace ACADEMY.Application.Implements
             category = await _categoryRepository.AddAsync(category);
 
             await _unitOfWork.CommitAsync();
-            
-            return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category), HttpStatusCode.Created);
+
+            return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category),
+                HttpStatusCode.Created);
         }
 
         public async Task<ApiResponse<CategoryVm>> UpdateAsync(long id, PutCategoryRequest request)
@@ -87,17 +87,15 @@ namespace ACADEMY.Application.Implements
                 await _categoryRepository.FindByIdAsync(id, e => e.Children, e => e.CreatedUser, e => e.UpdatedUser);
 
             if (category == null)
-            {
                 return new ApiErrorResponse<CategoryVm>($"Không tìm thấy danh mục với id là {id}",
                     HttpStatusCode.NotFound);
-            }
-            
+
             category = _mapper.Map(request, category);
 
             category = await _categoryRepository.UpdateAsync(category);
 
             await _unitOfWork.CommitAsync();
-            
+
             return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
         }
 
@@ -107,10 +105,8 @@ namespace ACADEMY.Application.Implements
                 await _categoryRepository.FindByIdAsync(id);
 
             if (category == null)
-            {
                 return new ApiErrorResponse<bool>($"Không tìm thấy danh mục với id là {id}",
                     HttpStatusCode.NotFound);
-            }
 
             await _categoryRepository.RemoveAsync(category);
             await _unitOfWork.CommitAsync();

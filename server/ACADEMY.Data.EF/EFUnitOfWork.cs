@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ACADEMY.Infrastructure.Interfaces;
 
 namespace ACADEMY.Data.EF
@@ -15,7 +11,7 @@ namespace ACADEMY.Data.EF
         {
             _context = context;
         }
-        
+
         public void Dispose()
         {
             _context?.Dispose();

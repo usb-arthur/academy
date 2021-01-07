@@ -1,11 +1,10 @@
-﻿using ACADEMY.Infrastructure.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ACADEMY.Infrastructure.SharedKernel;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using ACADEMY.Infrastructure.Interfaces;
+using ACADEMY.Infrastructure.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Data.EF
@@ -31,7 +30,8 @@ namespace ACADEMY.Data.EF
             return await items.FirstOrDefaultAsync(e => e.Id.Equals(id));
         }
 
-        public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includeProperties)
         {
             var items = await FindAllAsync(includeProperties);
             return await items.FirstOrDefaultAsync(predicate);
@@ -42,13 +42,14 @@ namespace ACADEMY.Data.EF
             var items = _context.Set<T>() as IQueryable<T>;
 
             if (includeProperties == null) return Task.FromResult(items);
-            
+
             items = includeProperties.Aggregate(items, (current, includeProperty) => current.Include(includeProperty));
 
             return Task.FromResult(items);
         }
 
-        public async Task<IQueryable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IQueryable<T>> FindAllAsync(Expression<Func<T, bool>> predicate,
+            params Expression<Func<T, object>>[] includeProperties)
         {
             return (await FindAllAsync(includeProperties)).Where(predicate);
         }

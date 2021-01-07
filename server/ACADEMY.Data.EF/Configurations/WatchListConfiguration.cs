@@ -18,7 +18,8 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");
 
-            builder.HasOne(e => e.User).WithMany(e => e.WatchLists).HasForeignKey(e => e.StudentId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(e => e.User).WithMany(e => e.WatchLists).HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

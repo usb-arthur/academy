@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
@@ -22,7 +17,7 @@ namespace ACADEMY.Application.ViewModels.Common
             Succeeded = true;
             ObjResult = content;
         }
-        
+
         public ApiSucceedResponse()
         {
             Succeeded = true;

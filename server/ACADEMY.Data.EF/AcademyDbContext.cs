@@ -34,7 +34,7 @@ namespace ACADEMY.Data.EF
             builder
                 .Entity<IdentityUserClaim<Guid>>()
                 .ToTable("UserClaim");
-            
+
             builder
                 .Entity<IdentityUserRole<Guid>>()
                 .ToTable("UserRole")

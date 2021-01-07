@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ACADEMY.Application.Requests.Catalog.Course
 {
@@ -17,9 +12,9 @@ namespace ACADEMY.Application.Requests.Catalog.Course
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Mô tả ngắn gọn không được bỏ trống")]
         public string BriefDescription { get; set; }
-        
+
         public string DetailDescription { get; set; }
-        
+
         [Required(ErrorMessage = "Khoá học phải thuộc vào một danh mục nhất định")]
         public int CategoryId { get; set; }
     }

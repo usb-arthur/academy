@@ -51,7 +51,7 @@ namespace ACADEMY.Data.Entities
         public ICollection<WatchList> WatchLists { get; set; }
 
         public ICollection<Feedback> Feedbacks { get; set; }
-        
+
         public ICollection<StudentCourse> StudentCourses { get; set; }
 
         public ICollection<CourseDetail> CourseDetails { get; set; }

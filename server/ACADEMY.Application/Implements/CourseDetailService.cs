@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
@@ -10,7 +9,6 @@ using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Application.Implements
@@ -23,7 +21,8 @@ namespace ACADEMY.Application.Implements
 
         private readonly IUnitOfWork _unitOfWork;
 
-        public CourseDetailService(IHttpContextAccessor httpContextAccessor, IMapper mapper, IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork)
+        public CourseDetailService(IMapper mapper,
+            IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _courseDetailRepository = courseDetailRepository;
@@ -43,10 +42,8 @@ namespace ACADEMY.Application.Implements
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id, e => e.Course);
 
             if (courseDetail == null)
-            {
                 return new ApiErrorResponse<CourseDetailVm>($"Không tìm thấy video nào với id = {id}",
                     HttpStatusCode.NotFound);
-            }
 
             return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
         }
@@ -55,9 +52,7 @@ namespace ACADEMY.Application.Implements
         {
             var courseDetail = await _courseDetailRepository.FindSingleAsync(e => e.Content.Equals(request.Content));
             if (courseDetail != null)
-            {
                 return new ApiErrorResponse<CourseDetailVm>("Nội dung chương này đã tồn tại", HttpStatusCode.Conflict);
-            }
 
             courseDetail = _mapper.Map<PostCourseDetailRequest, CourseDetail>(request);
 
@@ -65,23 +60,22 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
 
-            return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail), HttpStatusCode.Created);
+            return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail),
+                HttpStatusCode.Created);
         }
 
         public async Task<ApiResponse<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request)
         {
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id);
             if (courseDetail == null)
-            {
                 return new ApiErrorResponse<CourseDetailVm>("Không tồn tại chương này", HttpStatusCode.NotFound);
-            }
 
             courseDetail = _mapper.Map(request, courseDetail);
 
             courseDetail = await _courseDetailRepository.UpdateAsync(courseDetail);
 
             await _unitOfWork.CommitAsync();
-            
+
             return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail));
         }
 
@@ -89,14 +83,12 @@ namespace ACADEMY.Application.Implements
         {
             var courseDetail = await _courseDetailRepository.FindByIdAsync(id);
             if (courseDetail == null)
-            {
                 return new ApiErrorResponse<bool>("Không tồn tại chương này", HttpStatusCode.NotFound);
-            }
 
             await _courseDetailRepository.RemoveAsync(id);
 
             await _unitOfWork.CommitAsync();
-            
+
             return new ApiSucceedResponse<bool>(true);
         }
     }

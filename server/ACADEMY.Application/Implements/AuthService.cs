@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
@@ -20,11 +19,10 @@ namespace ACADEMY.Application.Implements
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _config;
 
         private readonly SignInManager<User> _signInManager;
-
-        private readonly IConfiguration _config;
+        private readonly UserManager<User> _userManager;
 
 
         public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config)
@@ -39,16 +37,12 @@ namespace ACADEMY.Application.Implements
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
-            {
                 return new ApiErrorResponse<AuthVm>($"User {request.Email} không tồn tại", HttpStatusCode.NotFound);
-            }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
             if (!result.Succeeded)
-            {
                 return new ApiErrorResponse<AuthVm>("Password không đúng", HttpStatusCode.BadRequest);
-            }
 
             var token = await Sign(user);
 
@@ -58,16 +52,40 @@ namespace ACADEMY.Application.Implements
 
 
             if (!succeed.Succeeded)
-            {
                 return new ApiErrorResponse<AuthVm>("Không thể khởi tạo token", HttpStatusCode.InternalServerError);
-            };
+            ;
 
-            return new ApiSucceedResponse<AuthVm>(new AuthVm()
+            return new ApiSucceedResponse<AuthVm>(new AuthVm
             {
                 AccessToken = token,
                 Email = user.Email,
                 Name = user.Name,
                 Id = user.Id,
+                RefreshToken = user.RefreshToken
+            });
+        }
+
+        public async Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request)
+        {
+            var userPrincipal = DecodeToken(request.AccessToken);
+
+            var email = userPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+                return new ApiErrorResponse<AuthVm>("Token không hợp lệ", HttpStatusCode.BadRequest);
+
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (!user.RefreshToken.Equals(request.RefreshToken))
+                return new ApiErrorResponse<AuthVm>("Token khÔng hợp lệ", HttpStatusCode.BadRequest);
+
+            var token = await Sign(user);
+            return new ApiSucceedResponse<AuthVm>(new AuthVm
+            {
+                AccessToken = token,
+                Email = user.Email,
+                Id = user.Id,
+                Name = user.Name,
                 RefreshToken = user.RefreshToken
             });
         }
@@ -85,8 +103,8 @@ namespace ACADEMY.Application.Implements
             var claims = new[]
             {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Role, string.Join(";",roles))
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, string.Join(";", roles))
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
@@ -97,10 +115,10 @@ namespace ACADEMY.Application.Implements
                 claims,
                 expires: DateTime.Now.AddMinutes(3),
                 signingCredentials: credentials);
-            
+
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        
+
         private static string GenerateRefreshToken()
         {
             using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
@@ -109,34 +127,6 @@ namespace ACADEMY.Application.Implements
                 rngCryptoServiceProvider.GetBytes(randomBytes);
                 return Convert.ToBase64String(randomBytes);
             }
-        }
-
-        public async Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request)
-        {
-            var userPrincipal = DecodeToken(request.AccessToken);
-
-            var email = userPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
-
-            if (string.IsNullOrEmpty(email))
-            {
-                return new ApiErrorResponse<AuthVm>("Token không hợp lệ", HttpStatusCode.BadRequest);
-            }
-
-            var user = await _userManager.FindByEmailAsync(email);
-            
-            if (!user.RefreshToken.Equals(request.RefreshToken))
-                return new ApiErrorResponse<AuthVm>("Token khÔng hợp lệ", HttpStatusCode.BadRequest);
-            
-            var token = await Sign(user);
-            return new ApiSucceedResponse<AuthVm>(new AuthVm
-            {
-                AccessToken = token,
-                Email = user.Email,
-                Id = user.Id,
-                Name = user.Name,
-                RefreshToken = user.RefreshToken
-            });
-
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using ACADEMY.Application.ViewModels.Catalog.Category;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.System;
@@ -20,7 +16,7 @@ namespace ACADEMY.Application.AutoMapper
             CreateMap<CourseDetail, CourseDetailVm>();
 
             CreateMap<WatchList, WatchListVm>();
-            
+
             CreateMap<Course, CourseVm>()
                 .ForMember(des => des.Rate, options => options.MapFrom(src => src.Feedbacks.Average(e => e.Rate)))
                 .ForMember(des => des.NumOfFeedback,
