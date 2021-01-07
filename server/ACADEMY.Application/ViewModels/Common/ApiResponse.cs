@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
-    public class ApiResult<T>
+    public class ApiResponse<T>
     {
         public bool Succeeded { get; set; }
 

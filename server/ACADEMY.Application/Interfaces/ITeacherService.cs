@@ -16,3 +16,4 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResult<ICollection<CourseVm>>> GetCoursesAsync();
     }
 }
+

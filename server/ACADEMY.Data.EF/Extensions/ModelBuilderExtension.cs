@@ -451,6 +451,7 @@ namespace ACADEMY.Data.EF.Extensions
             modelBuilder.Entity<WatchList>().HasData(
                 new WatchList()
                 {
+                    Id = 1,
                     StudentId = userId,
                     CourseId = 1,
                     CreatedDate = DateTime.Now,
@@ -460,6 +461,7 @@ namespace ACADEMY.Data.EF.Extensions
                 },
                 new WatchList()
                 {
+                    Id = 2,
                     StudentId = userId,
                     CourseId = 2,
                     CreatedDate = DateTime.Now,
@@ -469,6 +471,7 @@ namespace ACADEMY.Data.EF.Extensions
                 },
                 new WatchList()
                 {
+                    Id = 3,
                     StudentId = userId,
                     CourseId = 3,
                     CreatedDate = DateTime.Now,
@@ -478,6 +481,7 @@ namespace ACADEMY.Data.EF.Extensions
                 },
                 new WatchList()
                 {
+                    Id = 4,
                     StudentId = userId,
                     CourseId = 4,
                     CreatedDate = DateTime.Now,
@@ -487,6 +491,7 @@ namespace ACADEMY.Data.EF.Extensions
                 },
                 new WatchList()
                 {
+                    Id = 5,
                     StudentId = userId,
                     CourseId = 5,
                     CreatedDate = DateTime.Now,

@@ -34,35 +34,35 @@ namespace ACADEMY.Application.Implements
             _mapper = mapper;
         }
 
-        public async Task<ApiResult<ICollection<CategoryVm>>> GetAllAsync()
+        public async Task<ApiResponse<ICollection<CategoryVm>>> GetAllAsync()
         {
             var categories =
                 await _categoryRepository.FindAllAsync(e => e.CategoryId == null,  e => e.UpdatedUser, e => e.CreatedUser, e => e.Children);
 
-            return new ApiSucceedResult<ICollection<CategoryVm>>(await categories
+            return new ApiSucceedResponse<ICollection<CategoryVm>>(await categories
                 .ProjectTo<CategoryVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResult<CategoryVm>> GetByIdAsync(long id)
+        public async Task<ApiResponse<CategoryVm>> GetByIdAsync(long id)
         {
             var category =
                 await _categoryRepository.FindByIdAsync(id, e => e.UpdatedUser, e => e.CreatedUser, e => e.Children);
             if (category == null)
             {
-                return new ApiErrorResult<CategoryVm>($"Không tìm thấy danh mục với id là {id}", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<CategoryVm>($"Không tìm thấy danh mục với id là {id}", HttpStatusCode.NotFound);
             }
 
-            return new ApiSucceedResult<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
+            return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
         }
 
-        public async Task<ApiResult<CategoryVm>> CreateAsync(PostCategoryRequest request)
+        public async Task<ApiResponse<CategoryVm>> CreateAsync(PostCategoryRequest request)
         {
             var category = await _categoryRepository.FindSingleAsync(e =>
                 e.CategoryName.Equals(request.CategoryName) && e.CategoryId.Equals(request.CategoryId));
 
             if (category == null)
             {
-                return new ApiErrorResult<CategoryVm>($"Danh mục {request.CategoryName} đã tồn tại",
+                return new ApiErrorResponse<CategoryVm>($"Danh mục {request.CategoryName} đã tồn tại",
                     HttpStatusCode.Conflict);
             }
             
@@ -78,17 +78,17 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
             
-            return new ApiSucceedResult<CategoryVm>(_mapper.Map<Category, CategoryVm>(category), HttpStatusCode.Created);
+            return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category), HttpStatusCode.Created);
         }
 
-        public async Task<ApiResult<CategoryVm>> UpdateAsync(long id, PutCategoryRequest request)
+        public async Task<ApiResponse<CategoryVm>> UpdateAsync(long id, PutCategoryRequest request)
         {
             var category =
                 await _categoryRepository.FindByIdAsync(id, e => e.Children, e => e.CreatedUser, e => e.UpdatedUser);
 
             if (category == null)
             {
-                return new ApiErrorResult<CategoryVm>($"Không tìm thấy danh mục với id là {id}",
+                return new ApiErrorResponse<CategoryVm>($"Không tìm thấy danh mục với id là {id}",
                     HttpStatusCode.NotFound);
             }
             
@@ -98,24 +98,24 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
             
-            return new ApiSucceedResult<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
+            return new ApiSucceedResponse<CategoryVm>(_mapper.Map<Category, CategoryVm>(category));
         }
 
-        public async Task<ApiResult<bool>> DeleteAsync(long id)
+        public async Task<ApiResponse<bool>> DeleteAsync(long id)
         {
             var category =
                 await _categoryRepository.FindByIdAsync(id);
 
             if (category == null)
             {
-                return new ApiErrorResult<bool>($"Không tìm thấy danh mục với id là {id}",
+                return new ApiErrorResponse<bool>($"Không tìm thấy danh mục với id là {id}",
                     HttpStatusCode.NotFound);
             }
 
             await _categoryRepository.RemoveAsync(category);
             await _unitOfWork.CommitAsync();
 
-            return new ApiSucceedResult<bool>(true);
+            return new ApiSucceedResponse<bool>(true);
         }
     }
 }

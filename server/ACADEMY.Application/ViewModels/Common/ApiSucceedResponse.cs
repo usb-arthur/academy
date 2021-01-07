@@ -7,23 +7,23 @@ using System.Threading.Tasks;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
-    public class ApiSucceedResult<T> : ApiResult<T>
+    public class ApiSucceedResponse<T> : ApiResponse<T>
     {
-        public ApiSucceedResult(T content)
+        public ApiSucceedResponse(T content)
         {
             StatusCode = HttpStatusCode.OK;
             Succeeded = true;
             ObjResult = content;
         }
 
-        public ApiSucceedResult(T content, HttpStatusCode statusCode)
+        public ApiSucceedResponse(T content, HttpStatusCode statusCode)
         {
             StatusCode = statusCode;
             Succeeded = true;
             ObjResult = content;
         }
         
-        public ApiSucceedResult()
+        public ApiSucceedResponse()
         {
             Succeeded = true;
         }

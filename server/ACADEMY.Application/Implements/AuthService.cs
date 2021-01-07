@@ -34,20 +34,20 @@ namespace ACADEMY.Application.Implements
             _config = config;
         }
 
-        public async Task<ApiResult<AuthVm>> SignInAsync(SignInRequest request)
+        public async Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
-                return new ApiErrorResult<AuthVm>($"User {request.Email} không tồn tại", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<AuthVm>($"User {request.Email} không tồn tại", HttpStatusCode.NotFound);
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
             if (!result.Succeeded)
             {
-                return new ApiErrorResult<AuthVm>("Password không đúng", HttpStatusCode.BadRequest);
+                return new ApiErrorResponse<AuthVm>("Password không đúng", HttpStatusCode.BadRequest);
             }
 
             var token = await Sign(user);
@@ -59,10 +59,10 @@ namespace ACADEMY.Application.Implements
 
             if (!succeed.Succeeded)
             {
-                return new ApiErrorResult<AuthVm>("Không thể khởi tạo token", HttpStatusCode.InternalServerError);
+                return new ApiErrorResponse<AuthVm>("Không thể khởi tạo token", HttpStatusCode.InternalServerError);
             };
 
-            return new ApiSucceedResult<AuthVm>(new AuthVm()
+            return new ApiSucceedResponse<AuthVm>(new AuthVm()
             {
                 AccessToken = token,
                 Email = user.Email,
@@ -111,7 +111,7 @@ namespace ACADEMY.Application.Implements
             }
         }
 
-        public async Task<ApiResult<AuthVm>> RefreshTokenAsync(AuthRequest request)
+        public async Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request)
         {
             var userPrincipal = DecodeToken(request.AccessToken);
 
@@ -119,16 +119,16 @@ namespace ACADEMY.Application.Implements
 
             if (string.IsNullOrEmpty(email))
             {
-                return new ApiErrorResult<AuthVm>("Token không hợp lệ", HttpStatusCode.BadRequest);
+                return new ApiErrorResponse<AuthVm>("Token không hợp lệ", HttpStatusCode.BadRequest);
             }
 
             var user = await _userManager.FindByEmailAsync(email);
             
             if (!user.RefreshToken.Equals(request.RefreshToken))
-                return new ApiErrorResult<AuthVm>("Token khÔng hợp lệ", HttpStatusCode.BadRequest);
+                return new ApiErrorResponse<AuthVm>("Token khÔng hợp lệ", HttpStatusCode.BadRequest);
             
             var token = await Sign(user);
-            return new ApiSucceedResult<AuthVm>(new AuthVm
+            return new ApiSucceedResponse<AuthVm>(new AuthVm
             {
                 AccessToken = token,
                 Email = user.Email,

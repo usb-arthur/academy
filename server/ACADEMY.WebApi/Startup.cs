@@ -85,6 +85,8 @@ namespace ACADEMY.WebApi
 
             services.AddTransient<ITeacherService, TeacherService>();
 
+            services.AddTransient<IWatchListService, WatchListService>();
+
             #endregion
 
             services.AddControllers();

@@ -35,15 +35,15 @@ namespace ACADEMY.Application.Implements
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApiResult<ICollection<CourseVm>>> GetAllAsync()
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync()
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             
             var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
-            return new ApiSucceedResult<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+            return new ApiSucceedResponse<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResult<CourseVm>> GetByIdAsync(long id)
+        public async Task<ApiResponse<CourseVm>> GetByIdAsync(long id)
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             
@@ -51,13 +51,13 @@ namespace ACADEMY.Application.Implements
 
             if (course == null)
             {
-                return new ApiErrorResult<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
             }
 
-            return new ApiSucceedResult<CourseVm>(_mapper.Map<Course, CourseVm>(course));
+            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
-        public async Task<ApiResult<CourseVm>> CreateAsync(PostCourseRequest request)
+        public async Task<ApiResponse<CourseVm>> CreateAsync(PostCourseRequest request)
         {
             var course = _mapper.Map<PostCourseRequest, Course>(request);
 
@@ -65,15 +65,15 @@ namespace ACADEMY.Application.Implements
             course.TeacherId = course.UpdatedBy = course.CreatedBy = userId;
             course = await _courseRepository.AddAsync(course);
             await _unitOfWork.CommitAsync();
-            return new ApiSucceedResult<CourseVm>(_mapper.Map<Course, CourseVm>(course), HttpStatusCode.Created);
+            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course), HttpStatusCode.Created);
         }
 
-        public async Task<ApiResult<CourseVm>> UpdateAsync(long id, PutCourseRequest request)
+        public async Task<ApiResponse<CourseVm>> UpdateAsync(long id, PutCourseRequest request)
         {
             var course = await _courseRepository.FindByIdAsync(id);
             if (course == null)
             {
-                return new ApiErrorResult<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
             }
 
             course = _mapper.Map(request, course);
@@ -81,20 +81,20 @@ namespace ACADEMY.Application.Implements
             course.UpdatedBy = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             course = await _courseRepository.UpdateAsync(course);
             await _unitOfWork.CommitAsync();
-            return new ApiSucceedResult<CourseVm>(_mapper.Map<Course, CourseVm>(course));
+            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
-        public async Task<ApiResult<bool>> DeleteAsync(int id)
+        public async Task<ApiResponse<bool>> DeleteAsync(int id)
         {
             var course = await _courseRepository.FindByIdAsync(id);
             if (course == null)
             {
-                return new ApiErrorResult<bool>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
+                return new ApiErrorResponse<bool>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
             }
 
             await _courseRepository.RemoveAsync(course);
             await _unitOfWork.CommitAsync();
-            return new ApiSucceedResult<bool>(true);
+            return new ApiSucceedResponse<bool>(true);
         }
     }
 }

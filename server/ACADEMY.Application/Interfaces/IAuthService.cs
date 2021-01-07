@@ -11,8 +11,8 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface IAuthService
     {
-        Task<ApiResult<AuthVm>> SignInAsync(SignInRequest request);
+        Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request);
 
-        Task<ApiResult<AuthVm>> RefreshTokenAsync(AuthRequest request);
+        Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request);
     }
 }
