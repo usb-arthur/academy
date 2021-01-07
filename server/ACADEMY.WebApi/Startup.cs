@@ -159,6 +159,8 @@ namespace ACADEMY.WebApi
 
             app.UseStaticFiles();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
 
             app.UseRouting();
