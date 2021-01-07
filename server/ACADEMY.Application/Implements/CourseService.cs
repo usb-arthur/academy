@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -21,13 +20,14 @@ namespace ACADEMY.Application.Implements
     {
         private readonly IRepository<Course, long> _courseRepository;
 
-        private readonly IUnitOfWork _unitOfWork;
-        
-        private readonly IMapper _mapper;
-        
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CourseService(IRepository<Course, long> courseRepository, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        private readonly IMapper _mapper;
+
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CourseService(IRepository<Course, long> courseRepository, IMapper mapper, IUnitOfWork unitOfWork,
+            IHttpContextAccessor httpContextAccessor)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
@@ -38,21 +38,23 @@ namespace ACADEMY.Application.Implements
         public async Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync()
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-            
-            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
-            return new ApiSucceedResponse<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            return new ApiSucceedResponse<ICollection<CourseVm>>(
+                await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
         public async Task<ApiResponse<CourseVm>> GetByIdAsync(long id)
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-            
-            var course = await _courseRepository.FindSingleAsync(e => e.Id == id && e.TeacherId == userId, e =>  e.Category, e => e.Teacher);
+
+            var course = await _courseRepository.FindSingleAsync(e => e.Id == id && e.TeacherId == userId,
+                e => e.Category, e => e.Teacher);
 
             if (course == null)
-            {
-                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
-            }
+                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",
+                    HttpStatusCode.NotFound);
 
             return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
@@ -72,9 +74,8 @@ namespace ACADEMY.Application.Implements
         {
             var course = await _courseRepository.FindByIdAsync(id);
             if (course == null)
-            {
-                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
-            }
+                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",
+                    HttpStatusCode.NotFound);
 
             course = _mapper.Map(request, course);
             course.UpdatedDate = DateTime.Now;
@@ -88,9 +89,7 @@ namespace ACADEMY.Application.Implements
         {
             var course = await _courseRepository.FindByIdAsync(id);
             if (course == null)
-            {
                 return new ApiErrorResponse<bool>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
-            }
 
             await _courseRepository.RemoveAsync(course);
             await _unitOfWork.CommitAsync();

@@ -6,6 +6,12 @@ namespace ACADEMY.Data.Entities
 {
     public class Feedback : DomainEntity<long>, IDateTracking, IHasOwner<Guid>
     {
+        #region Relationship
+
+        public virtual StudentCourse StudentCourse { get; set; }
+
+        #endregion
+
         #region Properties
 
         public string Content { get; set; }
@@ -24,12 +30,6 @@ namespace ACADEMY.Data.Entities
 
         public Guid UpdatedBy { get; set; }
 
-        #endregion
-
-        #region Relationship
-
-        public virtual StudentCourse StudentCourse { get; set; }
-        
         #endregion
     }
 }

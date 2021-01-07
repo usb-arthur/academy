@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
-using ACADEMY.Utilities.Dtos;
 
 namespace ACADEMY.Application.Interfaces
 {

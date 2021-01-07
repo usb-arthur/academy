@@ -13,7 +13,7 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<WatchListVm>> GetByIdAsync(long id);
 
         Task<ApiResponse<WatchListVm>> CreateNewAsync(PostWatchListRequest request);
-        
+
         Task<ApiResponse<bool>> DeleteByCourseIdAsync(long courseId);
 
         Task<ApiResponse<bool>> DeleteByIdAsync(long id);

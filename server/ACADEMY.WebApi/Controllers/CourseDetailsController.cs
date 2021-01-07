@@ -38,29 +38,23 @@ namespace ACADEMY.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> PostCourseDetail([FromBody] PostCourseDetailRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var response = await _courseDetailService.CreateAsync(request);
 
             return StatusCode((int) response.StatusCode, response);
         }
-        
+
         [HttpPut("{id:long}")]
         public async Task<IActionResult> PutCourseDetail(long id, [FromBody] PutCourseDetailRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var response = await _courseDetailService.UpdateAsync(id, request);
 
             return StatusCode((int) response.StatusCode, response);
         }
-        
+
         [HttpDelete("{id:long}")]
         public async Task<IActionResult> DeleteCourseDetail(long id)
         {

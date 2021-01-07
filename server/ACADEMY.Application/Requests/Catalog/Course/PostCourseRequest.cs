@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ACADEMY.Data.Enums;
 
 namespace ACADEMY.Application.Requests.Catalog.Course
 {
@@ -22,9 +17,9 @@ namespace ACADEMY.Application.Requests.Catalog.Course
         public long? Sale { get; set; }
 
         public DateTime? SaleDate { get; set; }
-        
+
         public string DetailDescription { get; set; }
-        
+
         [Required(ErrorMessage = "Khoá học phải thuộc vào một danh mục nhất định")]
         public int CategoryId { get; set; }
     }

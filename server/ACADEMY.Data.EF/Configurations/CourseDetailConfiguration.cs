@@ -13,13 +13,13 @@ namespace ACADEMY.Data.EF.Configurations
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id).UseIdentityColumn();
-            
+
             builder.Property(e => e.Content).IsRequired();
 
             builder.Property(e => e.IsReview).HasDefaultValue(false);
 
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
-            
+
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");
         }
     }

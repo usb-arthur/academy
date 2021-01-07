@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.System;
@@ -28,16 +25,10 @@ namespace ACADEMY.WebApi.Controllers
         [Route("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var authResult = await _authService.SignInAsync(request);
-            if (authResult.Succeeded)
-            {
-                SetTokenCookie(authResult.ObjResult.RefreshToken);
-            }
+            if (authResult.Succeeded) SetTokenCookie(authResult.ObjResult.RefreshToken);
 
             return StatusCode((int) authResult.StatusCode, authResult);
         }
@@ -46,21 +37,31 @@ namespace ACADEMY.WebApi.Controllers
         [Route("refresh-token")]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] AuthRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             if (!Request.Cookies.TryGetValue("refreshToken", out var token))
-            {
                 return BadRequest("Token đã hết hạn hoặc không tồn tại");
-            }
-            
+
             request.RefreshToken = token;
 
             var result = await _authService.RefreshTokenAsync(request);
-            
+
             return StatusCode((int) result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessage());
+            }
+
+            var response = await _authService.ChangePasswordAsync(request);
+
+            return StatusCode((int)response.StatusCode, response);
         }
 
         private void SetTokenCookie(string token)

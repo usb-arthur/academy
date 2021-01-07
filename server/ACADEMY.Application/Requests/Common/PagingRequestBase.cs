@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ACADEMY.Application.Requests.Common
+﻿namespace ACADEMY.Application.Requests.Common
 {
     public abstract class PagingRequestBase
     {

@@ -9,7 +9,7 @@ namespace ACADEMY.Application.Requests.Catalog.Course
 
         [Required(ErrorMessage = "Nội dung không được bỏ trống")]
         public string Content { get; set; }
-        
+
         public bool? IsPreview { get; set; }
     }
 }

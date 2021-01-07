@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
@@ -14,5 +10,7 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request);
 
         Task<ApiResponse<AuthVm>> RefreshTokenAsync(AuthRequest request);
+
+        Task<ApiResponse<bool>> ChangePasswordAsync(ChangePasswordRequest request);
     }
 }

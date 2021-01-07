@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.System;
@@ -20,50 +17,45 @@ namespace ACADEMY.WebApi.Controllers
         {
             _userService = userService;
         }
-        
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var result = await _userService.GetAllAsync();
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
+
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             var result = await _userService.GetByIdAsync(id);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] PostUserRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var result = await _userService.AddAsync(request);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
 
         [Authorize]
         [HttpPatch("{id}")]
         public async Task<IActionResult> PutUser(Guid id, [FromBody] PutUserRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var result = await _userService.UpdateAsync(id, request);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
 
         [Authorize(Roles = "Admin")]
@@ -72,7 +64,7 @@ namespace ACADEMY.WebApi.Controllers
         {
             var result = await _userService.DeleteAsync(id);
 
-            return StatusCode((int)result.StatusCode, result);
+            return StatusCode((int) result.StatusCode, result);
         }
     }
 }

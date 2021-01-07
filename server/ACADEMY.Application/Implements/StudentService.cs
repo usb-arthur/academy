@@ -4,7 +4,6 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
-using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
@@ -18,24 +17,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Application.Implements
 {
-    public class TeacherService : ITeacherService
+    public class StudentService : IStudentService
     {
+        private readonly UserManager<User> _userManager;
+
         private readonly IRepository<Course, long> _courseRepository;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
 
-        public TeacherService(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor,
-            IRepository<Course, long> courseRepository)
+        public StudentService(UserManager<User> userManager, IRepository<Course, long> courseRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _userManager = userManager;
-            _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
             _courseRepository = courseRepository;
+            _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
-
+        
         public async Task<ApiResponse<UserVm>> GetInformationAsync()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
@@ -48,29 +47,12 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
         }
 
-        public async Task<ApiResponse<UserVm>> UpdateInformationAsync(PutTeacherRequest request)
-        {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null)
-                return new ApiErrorResponse<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
-
-            user = _mapper.Map(request, user);
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (result.Succeeded) return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
-
-            return new ApiErrorResponse<UserVm>(result.Errors.ToString(), HttpStatusCode.InternalServerError);
-        }
-
-        public async Task<ApiResponse<ICollection<CourseVm>>> GetCoursesAsync()
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetRegisteredCourseAsync()
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
-            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId);
+            var courses =
+                await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category, e => e.Teacher);
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ACADEMY.Data.Enums;
+﻿using ACADEMY.Data.Enums;
 
 namespace ACADEMY.Application.ViewModels.Catalog.Course
 {
@@ -18,13 +13,13 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
         public string BriefDescription { get; set; }
 
         public string DetailDescription { get; set; }
-        
+
         public double Rate { get; set; }
 
         public int NumOfFeedback { get; set; }
 
         public int NumOfStudent { get; set; }
-        
+
         public CourseStatus Status { get; set; }
 
         public string CreatedDate { get; set; }

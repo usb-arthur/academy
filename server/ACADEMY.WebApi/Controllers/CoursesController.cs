@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.WebApi.Extensions;
@@ -40,10 +36,7 @@ namespace ACADEMY.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> PostCourse([FromBody] PostCourseRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var result = await _courseService.CreateAsync(request);
 
@@ -53,16 +46,13 @@ namespace ACADEMY.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(int id, [FromBody] PutCourseRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var result = await _courseService.UpdateAsync(id, request);
 
             return StatusCode((int) result.StatusCode, result);
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {

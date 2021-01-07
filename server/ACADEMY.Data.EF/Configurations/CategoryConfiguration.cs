@@ -20,7 +20,7 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.HasOne(e => e.CreatedUser).WithMany().HasForeignKey(e => e.CreatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
             builder.HasOne(e => e.UpdatedUser).WithMany().HasForeignKey(e => e.UpdatedBy)
                 .OnDelete(DeleteBehavior.NoAction);
         }

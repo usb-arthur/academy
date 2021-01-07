@@ -38,11 +38,8 @@ namespace ACADEMY.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> PutTeacher([FromBody] PutTeacherRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var response = await _teacherService.UpdateInformationAsync(request);
 
             return StatusCode((int) response.StatusCode, response);

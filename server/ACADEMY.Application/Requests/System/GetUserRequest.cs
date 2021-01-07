@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ACADEMY.Application.Requests.Common;
+﻿using ACADEMY.Application.Requests.Common;
 
 namespace ACADEMY.Application.Requests.System
 {
@@ -11,7 +6,7 @@ namespace ACADEMY.Application.Requests.System
     {
         public string Search { get; set; }
 
-        
+
         public int OrderBy { get; set; } = 0;
     }
 }
