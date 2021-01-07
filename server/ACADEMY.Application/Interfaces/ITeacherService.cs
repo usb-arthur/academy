@@ -9,10 +9,11 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface ITeacherService
     {
-        Task<ApiResponse<UserVm>> GetInformationAsync();
+        Task<ApiResult<UserVm>> GetInformationAsync();
 
-        Task<ApiResponse<UserVm>> UpdateInformationAsync(PutTeacherRequest request);
+        Task<ApiResult<UserVm>> UpdateInformationAsync(PutTeacherRequest request);
 
-        Task<ApiResponse<ICollection<CourseVm>>> GetCoursesAsync();
+        Task<ApiResult<ICollection<CourseVm>>> GetCoursesAsync();
     }
 }
+

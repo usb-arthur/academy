@@ -37,7 +37,7 @@ namespace ACADEMY.Application.Implements
             _courseRepository = courseRepository;
         }
         
-        public async Task<ApiResponse<UserVm>> GetInformationAsync()
+        public async Task<ApiResult<UserVm>> GetInformationAsync()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
 
@@ -45,13 +45,13 @@ namespace ACADEMY.Application.Implements
 
             if (user == null)
             {
-                return new ApiErrorResponse<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
+                return new ApiErrorResult<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
             }
 
-            return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
+            return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user));
         }
 
-        public async Task<ApiResponse<UserVm>> UpdateInformationAsync(PutTeacherRequest request)
+        public async Task<ApiResult<UserVm>> UpdateInformationAsync(PutTeacherRequest request)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
 
@@ -59,7 +59,7 @@ namespace ACADEMY.Application.Implements
             
             if (user == null)
             {
-                return new ApiErrorResponse<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
+                return new ApiErrorResult<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
             }
 
             user = _mapper.Map(request, user);
@@ -68,19 +68,19 @@ namespace ACADEMY.Application.Implements
 
             if (result.Succeeded)
             {
-                return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
+                return new ApiSucceedResult<UserVm>(_mapper.Map<User, UserVm>(user));
             }
 
-            return new ApiErrorResponse<UserVm>(result.Errors.ToString(), HttpStatusCode.InternalServerError);
+            return new ApiErrorResult<UserVm>(result.Errors.ToString(), HttpStatusCode.InternalServerError);
         }
 
-        public async Task<ApiResponse<ICollection<CourseVm>>> GetCoursesAsync()
+        public async Task<ApiResult<ICollection<CourseVm>>> GetCoursesAsync()
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
             var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId);
 
-            return new ApiSucceedResponse<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+            return new ApiSucceedResult<ICollection<CourseVm>>(await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
     }
 }
