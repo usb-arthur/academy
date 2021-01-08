@@ -54,6 +54,7 @@
       </md-table-toolbar>
 
       <md-table-empty-state
+        v-if="!isLoading"
         md-label="Không tìm thấy người dùng"
         :md-description="
           `Không tìm thấy người dùng tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`
@@ -70,18 +71,89 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-numeric>{{ item.id }}</md-table-cell>
+        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{
+          item.id
+        }}</md-table-cell>
         <md-table-cell md-label="Tên" md-sort-by="name">{{
           item.name
         }}</md-table-cell>
-        <md-table-cell md-label="Loại người dùng" md-sort-by="role">{{
-          item.role
+        <md-table-cell md-label="Email" md-sort-by="email">{{
+          item.email
         }}</md-table-cell>
-        <md-table-cell md-label="Tình trạng" md-sort-by="active">{{
-          item.active
+        <md-table-cell md-label="Giới tính" md-sort-by="gender">{{
+          item.gender
+        }}</md-table-cell>
+        <md-table-cell md-label="Ngày sinh" md-sort-by="dateOfBirth">{{
+          item.dateOfBirth
+        }}</md-table-cell>
+        <md-table-cell md-label="Số điện thoại" md-sort-by="phoneNumber">{{
+          item.phoneNumber
         }}</md-table-cell>
       </md-table-row>
     </md-table>
+
+    <v-dialog v-model="addNewUser" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Thêm người dùng mới</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-text-field
+              v-model="userNew.name"
+              :rules="[() => !!userNew.name || 'Không được để trống']"
+              :counter="50"
+              label="Tên"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model.number="userNew.gender"
+              type="number"
+              label="Giới tính"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.email"
+              :rules="[() => !!userNew.email || 'Không được để trống']"
+              label="E-mail"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.contact"
+              :rules="[() => !!userNew.contact || 'Không được để trống']"
+              label="Contact"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.dateOfBirth"
+              :rules="[() => !!userNew.dateOfBirth || 'Không được để trống']"
+              label="Ngày sinh"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.phoneNumber"
+              :rules="[() => !!userNew.phoneNumber || 'Không được để trống']"
+              label="Số điện thoại"
+              required
+            ></v-text-field>
+
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              class="mr-4"
+              @click="validate"
+            >
+              Tạo
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -89,22 +161,34 @@
 export default {
   name: "TableSearch",
   data: () => ({
+    valid: false,
+    addNewUser: false,
+    userNew: {
+      name: "",
+      gender: 0,
+      email: "",
+      contact: "",
+      dateOfBirth: "2021-01-08T18:05:56.540Z",
+      phoneNumber: ""
+    },
+    isLoading: true,
     search: null,
     searched: [],
-    selected: []
+    selected: [],
+    list: []
   }),
   computed: {
-    dslinhvucs() {
+    dsUser() {
       return this.$store.state.user.items;
     },
     searchByName() {
       if (this.search) {
-        return this.dslinhvucs.filter(item =>
+        return this.list.filter(item =>
           item.name.toLowerCase().includes(this.search.toLowerCase())
         );
       }
 
-      return this.dslinhvucs;
+      return this.list;
     },
     morethanone() {
       if (this.selected.length < 2) return true;
@@ -112,8 +196,31 @@ export default {
     }
   },
   methods: {
+    async RefreshTable() {
+      await this.$store
+        .dispatch("user/getAllUser")
+        .then(() => {
+          this.list = this.dsUser;
+        })
+        .catch(err => console.log(err));
+      this.searched = this.list;
+      this.selected = [];
+    },
+    async validate() {
+      if (this.$refs.form.validate()) {
+        await this.$store
+          .dispatch("user/UploadUser", this.userNew)
+          .then(() => {
+            this.search = null;
+          })
+
+          .catch(err => console.log(err));
+        this.RefreshTable();
+        this.addNewUser = !this.addNewUser;
+      }
+    },
     newUser() {
-      window.alert("Noop");
+      this.addNewUser = !this.addNewUser;
     },
     onSelect(items) {
       this.selected = items;
@@ -130,15 +237,27 @@ export default {
     detailCatalog() {
       window.alert("detail");
     },
-    deleteCatalog() {
-      window.alert("Delete");
+    async deleteCatalog() {
+      for (let i = 0; i < this.selected.length; i++) {
+        await this.$store.dispatch("user/DeleteUser", {
+          id: this.selected[i].id
+        });
+      }
+      this.RefreshTable();
     },
     searchOnTable() {
       this.searched = this.searchByName;
     }
   },
-  created() {
-    this.searched = this.dslinhvucs;
+  async created() {
+    await this.$store
+      .dispatch("user/getAllUser")
+      .then(() => {
+        this.list = this.dsUser;
+      })
+      .catch(err => console.log(err));
+    this.isLoading = false;
+    this.searched = this.list;
   }
 };
 </script>
