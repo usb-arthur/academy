@@ -1,3 +1,5 @@
 export default {
-  courses: []
+  courses: [],
+  course: {},
+  courseDetails: []
 };

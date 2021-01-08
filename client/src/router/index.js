@@ -36,6 +36,22 @@ const routes = [
               import(
                 /* webpackChunkName: "CreateCourse" */ "../views/Page/Teacher/CreateCourse"
               )
+          },
+          {
+            name: "UpdateCourse",
+            path: "cap-nhat-khoa-hoc/:id",
+            component: () =>
+              import(
+                /* webpackChunkName: "UpdateCourse" */ "../views/Page/Teacher/UpdateCourse"
+              )
+          },
+          {
+            name: "CourseDetail",
+            path: "chi-tiet-khoa-hoc/:id",
+            component: () =>
+              import(
+                /* webpackChunkName: "UpdateCourse" */ "../views/Page/Teacher/CourseDetail"
+              )
           }
         ]
       }

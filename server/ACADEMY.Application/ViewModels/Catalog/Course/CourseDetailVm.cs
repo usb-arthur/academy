@@ -10,6 +10,6 @@
 
         public string UpdatedDate { get; set; }
 
-        public string IsReview { get; set; }
+        public bool IsReview { get; set; }
     }
 }

@@ -28,26 +28,6 @@
               label="Chọn hình ảnh"
             ></v-file-input>
           </v-col>
-          <v-col cols="6">
-            <v-select
-              :items="categories"
-              item-text="categoryName"
-              item-value="id"
-              v-model="categoryId"
-              label="Chọn danh mục cha"
-              dense
-            ></v-select>
-          </v-col>
-          <v-col cols="6">
-            <v-select
-              :items="children(categoryId)"
-              item-text="categoryName"
-              item-value="id"
-              v-model="course.categoryId"
-              label="Chọn danh mục con"
-              dense
-            ></v-select>
-          </v-col>
           <v-col cols="12">
             <v-textarea
               rows="3"
@@ -87,8 +67,11 @@
               </v-btn>
             </router-link>
 
-            <v-btn @click="createCourse(course)" color="primary">
-              Tạo mới
+            <v-btn
+              @click="updateCourse($route.params.id, course)"
+              color="primary"
+            >
+              Cập nhật
             </v-btn>
           </v-col>
         </v-row>
@@ -98,55 +81,34 @@
 </template>
 
 <script>
-import VTipTap from "@/components/WYSIWYG/vTipTap";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
+import vTipTap from "@/components/WYSIWYG/vTipTap";
 
 export default {
-  components: { VTipTap },
   data: () => ({
     hasSale: false,
     valid: false,
-    course: {
-      courseName: "",
-      courseFee: 0,
-      briefDescription: "",
-      detailDescription: "",
-      categoryId: 0,
-      sale: null,
-      saleDate: null
-    },
-    image: null,
     video: null,
-    categoryId: 0
+    image: null
   }),
-  watch: {
-    hasSale(val) {
-      if (!val) {
-        this.course.sale = this.course.saleDate = null;
-      }
-    }
-  },
   computed: {
-    ...mapState("categories", ["categories"]),
-    ...mapGetters("categories", ["children"])
+    ...mapState("course", ["course"])
   },
   created() {
-    this.getAllCategories();
+    console.log(this.$route.params);
+    const { id } = this.$route.params;
+    this.getCourseById(id);
   },
   methods: {
-    ...mapActions("categories", ["getAllCategories"]),
-    ...mapActions("course", ["createNewCourse"]),
-    createCourse(course) {
-      this.createNewCourse(course).then(() => {
-        this.$router.push("/giang-vien");
+    ...mapActions("course", ["getCourseById", "updateCourseById"]),
+    updateCourse(id, course) {
+      this.updateCourseById({ id, course }).then(() => {
+        this.$router.push("/giang-vien/khoa-hoc");
       });
     }
+  },
+  components: {
+    vTipTap
   }
 };
 </script>
-
-<style>
-.sale .v-input__control .v-input__slot label {
-  margin-bottom: 0 !important;
-}
-</style>
