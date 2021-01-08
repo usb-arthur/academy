@@ -4,7 +4,9 @@
       <md-button md-menu-trigger>Bottom Start</md-button>
 
       <md-menu-content>
-        <md-menu-item v-for="item in items" :key="item.id">{{item.name}}</md-menu-item>
+        <md-menu-item v-for="item in items" :key="item.id">{{
+          item.name
+        }}</md-menu-item>
       </md-menu-content>
     </md-menu>
 
@@ -41,21 +43,21 @@
 </template>
 
 <script>
-  export default {
-    name: 'Directions',
-    data() {
-      return{
+export default {
+  name: "Directions",
+  data() {
+    return {
       items: [
-        {id: 1, name:"ABC"},
-        {id: 2, name:"ACB"}
+        { id: 1, name: "ABC" },
+        { id: 2, name: "ACB" }
       ]
-      }
-    }
+    };
   }
+};
 </script>
 
 <style lang="scss" scoped>
-  .md-menu {
-    margin: 24px;
-  }
+.md-menu {
+  margin: 24px;
+}
 </style>

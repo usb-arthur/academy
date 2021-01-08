@@ -1,26 +1,24 @@
 const state = () => ({
-    items: [
-        { title:"LĨNH VỰC", href:"/admin/linhvuc", icon:"mdi-home-outline" },
-        { title:"KHÓA HỌC", href:"/admin/khoahoc", icon:"mdi-shield-account" },
-        { title:"NGƯỜI DÙNG", href:"/admin/user", icon:"mdi-palette-swatch" }
-    ]
-  });
+  items: [
+    { title: "LĨNH VỰC", href: "/admin/linhvuc", icon: "mdi-home-outline" },
+    { title: "KHÓA HỌC", href: "/admin/khoahoc", icon: "mdi-shield-account" },
+    { title: "NGƯỜI DÙNG", href: "/admin/user", icon: "mdi-palette-swatch" }
+  ]
+});
 
-  // getters
-  const getters = {
+// getters
+const getters = {};
 
-  };
-  
-  // actions
-  const actions = {};
-  
-  // mutations
-  const mutations = {};
-  
-  export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations
-  };
+// actions
+const actions = {};
+
+// mutations
+const mutations = {};
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
+};

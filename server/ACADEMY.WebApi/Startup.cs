@@ -53,9 +53,11 @@ namespace ACADEMY.WebApi
 
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder
+                    .WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowCredentials();
             }));
 
             services.AddAutoMapper(typeof(DateTimeToStringProfile).Assembly, typeof(DomainToViewModelProfile).Assembly,
