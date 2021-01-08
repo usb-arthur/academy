@@ -95,5 +95,18 @@ export default {
           reject(err);
         });
     });
+  },
+  deleteCourseDetail: ({ dispatch }, payload) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(`/course-details/${payload.courseDetailId}`)
+        .then(res => {
+          dispatch("getCourseDetailByCourseId", payload.courseId);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 };
