@@ -14,8 +14,5 @@ namespace ACADEMY.Application.Requests.Catalog.Course
         public string BriefDescription { get; set; }
 
         public string DetailDescription { get; set; }
-
-        [Required(ErrorMessage = "Khoá học phải thuộc vào một danh mục nhất định")]
-        public int CategoryId { get; set; }
     }
 }

@@ -21,9 +21,7 @@ axios.interceptors.response.use(
 
     if (error.response.status === 403) {
       router.push("/forbidden");
-    }
-
-    if (error.response.status === 401 && !originalRequest._retry) {
+    } else if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       return axios
         .post("auth/refresh-token", {
@@ -31,13 +29,14 @@ axios.interceptors.response.use(
         })
         .then(res => {
           if (res.status === 200) {
-            localStorage.setItem("accessToKen", res.data.objReturn.accessToken);
+            console.log(res);
+            localStorage.setItem("accessToKen", res.data.objResult.accessToken);
             axios.defaults.headers.common["Authorization"] =
-              res.data.objReturn.accessToken;
+              res.data.objResult.accessToken;
             return axios(originalRequest);
           }
         });
-    } else {
+    } else if (error.response.status === 401 && originalRequest._retry) {
       router.push("/dang-nhap");
     }
     return Promise.reject(error);
