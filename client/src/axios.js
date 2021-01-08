@@ -5,5 +5,5 @@ const baseURL = "https://localhost:5001";
 export default axios.create({
   baseURL,
   withCredentials: true,
-  xsrfCookieName: 'refreshToken'
+  xsrfCookieName: "refreshToken"
 });

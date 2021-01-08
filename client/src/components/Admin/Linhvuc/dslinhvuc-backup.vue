@@ -3,7 +3,6 @@
     <h3>Todo</h3>
     <ul id="array-with-index" class="demo">
       <LINHVUCITEM
-        
         v-for="items in dslinhvucs"
         :key="items.id"
         v-bind:catalog="items"
@@ -31,5 +30,3 @@ export default {
   }
 };
 </script>
-
-

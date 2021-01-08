@@ -8,8 +8,8 @@ const state = () => ({
 
 // getters
 const getters = {
-  ACatalog: state => {
-    return state.items.filter(catalog => catalog.active);
+  ACatalog: () => {
+    return state.items;
   }
 };
 
@@ -27,6 +27,53 @@ const actions = {
           reject(err);
         });
     });
+  },
+  UploadCategory: ({ commit }, payload) => {
+    commit("DONOTHING");
+    console.log(payload);
+    return new Promise((resolve, reject) => {
+      axios
+        .post("/categories", {
+          categoryName: payload.categoryName,
+          categoryId: payload.categoryId
+        })
+        .then(() => {
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  DeleteCategory: ({ commit }, lid) => {
+    commit("DONOTHING");
+    console.log(lid);
+    return new Promise((resolve, reject) => {
+      axios
+        .delete("/categories/" + lid.id)
+        .then(() => {
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  UpdateNameCategory: ({ commit }, lid) => {
+    commit("DONOTHING");
+    console.log(lid);
+    return new Promise((resolve, reject) => {
+      axios
+        .put("/categories/" + lid.id, {
+          categoryName: lid.categoryName
+        })
+        .then(() => {
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 };
 
@@ -34,7 +81,11 @@ const actions = {
 const mutations = {
   SET_CATEGORIES: (state, payload) => {
     state.items = payload;
-  }
+  },
+  ADD_CATEGORIES: (state, payload) => {
+    state.items.push(payload);
+  },
+  DONOTHING: () => {}
 };
 
 export default {

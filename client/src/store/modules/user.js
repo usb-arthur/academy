@@ -45,7 +45,7 @@ const state = () => ({
 // getters
 const getters = {
   ACatalog: state => {
-    return state.items.filters(catalog => catalog.active);
+    return state.items;
   }
 };
 

@@ -31,9 +31,9 @@ axios.interceptors.response.use(
         })
         .then(res => {
           if (res.status === 200) {
-            localStorage.setItem("accessToKen", res.data.objReturn.accessToken);
+            localStorage.setItem("accessToKen", res.data.objResult.accessToken);
             axios.defaults.headers.common["Authorization"] =
-              res.data.objReturn.accessToken;
+              res.data.objResult.accessToken;
             return axios(originalRequest);
           }
         });
