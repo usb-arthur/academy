@@ -4,12 +4,37 @@
 import HomePageLayout from "../views/Page/HomePage/HomePageLayout.vue";
 //import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
 import TestAdminLayout from "../views/Page/Admin/Layout/TestAdminLayout.vue";
+import VueRouter from "vue-router";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: HomePageLayout
+  },
+  {
+    path: "",
+    name: "FullPageLayout",
+    component: () =>
+      import(
+        /* webpackChunkName: "FullPageLayout" */ "../views/Page/Layout/FullPage"
+      ),
+    children: [
+      {
+        path: "/dang-nhap",
+        name: "Login",
+        component: () =>
+          import(/* webpackChunkName: "Login" */ "../views/Page/Auth/vLogin")
+      },
+      {
+        path: "/dang-ky",
+        name: "Register",
+        component: () =>
+          import(
+            /* webpackChunkName: "Register" */ "../views/Page/Auth/vRegister"
+          )
+      }
+    ]
   },
   {
     path: "/about",
@@ -55,37 +80,45 @@ const routes = [
     path: "/test",
     name: "Test",
     component: () =>
-          import(
-            /* webpackChunkName: "demo" */ "../views/Page/Admin/Layout/TestAdminLayout.vue"
-          ),
+      import(
+        /* webpackChunkName: "demo" */ "../views/Page/Admin/Layout/TestAdminLayout.vue"
+      ),
     redirect: { name: "LinhVuct" },
     children: [
-            {
-              path: "linhvuc",
-              name: "LinhVuct",
-              component: () =>
-                import(
-                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
-                )
-            },
-            {
-              path: "khoahoc",
-              name: "KhoaHoct",
-              component: () =>
-                import(
-                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
-                )
-            },
-            {
-              path: "user",
-              name: "usert",
-              component: () =>
-                import(
-                  /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
-                )
-            }
-          ]
-  },
+      {
+        path: "linhvuc",
+        name: "LinhVuct",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
+          )
+      },
+      {
+        path: "khoahoc",
+        name: "KhoaHoct",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
+          )
+      },
+      {
+        path: "user",
+        name: "usert",
+        component: () =>
+          import(
+            /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
+          )
+      }
+    ]
+  }
 ];
 
-export default routes;
+const linkActiveClass = "my-link-active-class";
+
+const router = new VueRouter({
+  mode: "history",
+  routes,
+  linkActiveClass
+});
+
+export default router;

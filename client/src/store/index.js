@@ -4,6 +4,7 @@ import linhvuc from "./linhvuc/linhvuc.js";
 import khoahoc from "./modules/khoahoc.js";
 import user from "./modules/user.js";
 import paths from "./modules/path.js";
+import auth from "./auth/moduleAuth";
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     linhvuc,
     khoahoc,
     user,
-    paths
+    paths,
+    auth
   }
 });
