@@ -5,12 +5,41 @@ import HomePageLayout from "../views/Page/HomePage/HomePageLayout.vue";
 //import AdminLayout from "../views/Page/Admin/Layout/AdminLayout.vue";
 import TestAdminLayout from "../views/Page/Admin/Layout/TestAdminLayout.vue";
 import VueRouter from "vue-router";
+import Layout from "@/views/Page/Layout/Layout";
+import Course from "@/views/Page/Teacher/CourseList";
+import TeacherLayout from "@/views/Page/Teacher/Layout/Layout";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: HomePageLayout
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "/giang-vien",
+        redirect: { name: "Course" },
+        component: TeacherLayout,
+        children: [
+          {
+            name: "Course",
+            path: "khoa-hoc",
+            component: Course
+          },
+          {
+            name: "CreateCourse",
+            path: "tao-khoa-hoc",
+            component: () =>
+              import(
+                /* webpackChunkName: "CreateCourse" */ "../views/Page/Teacher/CreateCourse"
+              )
+          }
+        ]
+      }
+    ]
   },
   {
     path: "",
@@ -35,15 +64,6 @@ const routes = [
           )
       }
     ]
-  },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
     path: "/admin",

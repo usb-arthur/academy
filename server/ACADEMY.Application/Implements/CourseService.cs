@@ -41,6 +41,9 @@ namespace ACADEMY.Application.Implements
 
             var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+
+            var result = courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider);
+
             return new ApiSucceedResponse<ICollection<CourseVm>>(
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
@@ -50,7 +53,7 @@ namespace ACADEMY.Application.Implements
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
             var course = await _courseRepository.FindSingleAsync(e => e.Id == id && e.TeacherId == userId,
-                e => e.Category, e => e.Teacher);
+                e => e.Category, e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
             if (course == null)
                 return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",
