@@ -61,7 +61,7 @@ namespace ACADEMY.Application.Implements
             var category = await _categoryRepository.FindSingleAsync(e =>
                 e.CategoryName.Equals(request.CategoryName) && e.CategoryId.Equals(request.CategoryId));
 
-            if (category == null)
+            if (category != null)
                 return new ApiErrorResponse<CategoryVm>($"Danh mục {request.CategoryName} đã tồn tại",
                     HttpStatusCode.Conflict);
 
