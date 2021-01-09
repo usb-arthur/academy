@@ -1,7 +1,7 @@
 export default {
   isAuthenticated: () => {
     return (
-      localStorage.getItem("accessToKen") && localStorage.getItem("userInfo")
+      window.localStorage.getItem("accessToKen") && window.localStorage.getItem("userInfo")
     );
   }
 };
