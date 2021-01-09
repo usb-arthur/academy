@@ -53,7 +53,7 @@ namespace ACADEMY.Application.Implements
             var currentUser = await _userManager.FindByEmailAsync(email.Value);
 
             user.CreatedBy = user.UpdatedBy = currentUser.Id;
-            user.FirstLogin = false;
+            user.FirstLogin = true;
             user.UserName = request.Email;
             user.NormalizedEmail = user.NormalizedUserName = _userManager.NormalizeEmail(request.Email);
 
