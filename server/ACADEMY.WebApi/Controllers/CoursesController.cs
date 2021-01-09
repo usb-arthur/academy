@@ -26,6 +26,13 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourses()
         {
+            return Ok(await _courseService.GetByTeacherAsync());
+        }
+
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllCourses()
+        {
             return Ok(await _courseService.GetAllAsync());
         }
 
@@ -76,7 +83,7 @@ namespace ACADEMY.WebApi.Controllers
         }
         
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher,Admin")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var result = await _courseService.DeleteAsync(id);

@@ -41,7 +41,7 @@ namespace ACADEMY.Application.Implements
             _storageService = storageService;
         }
 
-        public async Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync()
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetByTeacherAsync()
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
@@ -126,6 +126,15 @@ namespace ACADEMY.Application.Implements
             await _storageService.DeleteFileAsync("Courses", $"{id}.jpg");
             
             return new ApiSucceedResponse<bool>(true);
+        }
+
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync()
+        {
+            var courses = await _courseRepository.FindAllAsync(e => e.Category,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+
+            return new ApiSucceedResponse<ICollection<CourseVm>>(await courses
+                .ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
     }
 }

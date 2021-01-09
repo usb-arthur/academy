@@ -8,7 +8,7 @@ namespace ACADEMY.Application.Interfaces
 {
     public interface ICourseService
     {
-        Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync();
+        Task<ApiResponse<ICollection<CourseVm>>> GetByTeacherAsync();
 
         Task<ApiResponse<CourseVm>> GetByIdAsync(long id);
 
@@ -17,5 +17,6 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<CourseVm>> UpdateAsync(long id, PutCourseRequest request);
 
         Task<ApiResponse<bool>> DeleteAsync(int id);
+        Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync();
     }
 }
