@@ -39,7 +39,7 @@ namespace ACADEMY.Application.StorageService
             }
         }
 
-        public Task<string> GetImagePathAsync(string directory, string fileName)
+        public Task<string> GetFilePathAsync(string directory, string fileName)
         {
             return Task.FromResult(Path.Combine(_contentFolder, directory, fileName));
         }

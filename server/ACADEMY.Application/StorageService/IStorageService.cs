@@ -8,6 +8,6 @@ namespace ACADEMY.Application.StorageService
         Task SaveFileAsync(Stream mediaBinaryStream, string directory, string fileName);
 
         Task DeleteFileAsync(string directory, string fileName);
-        Task<string> GetImagePathAsync(string directory, string fileName);
+        Task<string> GetFilePathAsync(string directory, string fileName);
     }
 }
