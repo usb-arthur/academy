@@ -48,10 +48,18 @@ namespace ACADEMY.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("courses/{id:long}")]
-        public async Task<IActionResult> RegisterCourse(long id)
+        public async Task<IActionResult> SubscribeCourse(long id)
         {
-            var result = await _studentService.RegisterCourseAsync(id);
+            var result = await _studentService.SubscribeCourseAsync(id);
 
+            return StatusCode((int) result.StatusCode, result);
+        }
+
+        [HttpDelete("courses/{id:long}")]
+        public async Task<IActionResult> UnsubscribeCourse(long id)
+        {
+            var result = await _studentService.UnsubscribeCourseAsync(id);
+            
             return StatusCode((int) result.StatusCode, result);
         }
     }

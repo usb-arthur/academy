@@ -66,7 +66,7 @@ namespace ACADEMY.Application.Implements
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResponse<StudentCourse>> RegisterCourseAsync(long courseId)
+        public async Task<ApiResponse<StudentCourse>> SubscribeCourseAsync(long courseId)
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
             var studentCourse = await _context.StudentCourses.AddAsync(new StudentCourse
@@ -76,6 +76,19 @@ namespace ACADEMY.Application.Implements
             });
             await _unitOfWork.CommitAsync();
             return new ApiSucceedResponse<StudentCourse>(studentCourse.Entity);
+        }
+
+        public async Task<ApiResponse<bool>> UnsubscribeCourseAsync(long courseId)
+        {
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            var studentCourses =
+                await _context.StudentCourses.FirstOrDefaultAsync(e => e.CourseId == courseId && e.StudentId == userId);
+            if (studentCourses == null)
+            {
+                return new ApiErrorResponse<bool>("Khoá học này không tồn tại hoặc bạn đã huỷ đăng ký rồi", HttpStatusCode.NotFound);
+            }
+            _context.StudentCourses.Remove(studentCourses);
+            return new ApiSucceedResponse<bool>(true);
         }
     }
 }

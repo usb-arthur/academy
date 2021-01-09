@@ -14,6 +14,7 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResponse<ICollection<CourseVm>>> GetRegisteredCourseAsync();
         
-        Task<ApiResponse<StudentCourse>> RegisterCourseAsync(long courseId);
+        Task<ApiResponse<StudentCourse>> SubscribeCourseAsync(long courseId);
+        Task<ApiResponse<bool>> UnsubscribeCourseAsync(long courseId);
     }
 }
