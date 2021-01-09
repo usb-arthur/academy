@@ -19,6 +19,10 @@
             v-model="search"
             @input="searchOnTable"
           />
+
+          <v-btn @click="newUser">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </md-field>
       </md-table-toolbar>
 
@@ -92,6 +96,7 @@
         <md-table-cell md-label="Thuộc">{{ item.parent }}</md-table-cell>
       </md-table-row>
     </md-table>
+
     <v-dialog v-model="addNewCatalog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -107,12 +112,7 @@
               ></v-text-field>
             </v-row>
             <v-row>
-              <v-text-field
-                type="number"
-                label="Thuộc lĩnh vực"
-                hint="để trống nếu muốn để làm lĩnh vực cha"
-                v-model.number="ThuocLV"
-              ></v-text-field>
+              <v-select :items="getParentID" v-model="ThuocLV"></v-select>
             </v-row>
           </v-container>
         </v-card-text>
@@ -155,6 +155,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="DeleteDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Xóa người dùng</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-simple-table dense>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      ID
+                    </th>
+                    <th class="text-left">
+                      Tên
+                    </th>
+                    <th class="text-left">
+                      Người tạo
+                    </th>
+                    <th class="text-left">
+                      Ngày tạo
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in selected" :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.createdBy }}</td>
+                    <td>{{ item.createdDate }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="DeleteDialog = false">
+            Hủy
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="ConfirmDelete">
+            Xác nhận xóa
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -162,6 +211,7 @@
 export default {
   name: "TableSearch",
   data: () => ({
+    DeleteDialog: false,
     newname: null,
     rename: false,
     ThuocLV: null,
@@ -193,12 +243,17 @@ export default {
             updateDate: objc.updatedDate,
             createdBy: objc.createdBy,
             updatedBy: objc.updatedBy,
-            parent: obj.id
+            parent: obj.id + " - " + obj.categoryName
           });
         });
       });
       //console.log(catagorylist)
       return catagorylist;
+    },
+    getParentID() {
+      let listid = this.$store.state.linhvuc.items.map(obj => obj.id);
+      listid.push("");
+      return listid;
     },
     searchByName() {
       if (this.search != null) {
@@ -224,6 +279,7 @@ export default {
         .catch(err => console.log(err));
       this.searched = this.list;
       this.selected = [];
+      this.ThuocLV = null;
     },
     newUser() {
       //window.alert('Noop')
@@ -276,12 +332,16 @@ export default {
     detailCatalog() {
       window.alert("detail");
     },
-    async deleteCatalog() {
+    deleteCatalog() {
+      this.DeleteDialog = !this.DeleteDialog;
+    },
+    async ConfirmDelete() {
       for (let i = 0; i < this.selected.length; i++) {
         await this.$store.dispatch("linhvuc/DeleteCategory", {
           id: this.selected[i].id
         });
       }
+      this.DeleteDialog = !this.DeleteDialog;
       this.RefreshTable();
     },
     searchOnTable() {

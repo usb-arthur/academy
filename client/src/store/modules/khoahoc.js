@@ -1,40 +1,9 @@
 //import shop from '../../api/shop'
-
+import axios from "@/http/axios";
 // initial state
 // shape: [{ id, quantity }]
 const state = () => ({
-  items: [
-    {
-      id: 1,
-      name: "AAAAAAAAAAA",
-      mota: "ABCDXYZ DASDWDSFDGFDGFDGFD DSAD ASDAS DAS DAS DASD ASD SA",
-      active: true
-    },
-    {
-      id: 2,
-      name: "BBBBBBBBBBB",
-      mota: "ABCDXYZ DASDWDSFDGFDGFDGFD DSAD ASDAS DAS DAS DASD ASD SA",
-      active: true
-    },
-    {
-      id: 3,
-      name: "CCCCCCCCCCC",
-      mota: "ABCDXYZ DASDWDSFDGFDGFDGFD DSAD ASDAS DAS DAS DASD ASD SA",
-      active: true
-    },
-    {
-      id: 4,
-      name: "DDDDDDDDDDD",
-      mota: "ABCDXYZ DASDWDSFDGFDGFDGFD DSAD ASDAS DAS DAS DASD ASD SA",
-      active: true
-    },
-    {
-      id: 5,
-      name: "EEEEEEEEEEE",
-      mota: "ABCDXYZ DASDWDSFDGFDGFDGFD DSAD ASDAS DAS DAS DASD ASD SA",
-      active: true
-    }
-  ]
+  items: []
 });
 
 // getters
@@ -45,10 +14,46 @@ const getters = {
 };
 
 // actions
-const actions = {};
+const actions = {
+  getAllCourses: ({ commit }) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("/courses/all")
+        .then(res => {
+          commit("SET_COURSES", res.data.objResult);
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  DeleteCourse: ({ commit }, lid) => {
+    commit("DONOTHING");
+    console.log(lid);
+    return new Promise((resolve, reject) => {
+      axios
+        .delete("/courses/" + lid.id)
+        .then(() => {
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+};
 
 // mutations
-const mutations = {};
+const mutations = {
+  SET_COURSES: (state, payload) => {
+    state.items = payload;
+  },
+  ADD_CATEGORIES: (state, payload) => {
+    state.items.push(payload);
+  },
+  DONOTHING: () => {}
+};
 
 export default {
   namespaced: true,
