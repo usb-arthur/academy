@@ -27,5 +27,9 @@
     <ProjectReference Include="..\ACADEMY.Utilities\ACADEMY.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot" />
+  </ItemGroup>
+
 
 </Project>

@@ -4,6 +4,7 @@ using System.Text;
 using ACADEMY.Application.AutoMapper;
 using ACADEMY.Application.Implements;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.StorageService;
 using ACADEMY.Data.EF;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
@@ -86,6 +87,8 @@ namespace ACADEMY.WebApi
             services.AddTransient<IWatchListService, WatchListService>();
 
             services.AddTransient<IStudentService, StudentService>();
+
+            services.AddTransient<IStorageService, StorageService>();
 
             #endregion
 
