@@ -33,6 +33,7 @@
       </md-table-toolbar>
 
       <md-table-empty-state
+        v-if="!isLoading"
         md-label="Không tìm thấy khóa học"
         :md-description="
           `Không tìm thấy khóa học tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`
@@ -49,15 +50,82 @@
         md-selectable="multiple"
         md-auto-select
       >
-        <md-table-cell md-label="ID" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Tên" md-sort-by="name">{{
-          item.name
+        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{
+          item.id
         }}</md-table-cell>
-        <md-table-cell md-label="Tình trạng" md-sort-by="active">{{
-          item.active
+        <md-table-cell md-label="Tên khóa học" md-sort-by="courseName">{{
+          item.courseName
+        }}</md-table-cell>
+        <md-table-cell md-label="Mô tả">{{
+          item.briefDescription
+        }}</md-table-cell>
+        <md-table-cell md-label="Ngày tạo" md-sort-by="createdDate">{{
+          item.createdDate
+        }}</md-table-cell>
+        <md-table-cell md-label="Ngày chỉnh sửa" md-sort-by="updatedDate">{{
+          item.updatedDate
+        }}</md-table-cell>
+        <md-table-cell md-label="Số học viên" md-sort-by="numOfStudent">{{
+          item.numOfStudent
+        }}</md-table-cell>
+        <md-table-cell md-label="Tình trạng" md-sort-by="status">{{
+          item.status
         }}</md-table-cell>
       </md-table-row>
     </md-table>
+
+    <v-dialog v-model="DeleteDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Xóa khóa học</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-simple-table dense>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      ID
+                    </th>
+                    <th class="text-left">
+                      Tên khóa học
+                    </th>
+                    <th class="text-left">
+                      Số học viên
+                    </th>
+                    <th class="text-left">
+                      Ngày tạo
+                    </th>
+                    <th class="text-left">
+                      Tình trạng
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in selected" :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.courseName }}</td>
+                    <td>{{ item.numOfStudent }}</td>
+                    <td>{{ item.createdDate }}</td>
+                    <td>{{ item.status }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="DeleteDialog = false">
+            Hủy
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="ConfirmDelete">
+            Xác nhận xóa
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -65,6 +133,9 @@
 export default {
   name: "TableSearch",
   data: () => ({
+    isLoading: true,
+    DeleteDialog: false,
+    list: [],
     search: null,
     searched: [],
     selected: []
@@ -75,7 +146,7 @@ export default {
     },
     searchByName() {
       if (this.search) {
-        return this.dskhoahoc.filter(item =>
+        return this.list.filter(item =>
           item.name.toLowerCase().includes(this.search.toLowerCase())
         );
       }
@@ -88,6 +159,16 @@ export default {
     }
   },
   methods: {
+    async RefreshTable() {
+      await this.$store
+        .dispatch("khoahoc/getAllCourses")
+        .then(() => {
+          this.list = this.dskhoahoc;
+        })
+        .catch(err => console.log(err));
+      this.searched = this.list;
+      this.selected = [];
+    },
     newUser() {
       window.alert("Noop");
     },
@@ -95,14 +176,30 @@ export default {
       this.selected = items;
     },
     deletekh() {
-      window.alert("Delete");
+      this.DeleteDialog = !this.DeleteDialog;
+    },
+    async ConfirmDelete() {
+      this.DeleteDialog = !this.DeleteDialog;
+      for (let i = 0; i < this.selected.length; i++) {
+        await this.$store.dispatch("khoahoc/DeleteCourse", {
+          id: this.selected[i].id
+        });
+      }
+      this.RefreshTable();
     },
     searchOnTable() {
       this.searched = this.searchByName;
     }
   },
-  created() {
-    this.searched = this.dskhoahoc;
+  async created() {
+    await this.$store
+      .dispatch("khoahoc/getAllCourses")
+      .then(() => {
+        this.list = this.dskhoahoc;
+      })
+      .catch(err => console.log(err));
+    this.isLoading = false;
+    this.searched = this.list;
   }
 };
 </script>

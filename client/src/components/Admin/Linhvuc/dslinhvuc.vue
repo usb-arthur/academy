@@ -92,6 +92,7 @@
         <md-table-cell md-label="Thuộc">{{ item.parent }}</md-table-cell>
       </md-table-row>
     </md-table>
+
     <v-dialog v-model="addNewCatalog" persistent max-width="600px">
       <v-card>
         <v-card-title>
