@@ -25,15 +25,21 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
       return axios
         .post("auth/refresh-token", {
-          accessToken: localStorage.getItem("accessToKen")
+          accessToken: localStorage.getItem("accessToken")
         })
         .then(res => {
           if (res.status === 200) {
-            localStorage.setItem("accessToKen", res.data.objResult.accessToken);
+            localStorage.setItem(
+              "accessToken",
+              res.data.objResult.accessToken
+            );
             axios.defaults.headers.common["Authorization"] =
               res.data.objResult.accessToken;
             return axios(originalRequest);
           }
+        })
+        .catch(() => {
+          return axios(originalRequest);
         });
     } else if (error.response.status === 401 && originalRequest._retry) {
       router.push("/dang-nhap");

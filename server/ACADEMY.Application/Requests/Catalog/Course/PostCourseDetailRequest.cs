@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ACADEMY.Application.Requests.Catalog.Course
 {
@@ -11,5 +12,8 @@ namespace ACADEMY.Application.Requests.Catalog.Course
         public string Content { get; set; }
 
         public bool IsReview { get; set; } = false;
+
+        [Required(ErrorMessage = "Mỗi chương phải có một video tương ứng")]
+        public IFormFile Video { get; set; }
     }
 }

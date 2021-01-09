@@ -77,7 +77,7 @@ namespace ACADEMY.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetImageByCourseId(long id)
         {
-            var imagePath = await _storageService.GetImagePathAsync("Courses", $"{id}.jpg");
+            var imagePath = await _storageService.GetFilePathAsync("Courses", $"{id}.jpg");
             var image = System.IO.File.OpenRead(imagePath);
             return File(image, "image/jpeg");
         }

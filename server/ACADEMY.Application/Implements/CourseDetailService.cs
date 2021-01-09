@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.StorageService;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Data.Entities;
@@ -21,12 +22,15 @@ namespace ACADEMY.Application.Implements
 
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly IStorageService _storageService;
+
         public CourseDetailService(IMapper mapper,
-            IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork)
+            IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork, IStorageService storageService)
         {
             _mapper = mapper;
             _courseDetailRepository = courseDetailRepository;
             _unitOfWork = unitOfWork;
+            _storageService = storageService;
         }
 
         public async Task<ApiResponse<ICollection<CourseDetailVm>>> GetAllAsync(long courseId)
@@ -60,6 +64,9 @@ namespace ACADEMY.Application.Implements
 
             await _unitOfWork.CommitAsync();
 
+            await _storageService.SaveFileAsync(request.Video.OpenReadStream(), "CourseDetails",
+                $"{courseDetail.Id}.mp4");
+            
             return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail),
                 HttpStatusCode.Created);
         }
@@ -88,6 +95,8 @@ namespace ACADEMY.Application.Implements
             await _courseDetailRepository.RemoveAsync(id);
 
             await _unitOfWork.CommitAsync();
+
+            await _storageService.DeleteFileAsync("CourseDetails", $"{id}.mp4");
 
             return new ApiSucceedResponse<bool>(true);
         }
