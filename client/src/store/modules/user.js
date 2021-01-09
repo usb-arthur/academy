@@ -34,7 +34,7 @@ const actions = {
       axios
         .post("/Users", {
           name: payload.name,
-          gender: payload.gender,
+          gender: parseInt(payload.gender),
           email: payload.email,
           contact: payload.contact,
           dateOfBirth: payload.dateOfBirth,
@@ -69,7 +69,7 @@ const actions = {
       axios
         .patch("/Users/" + lid.id, {
           name: lid.name,
-          gender: lid.gender,
+          gender: parseInt(lid.gender),
           contact: lid.contact,
           dateOfBirth: lid.dateOfBirth
         })

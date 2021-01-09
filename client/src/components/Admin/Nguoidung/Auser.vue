@@ -19,6 +19,10 @@
             v-model="search"
             @input="searchOnTable"
           />
+
+          <v-btn @click="newUser">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </md-field>
       </md-table-toolbar>
 
@@ -103,12 +107,14 @@
               required
             ></v-text-field>
 
-            <v-text-field
-              v-model.number="userNew.gender"
-              type="number"
-              label="Giới tính"
-              required
-            ></v-text-field>
+            <v-radio-group
+              v-model="userNew.gender"
+              mandatory
+              label="Giới tính: "
+            >
+              <v-radio label="Nam" value="0"></v-radio>
+              <v-radio label="Nữ" value="1"></v-radio>
+            </v-radio-group>
 
             <v-text-field
               v-model="userNew.email"
@@ -166,12 +172,14 @@
               required
             ></v-text-field>
 
-            <v-text-field
-              v-model.number="userNew.gender"
-              type="number"
-              label="Giới tính"
-              required
-            ></v-text-field>
+            <v-radio-group
+              v-model="userNew.gender"
+              mandatory
+              label="Giới tính: "
+            >
+              <v-radio label="Nam" value="0"></v-radio>
+              <v-radio label="Nữ" value="1"></v-radio>
+            </v-radio-group>
 
             <v-text-field
               v-model="userNew.contact"
@@ -252,6 +260,7 @@
 export default {
   name: "TableSearch",
   data: () => ({
+    radios: null,
     DeleteDialog: false,
     valid: false,
     valid1: false,
@@ -259,7 +268,7 @@ export default {
     addNewUser: false,
     userNew: {
       name: "",
-      gender: 0,
+      gender: null,
       email: "",
       contact: "",
       dateOfBirth: "2021-01-08",

@@ -19,6 +19,10 @@
             v-model="search"
             @input="searchOnTable"
           />
+
+          <v-btn @click="newUser">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
         </md-field>
       </md-table-toolbar>
 
@@ -108,12 +112,7 @@
               ></v-text-field>
             </v-row>
             <v-row>
-              <v-text-field
-                type="number"
-                label="Thuộc lĩnh vực"
-                hint="để trống nếu muốn để làm lĩnh vực cha"
-                v-model.number="ThuocLV"
-              ></v-text-field>
+              <v-select :items="getParentID" v-model="ThuocLV"></v-select>
             </v-row>
           </v-container>
         </v-card-text>
@@ -244,12 +243,17 @@ export default {
             updateDate: objc.updatedDate,
             createdBy: objc.createdBy,
             updatedBy: objc.updatedBy,
-            parent: obj.id
+            parent: obj.id + " - " + obj.categoryName
           });
         });
       });
       //console.log(catagorylist)
       return catagorylist;
+    },
+    getParentID() {
+      let listid = this.$store.state.linhvuc.items.map(obj => obj.id);
+      listid.push("");
+      return listid;
     },
     searchByName() {
       if (this.search != null) {
@@ -275,6 +279,7 @@ export default {
         .catch(err => console.log(err));
       this.searched = this.list;
       this.selected = [];
+      this.ThuocLV = null;
     },
     newUser() {
       //window.alert('Noop')
