@@ -37,7 +37,6 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourse(int id)
         {
             var result = await _courseService.GetByIdAsync(id);

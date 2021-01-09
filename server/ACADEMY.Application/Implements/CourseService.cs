@@ -65,6 +65,9 @@ namespace ACADEMY.Application.Implements
                 return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",
                     HttpStatusCode.NotFound);
 
+            course.NumOfView += 1;
+            course = await _courseRepository.UpdateAsync(course);
+            
             return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
