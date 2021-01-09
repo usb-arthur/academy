@@ -29,7 +29,6 @@ axios.interceptors.response.use(
         })
         .then(res => {
           if (res.status === 200) {
-            console.log(res);
             localStorage.setItem("accessToKen", res.data.objResult.accessToken);
             axios.defaults.headers.common["Authorization"] =
               res.data.objResult.accessToken;
