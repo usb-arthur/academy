@@ -156,6 +156,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="DeleteDialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Xóa người dùng</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-simple-table dense>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      ID
+                    </th>
+                    <th class="text-left">
+                      Tên
+                    </th>
+                    <th class="text-left">
+                      Người tạo
+                    </th>
+                    <th class="text-left">
+                      Ngày tạo
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in selected" :key="item.id">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.createdBy }}</td>
+                    <td>{{ item.createdDate }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="DeleteDialog = false">
+            Hủy
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="ConfirmDelete">
+            Xác nhận xóa
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -163,6 +212,7 @@
 export default {
   name: "TableSearch",
   data: () => ({
+    DeleteDialog: false,
     newname: null,
     rename: false,
     ThuocLV: null,
@@ -277,12 +327,16 @@ export default {
     detailCatalog() {
       window.alert("detail");
     },
-    async deleteCatalog() {
+    deleteCatalog() {
+      this.DeleteDialog = !this.DeleteDialog;
+    },
+    async ConfirmDelete() {
       for (let i = 0; i < this.selected.length; i++) {
         await this.$store.dispatch("linhvuc/DeleteCategory", {
           id: this.selected[i].id
         });
       }
+      this.DeleteDialog = !this.DeleteDialog;
       this.RefreshTable();
     },
     searchOnTable() {

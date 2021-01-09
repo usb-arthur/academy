@@ -147,7 +147,7 @@ export default {
     searchByName() {
       if (this.search) {
         return this.list.filter(item =>
-          item.name.toLowerCase().includes(this.search.toLowerCase())
+          item.courseName.toLowerCase().includes(this.search.toLowerCase())
         );
       }
 
