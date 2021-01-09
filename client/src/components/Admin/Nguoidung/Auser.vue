@@ -33,17 +33,13 @@
           >
             <md-icon>assignment</md-icon>
           </md-button>
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="assignCatalog"
-          >
+          <md-button v-if="morethanone" class="md-icon-button">
             <md-icon>settings</md-icon>
           </md-button>
           <md-button
             v-if="morethanone"
             class="md-icon-button"
-            @click="renameCatalog"
+            @click="renameUser"
           >
             <md-icon>create</md-icon>
           </md-button>
@@ -98,7 +94,7 @@
           <span class="headline">Thêm người dùng mới</span>
         </v-card-title>
         <v-card-text>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid1" lazy-validation>
             <v-text-field
               v-model="userNew.name"
               :rules="[() => !!userNew.name || 'Không được để trống']"
@@ -143,10 +139,60 @@
             ></v-text-field>
 
             <v-btn
-              :disabled="!valid"
+              :disabled="!valid1"
               color="success"
               class="mr-4"
               @click="validate"
+            >
+              Tạo
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="patchUser" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Chỉnh sửa người dùng</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form1" v-model="valid" lazy-validation>
+            <v-text-field
+              v-model="userNew.name"
+              :rules="[() => !!userNew.name || 'Không được để trống']"
+              :counter="50"
+              label="Tên"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model.number="userNew.gender"
+              type="number"
+              label="Giới tính"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.contact"
+              :rules="[() => !!userNew.contact || 'Không được để trống']"
+              label="Contact"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="userNew.dateOfBirth"
+              :rules="[() => !!userNew.dateOfBirth || 'Không được để trống']"
+              label="Ngày sinh"
+              type="date"
+              required
+            ></v-text-field>
+
+            <v-btn
+              :disabled="!valid"
+              color="success"
+              class="mr-4"
+              @click="validate1"
             >
               Tạo
             </v-btn>
@@ -162,13 +208,15 @@ export default {
   name: "TableSearch",
   data: () => ({
     valid: false,
+    valid1: false,
+    patchUser: false,
     addNewUser: false,
     userNew: {
       name: "",
       gender: 0,
       email: "",
       contact: "",
-      dateOfBirth: "2021-01-08T18:05:56.540Z",
+      dateOfBirth: "2021-01-08",
       phoneNumber: ""
     },
     isLoading: true,
@@ -212,14 +260,34 @@ export default {
           .dispatch("user/UploadUser", this.userNew)
           .then(() => {
             this.search = null;
+            this.$refs.form.reset();
           })
 
           .catch(err => console.log(err));
-        this.RefreshTable();
         this.addNewUser = !this.addNewUser;
       }
+      this.RefreshTable();
+    },
+    async validate1() {
+      if (this.$refs.form1.validate()) {
+        await this.$store
+          .dispatch("user/UpdateUser", {
+            id: this.searched[0].id,
+            name: this.userNew.name,
+            gender: this.userNew.gender,
+            contact: this.userNew.contact,
+            dateOfBirth: this.userNew.dateOfBirth
+          })
+          .then(() => {
+            this.$refs.form1.reset();
+          })
+          .catch(err => console.log(err));
+        this.patchUser = !this.patchUser;
+      }
+      this.RefreshTable();
     },
     newUser() {
+      this.userNew.name = this.search;
       this.addNewUser = !this.addNewUser;
     },
     onSelect(items) {
@@ -228,8 +296,8 @@ export default {
     activeCatalog() {
       window.alert("Active");
     },
-    renameCatalog() {
-      window.alert("rename");
+    renameUser() {
+      this.patchUser = !this.patchUser;
     },
     assignCatalog() {
       window.alert("assign");

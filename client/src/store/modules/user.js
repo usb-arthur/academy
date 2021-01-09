@@ -61,6 +61,25 @@ const actions = {
           reject(err);
         });
     });
+  },
+  UpdateUser: ({ commit }, lid) => {
+    commit("DONOTHING");
+    console.log(lid);
+    return new Promise((resolve, reject) => {
+      axios
+        .patch("/Users/" + lid.id, {
+          name: lid.name,
+          gender: lid.gender,
+          contact: lid.contact,
+          dateOfBirth: lid.dateOfBirth
+        })
+        .then(() => {
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 };
 
