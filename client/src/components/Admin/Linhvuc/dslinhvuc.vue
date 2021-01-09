@@ -251,7 +251,9 @@ export default {
       return catagorylist;
     },
     getParentID() {
-      let listid = this.$store.state.linhvuc.items.map(obj => obj.id);
+      let listid = this.$store.state.linhvuc.items.map(
+        obj => obj.id + "-" + obj.categoryName
+      );
       listid.push("");
       return listid;
     },
@@ -290,7 +292,9 @@ export default {
       await this.$store
         .dispatch("linhvuc/UploadCategory", {
           categoryName: this.search,
-          categoryId: this.ThuocLV
+          categoryId: parseInt(
+            this.ThuocLV.substr(0, this.ThuocLV.indexOf("-"))
+          )
         })
         .then(() => {
           this.search = null;

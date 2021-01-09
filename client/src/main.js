@@ -20,9 +20,9 @@ Vue.use(BootstrapVue);
 import VueCurrencyFilter from "vue-currency-filter";
 
 const linkActiveClass = "my-link-active-class";
-import VueCoreVideoPlayer from 'vue-core-video-player'
+import VueCoreVideoPlayer from "vue-core-video-player";
 
-Vue.use(VueCoreVideoPlayer)
+Vue.use(VueCoreVideoPlayer);
 // pass custom class to Vue Material
 Vue.material.router.linkActiveClass = linkActiveClass;
 Vue.use(VueCurrencyFilter, {

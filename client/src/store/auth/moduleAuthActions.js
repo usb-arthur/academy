@@ -13,10 +13,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             router.push(router.currentRoute.query.to || "/");
-            localStorage.setItem(
-              "accessToKen",
-              res.data.objResult.accessToken
-            );
+            localStorage.setItem("accessToKen", res.data.objResult.accessToken);
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }
