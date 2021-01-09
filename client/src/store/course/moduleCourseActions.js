@@ -29,9 +29,29 @@ export default {
   },
   updateCourseById: (_, { id, course }) => {
     return new Promise((resolve, reject) => {
-      course.courseFee = +course.courseFee;
+      const formData = new FormData();
+      if (course.image) {
+        formData.append("Image", course.image);
+      }
+      formData.append("CourseName", course.courseName);
+      formData.append("CourseFee", course.courseFee);
+      formData.append("BriefDescription", course.briefDescription);
+      // if (payload.sale) {
+      //   formData.append("Sale", payload.sale);
+      // }
+      // if (payload.saleDate) {
+      //   formData.append("SaleDate", payload.saleDate);
+      // }
+      if (course.detailDescription) {
+        formData.append("DetailDescription", course.detailDescription);
+      }
+      // course.courseFee = +course.courseFee;
       axios
-        .put(`/courses/${id}`, course)
+        .put(`/courses/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
         .then(res => {
           resolve(res);
         })
@@ -56,8 +76,28 @@ export default {
   createNewCourse: (_, payload) => {
     return new Promise((resolve, reject) => {
       payload.courseFee = +payload.courseFee;
+      const formData = new FormData();
+      formData.append("Image", payload.image);
+      formData.append("CourseName", payload.courseName);
+      formData.append("CourseFee", payload.courseFee);
+      formData.append("BriefDescription", payload.briefDescription);
+      if (payload.sale) {
+        formData.append("Sale", payload.sale);
+      }
+      if (payload.saleDate) {
+        formData.append("SaleDate", payload.saleDate);
+      }
+      if (payload.detailDescription) {
+        formData.append("DetailDescription", payload.detailDescription);
+      }
+      formData.append("CategoryId", payload.categoryId);
+
       axios
-        .post("/courses", payload)
+        .post("/courses", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
         .then(res => {
           resolve(res);
         })

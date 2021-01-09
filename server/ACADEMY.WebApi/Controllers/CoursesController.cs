@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Teacher")]
     [Route("courses")]
     public class CoursesController : ControllerBase
     {
@@ -24,12 +23,14 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourses()
         {
             return Ok(await _courseService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourse(int id)
         {
             var result = await _courseService.GetByIdAsync(id);
@@ -37,8 +38,11 @@ namespace ACADEMY.WebApi.Controllers
             return result.Succeeded ? Ok(result) : StatusCode((int) result.StatusCode, result);
         }
 
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         [HttpPost]
         [Consumes("multipart/form-data")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> PostCourse([FromForm] PostCourseRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
@@ -48,8 +52,11 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) result.StatusCode, result);
         }
 
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> PutCourse(int id, [FromForm] PutCourseRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
@@ -60,6 +67,7 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet("{id}/images")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetImageByCourseId(long id)
         {
             var imagePath = await _storageService.GetImagePathAsync("Courses", $"{id}.jpg");
@@ -68,6 +76,7 @@ namespace ACADEMY.WebApi.Controllers
         }
         
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var result = await _courseService.DeleteAsync(id);

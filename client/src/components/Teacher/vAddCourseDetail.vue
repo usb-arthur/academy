@@ -69,16 +69,18 @@ export default {
   methods: {
     ...mapActions("course", ["createCourseDetail"]),
     createNewCourseDetail(id, courseDetail) {
-      this.createCourseDetail({ id, courseDetail }).then(() => {
-        this.dialog = false;
-        this.$emit("handleSuccess")
-      }).catch(err => {
-        this.$emit("handleError", err.response.data.message)
-      });
+      this.createCourseDetail({ id, courseDetail })
+        .then(() => {
+          this.dialog = false;
+          this.$emit("handleSuccess");
+        })
+        .catch(err => {
+          this.$emit("handleError", err.response.data.message);
+        });
     },
     setDefaultValue() {
       this.isReview = false;
-      this.content = ''
+      this.content = "";
     }
   }
 };

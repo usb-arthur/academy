@@ -22,7 +22,7 @@
           </v-col>
           <v-col cols="4">
             <v-file-input
-              v-model="image"
+              v-model="course.image"
               show-size
               accept="image/png, image/jpeg, image/bmp"
               label="Chọn hình ảnh"
