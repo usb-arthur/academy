@@ -11,6 +11,7 @@ using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
 using ACADEMY.Data.Entities;
+using ACADEMY.Data.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,13 @@ namespace ACADEMY.Application.Implements
 
             if (user == null)
                 return new ApiErrorResponse<AuthVm>($"User {request.Email} không tồn tại", HttpStatusCode.NotFound);
+
+            if (user.Status == UserStatus.Deactivated)
+            {
+                return new ApiErrorResponse<AuthVm>(
+                    $"Tài khoản của bạn hiện tại đang bị khoá. Vui lòng liên hệ admin để mở khoá tài khoản",
+                    HttpStatusCode.BadRequest);
+            }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 

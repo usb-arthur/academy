@@ -19,7 +19,6 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetCategories()
         {
             return Ok(await _categoryService.GetAllAsync());

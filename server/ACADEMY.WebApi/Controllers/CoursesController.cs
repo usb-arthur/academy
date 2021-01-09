@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.StorageService;
 using ACADEMY.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,24 +9,35 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
-    [Authorize(Roles = "Teacher")]
     [Route("courses")]
     public class CoursesController : ControllerBase
     {
         private readonly ICourseService _courseService;
 
-        public CoursesController(ICourseService courseService)
+        private readonly IStorageService _storageService;
+
+        public CoursesController(ICourseService courseService, IStorageService storageService)
         {
             _courseService = courseService;
+            _storageService = storageService;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourses()
+        {
+            return Ok(await _courseService.GetByTeacherAsync());
+        }
+
+        [HttpGet("all")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllCourses()
         {
             return Ok(await _courseService.GetAllAsync());
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> GetCourse(int id)
         {
             var result = await _courseService.GetByIdAsync(id);
@@ -33,8 +45,12 @@ namespace ACADEMY.WebApi.Controllers
             return result.Succeeded ? Ok(result) : StatusCode((int) result.StatusCode, result);
         }
 
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         [HttpPost]
-        public async Task<IActionResult> PostCourse([FromBody] PostCourseRequest request)
+        [Consumes("multipart/form-data")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> PostCourse([FromForm] PostCourseRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
@@ -43,8 +59,12 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) result.StatusCode, result);
         }
 
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        [DisableRequestSizeLimit]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, [FromBody] PutCourseRequest request)
+        [Consumes("multipart/form-data")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> PutCourse(int id, [FromForm] PutCourseRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
@@ -53,7 +73,17 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) result.StatusCode, result);
         }
 
+        [HttpGet("{id}/images")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetImageByCourseId(long id)
+        {
+            var imagePath = await _storageService.GetImagePathAsync("Courses", $"{id}.jpg");
+            var image = System.IO.File.OpenRead(imagePath);
+            return File(image, "image/jpeg");
+        }
+        
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher,Admin")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             var result = await _courseService.DeleteAsync(id);

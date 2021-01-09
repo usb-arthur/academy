@@ -17,12 +17,21 @@ Vue.use(MaterialDesignIcon);
 Vue.use(VueMaterial);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+import VueCurrencyFilter from "vue-currency-filter";
 
 const linkActiveClass = "my-link-active-class";
 
 // pass custom class to Vue Material
 Vue.material.router.linkActiveClass = linkActiveClass;
-
+Vue.use(VueCurrencyFilter, {
+  symbol: "đ",
+  thousandsSeparator: ",",
+  fractionCount: 0,
+  fractionSeparator: ",",
+  symbolPosition: "end",
+  symbolSpacing: false,
+  avoidEmptyDecimals: undefined
+});
 new Vue({
   el: "#app",
   render: h => h(App),

@@ -5,6 +5,8 @@ import khoahoc from "./modules/khoahoc.js";
 import user from "./modules/user.js";
 import paths from "./modules/path.js";
 import auth from "./auth/moduleAuth";
+import course from "./course/moduleCourse";
+import categories from "./categories/moduleCategory";
 
 Vue.use(Vuex);
 
@@ -14,6 +16,8 @@ export default new Vuex.Store({
     khoahoc,
     user,
     paths,
-    auth
+    auth,
+    course,
+    categories
   }
 });

@@ -21,9 +21,7 @@ axios.interceptors.response.use(
 
     if (error.response.status === 403) {
       router.push("/forbidden");
-    }
-
-    if (error.response.status === 401 && !originalRequest._retry) {
+    } else if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       return axios
         .post("auth/refresh-token", {
@@ -37,7 +35,7 @@ axios.interceptors.response.use(
             return axios(originalRequest);
           }
         });
-    } else {
+    } else if (error.response.status === 401 && originalRequest._retry) {
       router.push("/dang-nhap");
     }
     return Promise.reject(error);

@@ -14,13 +14,17 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
 
         public string DetailDescription { get; set; }
 
-        public double Rate { get; set; }
+        public double? Sale { get; set; }
 
-        public int NumOfFeedback { get; set; }
+        public string SaleDate { get; set; }
 
-        public int NumOfStudent { get; set; }
+        public double? Rate { get; set; }
 
-        public CourseStatus Status { get; set; }
+        public int? NumOfFeedback { get; set; }
+
+        public int? NumOfStudent { get; set; }
+
+        public string Status { get; set; }
 
         public string CreatedDate { get; set; }
 

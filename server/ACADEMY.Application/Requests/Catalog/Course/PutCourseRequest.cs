@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ACADEMY.Application.Requests.Catalog.Course
 {
@@ -15,7 +16,6 @@ namespace ACADEMY.Application.Requests.Catalog.Course
 
         public string DetailDescription { get; set; }
 
-        [Required(ErrorMessage = "Khoá học phải thuộc vào một danh mục nhất định")]
-        public int CategoryId { get; set; }
+        public IFormFile Image { get; set; }
     }
 }
