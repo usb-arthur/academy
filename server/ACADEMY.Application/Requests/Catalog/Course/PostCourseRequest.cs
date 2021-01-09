@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ACADEMY.Application.Requests.Catalog.Course
 {
@@ -22,5 +23,9 @@ namespace ACADEMY.Application.Requests.Catalog.Course
 
         [Required(ErrorMessage = "Khoá học phải thuộc vào một danh mục nhất định")]
         public int CategoryId { get; set; }
+        
+        [Required(ErrorMessage = "Khoá học phải có hình đại diện")]
+        [FileExtensions(Extensions = "jpg,jpeg", ErrorMessage = "Chỉ cho phép file jpg")]
+        public IFormFile Image { get; set; } 
     }
 }
