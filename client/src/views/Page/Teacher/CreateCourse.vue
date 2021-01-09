@@ -22,9 +22,9 @@
           </v-col>
           <v-col cols="4">
             <v-file-input
-              v-model="image"
+              v-model="course.image"
               show-size
-              accept="image/png, image/jpeg, image/bmp"
+              accept="image/jpeg"
               label="Chọn hình ảnh"
             ></v-file-input>
           </v-col>
@@ -94,6 +94,14 @@
         </v-row>
       </v-container>
     </v-form>
+    <v-snackbar v-model="snackbar" timeout="2000">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -106,6 +114,8 @@ export default {
   data: () => ({
     hasSale: false,
     valid: false,
+    snackbar: false,
+    text: "",
     course: {
       courseName: "",
       courseFee: 0,
@@ -113,9 +123,9 @@ export default {
       detailDescription: "",
       categoryId: 0,
       sale: null,
-      saleDate: null
+      saleDate: null,
+      image: null
     },
-    image: null,
     video: null,
     categoryId: 0
   }),
@@ -124,6 +134,9 @@ export default {
       if (!val) {
         this.course.sale = this.course.saleDate = null;
       }
+    },
+    text() {
+      this.snackbar = true;
     }
   },
   computed: {
@@ -137,9 +150,15 @@ export default {
     ...mapActions("categories", ["getAllCategories"]),
     ...mapActions("course", ["createNewCourse"]),
     createCourse(course) {
-      this.createNewCourse(course).then(() => {
-        this.$router.push("/giang-vien");
-      });
+      this.createNewCourse(course)
+        .then(() => {
+          this.$router.push("/giang-vien");
+        })
+        .catch(err => {
+          this.text =
+            err.response.data.message ||
+            "Có lỗi xảy ra. Vui lòng liên hệ admin để biết thêm chi tiết";
+        });
     }
   }
 };

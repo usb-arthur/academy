@@ -23,9 +23,14 @@
                     <span>{{ courseDetail.content }}</span>
                     <v-spacer></v-spacer>
                     <v-icon small class="mr-2">mdi-pencil</v-icon>
-                    <v-icon @click="removeItem(courseDetail.id)" small>mdi-delete</v-icon>
+                    <v-icon @click="removeItem(courseDetail.id)" small
+                      >mdi-delete</v-icon
+                    >
                   </v-list-item>
-                  <v-add-course-detail @handleSuccess="text = 'Thêm nội dung thành công'" @handleError="text = $event"></v-add-course-detail>
+                  <v-add-course-detail
+                    @handleSuccess="text = 'Thêm nội dung thành công'"
+                    @handleError="text = $event"
+                  ></v-add-course-detail>
                 </v-list>
               </v-card-text>
             </v-card>
@@ -48,7 +53,7 @@
 
           <v-img
             height="250"
-            src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+            :src="`https://localhost:5001/courses/${$route.params.id}/images`"
           ></v-img>
 
           <v-card-title>{{ course.courseName }}</v-card-title>
@@ -102,15 +107,13 @@
     <v-dialog v-model="dialogDelete" max-width="540px">
       <v-card>
         <v-card-title class="headline"
-        >Bạn có chắc chắn muốn xóa nội dung này?</v-card-title
+          >Bạn có chắc chắn muốn xóa nội dung này?</v-card-title
         >
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete"
-          >Không</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="closeDelete">Không</v-btn>
           <v-btn color="blue darken-1" text @click="deleteCourseConfirm"
-          >Có</v-btn
+            >Có</v-btn
           >
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -138,7 +141,7 @@ export default {
     selection: 1,
     dialogDelete: false,
     id: -1,
-    text: '',
+    text: "",
     snackbar: false
   }),
   watch: {
@@ -170,7 +173,11 @@ export default {
     this.getCourseDetailByCourseId(id);
   },
   methods: {
-    ...mapActions("course", ["getCourseById", "getCourseDetailByCourseId", "deleteCourseDetail"]),
+    ...mapActions("course", [
+      "getCourseById",
+      "getCourseDetailByCourseId",
+      "deleteCourseDetail"
+    ]),
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
@@ -178,13 +185,16 @@ export default {
       });
     },
     deleteCourseConfirm() {
-      this.deleteCourseDetail({ courseDetailId: this.id, courseId: this.$route.params.id })
+      this.deleteCourseDetail({
+        courseDetailId: this.id,
+        courseId: this.$route.params.id
+      })
         .then(() => {
           this.text = "Thao tác thành công";
           this.closeDelete();
         })
         .catch(err => {
-          alert(err)
+          alert(err);
           this.text =
             err.response.statusText ||
             "Có lỗi xảy ra. Vui lòng liên hệ admin để biết thêm chi tiết";
