@@ -23,6 +23,7 @@
             <v-col cols="6">
               <v-file-input
                 show-size
+                v-model="courseDetail.video"
                 accept="video/mp4, video/avi"
                 hide-details
                 label="Chèn video"
@@ -63,7 +64,8 @@ export default {
     dialog: false,
     courseDetail: {
       isReview: false,
-      content: ""
+      content: "",
+      video: null
     }
   }),
   methods: {

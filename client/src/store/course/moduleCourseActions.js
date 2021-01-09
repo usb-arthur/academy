@@ -121,11 +121,18 @@ export default {
   },
   createCourseDetail({ dispatch }, { id, courseDetail }) {
     return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append("CourseId", id);
+      formData.append("Content", courseDetail.content);
+      if (courseDetail.isReview) {
+        formData.append("IsReview", courseDetail.isReview);
+      }
+      formData.append("Video", courseDetail.video);
       axios
-        .post("/course-details", {
-          courseId: +id,
-          content: courseDetail.content,
-          isReview: courseDetail.isReview
+        .post("/course-details", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
         })
         .then(res => {
           dispatch("getCourseDetailByCourseId", id);

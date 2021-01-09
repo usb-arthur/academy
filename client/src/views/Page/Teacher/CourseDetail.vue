@@ -22,6 +22,22 @@
                   >
                     <span>{{ courseDetail.content }}</span>
                     <v-spacer></v-spacer>
+                    <v-dialog transition="dialog-bottom-transition" max-width="900">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon v-bind="attrs"
+                                v-on="on" small class="mr-2">mdi-eye</v-icon>
+                      </template>
+                      <template v-slot:default="dialog">
+                          <v-container fluid>
+                            <v-row>
+                              <v-col cols="12">
+                                <vue-core-video-player type="video/webm" :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"></vue-core-video-player>
+                              </v-col>
+                            </v-row>
+                            <v-btn class="mt-2" block @click="dialog.value=false">Đóng</v-btn>
+                          </v-container>
+                      </template>
+                    </v-dialog>
                     <v-icon small class="mr-2">mdi-pencil</v-icon>
                     <v-icon @click="removeItem(courseDetail.id)" small
                       >mdi-delete</v-icon
@@ -207,3 +223,9 @@ export default {
   }
 };
 </script>
+
+<style>
+ .play-pause-layer{
+   display: none !important;
+ }
+</style>
