@@ -4,14 +4,16 @@ using ACADEMY.Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ACADEMY.WebApi.Migrations
 {
     [DbContext(typeof(AcademyDbContext))]
-    partial class AcademyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210109175903_AddCourseView")]
+    partial class AddCourseView
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,27 +68,27 @@ namespace ACADEMY.WebApi.Migrations
                             Id = 1L,
                             CategoryName = "Công nghệ thông tin",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 323, DateTimeKind.Local).AddTicks(2194),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 997, DateTimeKind.Local).AddTicks(9567),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(3192)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 998, DateTimeKind.Local).AddTicks(8927)
                         },
                         new
                         {
                             Id = 2L,
                             CategoryName = "Ngoại ngữ",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(4888),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 998, DateTimeKind.Local).AddTicks(9994),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(4909)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(17)
                         },
                         new
                         {
                             Id = 3L,
                             CategoryName = "Thiết kế",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(4935),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(42),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(4936)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(43)
                         },
                         new
                         {
@@ -94,9 +96,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 1L,
                             CategoryName = "Cơ sở dữ liệu",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5226),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(352),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5230)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(357)
                         },
                         new
                         {
@@ -104,9 +106,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 1L,
                             CategoryName = "Ngôn ngữ lập trình",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5263),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(372),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5264)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(373)
                         },
                         new
                         {
@@ -114,9 +116,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 1L,
                             CategoryName = "Lập trình web",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5266),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(375),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5267)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(376)
                         },
                         new
                         {
@@ -124,9 +126,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 2L,
                             CategoryName = "Tiếng Hoa",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5268),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(378),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5270)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(379)
                         },
                         new
                         {
@@ -134,9 +136,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 2L,
                             CategoryName = "Tiếng Anh",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5271),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(384),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5272)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(385)
                         },
                         new
                         {
@@ -144,9 +146,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 2L,
                             CategoryName = "Tiếng Nhật",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5334),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(387),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5335)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(388)
                         },
                         new
                         {
@@ -154,9 +156,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 3L,
                             CategoryName = "Phần mềm thiết kế",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5337),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(390),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5338)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(391)
                         },
                         new
                         {
@@ -164,9 +166,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 3L,
                             CategoryName = "Thiết kế đồ họa",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5342),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(393),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5343)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(394)
                         },
                         new
                         {
@@ -174,9 +176,9 @@ namespace ACADEMY.WebApi.Migrations
                             CategoryId = 3L,
                             CategoryName = "Thiết kế 3D",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5344),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(396),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(5345)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(397)
                         });
                 });
 
@@ -217,9 +219,7 @@ namespace ACADEMY.WebApi.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<int>("NumOfView")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
+                        .HasColumnType("int");
 
                     b.Property<double?>("Sale")
                         .ValueGeneratedOnAdd()
@@ -265,7 +265,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 500000.0,
                             CourseName = "Làm quen với SQL",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(7566),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(3495),
                             DetailDescription = "Khóa học này sẽ giúp các lập trình viên nắm được nguyên tắc, cú pháp và cách thức hoạt động của SQL (Structured Query Language).",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -273,7 +273,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 0,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(7814)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(3778)
                         },
                         new
                         {
@@ -283,7 +283,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 499000.0,
                             CourseName = "C cho người mới bắt đầu",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8580),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4667),
                             DetailDescription = "Khóa học lập trình C cho người mới bắt đầu. Khóa học này sẽ cung cấp những kiến thức cơ bản và là nền tảng để bạn đi xa hơn trên con đường lập trình.",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -291,7 +291,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 0,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8593)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4683)
                         },
                         new
                         {
@@ -301,7 +301,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 700000.0,
                             CourseName = "Nhập môn lập trình Web",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8613),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4709),
                             DetailDescription = "bắt đầu lập trình Web từ những vấn đề cơ bản nhất",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -309,7 +309,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 1,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8614)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4710)
                         },
                         new
                         {
@@ -319,7 +319,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 499000.0,
                             CourseName = "Tiếng Anh cho người bắt đầu",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8616),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4713),
                             DetailDescription = "Trọn bộ kỹ năng tiếng anh cơ bản. Giao tiếp tiếng Anh từ con số 0.",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -327,7 +327,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 0,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8618)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4714)
                         },
                         new
                         {
@@ -337,7 +337,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 599000.0,
                             CourseName = "Tiếng Trung cơ bản",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8620),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4715),
                             DetailDescription = "Khóa học tiếng Trung dễ hiểu, lôi cuốn cho người mới bắt đầu, được thiết kế dựa trên giáo trình Boya Chinese của Đại học Văn hóa và Ngôn ngữ Bắc Kinh.",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -345,7 +345,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 0,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8620)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4716)
                         },
                         new
                         {
@@ -355,7 +355,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 666000.0,
                             CourseName = "Tiếng Nhật cơ bản cho người bắt đầu",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8622),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4718),
                             DetailDescription = "Khóa học này sẽ giúp bạn làm quen với tiếng Nhật và có kiến thức nền tảng.",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -363,7 +363,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 1,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8623)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4719)
                         },
                         new
                         {
@@ -373,7 +373,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 299000.0,
                             CourseName = "Học Photoshop trọn bộ",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8625),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4722),
                             DetailDescription = "Trở thành nhà thiết kế chuyên nghiệp với Photoshop.",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -381,7 +381,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 0,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8626)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4723)
                         },
                         new
                         {
@@ -391,7 +391,7 @@ namespace ACADEMY.WebApi.Migrations
                             CourseFee = 499000.0,
                             CourseName = "Học thiết kế đồ họa trọn bộ",
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8629),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4725),
                             DetailDescription = "Học thiết kế đồ họa với Adobe CC trong khóa học mới này!",
                             IsDeleted = false,
                             NumOfView = 0,
@@ -399,7 +399,7 @@ namespace ACADEMY.WebApi.Migrations
                             Status = 1,
                             TeacherId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 324, DateTimeKind.Local).AddTicks(8630)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(4726)
                         });
                 });
 
@@ -489,11 +489,11 @@ namespace ACADEMY.WebApi.Migrations
                             Content = "Tạm được",
                             CourseId = 1L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(2942),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(307),
                             Rate = 7,
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(3170)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(563)
                         },
                         new
                         {
@@ -501,11 +501,11 @@ namespace ACADEMY.WebApi.Migrations
                             Content = "Khóa học rất tốt",
                             CourseId = 2L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(4597),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(1546),
                             Rate = 9,
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(4608)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(1795)
                         },
                         new
                         {
@@ -513,11 +513,11 @@ namespace ACADEMY.WebApi.Migrations
                             Content = "Khóa học rất bổ ích",
                             CourseId = 3L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(4629),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(1821),
                             Rate = 8,
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(4630)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 3, 0, DateTimeKind.Local).AddTicks(1823)
                         });
                 });
 
@@ -544,21 +544,21 @@ namespace ACADEMY.WebApi.Migrations
                         new
                         {
                             Id = new Guid("ad0e4e6a-fee6-4ccf-91eb-5f357e04e467"),
-                            ConcurrencyStamp = "3eeb5b7a-463a-41b1-ac7d-eef2b0af4c84",
+                            ConcurrencyStamp = "e42b6428-5cc5-44a9-878b-8e9a03d4518a",
                             Name = "Admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = new Guid("09e89e3b-00dd-4580-a403-63fc3f91ab50"),
-                            ConcurrencyStamp = "7fd00c2e-945a-4209-9a7e-a0d9f7525a01",
+                            ConcurrencyStamp = "68a937dc-2f9e-4f9c-b8bd-cf2312e9f408",
                             Name = "Teacher",
                             NormalizedName = "teacher"
                         },
                         new
                         {
                             Id = new Guid("85baa706-7544-477e-ba32-004d478a7200"),
-                            ConcurrencyStamp = "3c636e66-7443-4c5d-9d7b-904256a10f4b",
+                            ConcurrencyStamp = "a334a613-cd15-44be-a166-b32e7f104501",
                             Name = "Student",
                             NormalizedName = "student"
                         });
@@ -739,7 +739,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Nguyễn Võ Nhân",
                             NormalizedEmail = "nhan.nguyenvo1@gmail.com",
                             NormalizedUserName = "nhan.nguyenvo1@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAMGTF3Xrwj/UdWqeDoZbCcCr2LidkUW+pWti5TTW+R70ZwRNRIn7aEhwO4GAfqGDg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPHrJdXZMjZIRjwvZIhKh1djM8E7wqGZP7ug3rvp56qXVsPpUlJwg5s93KsLflIs8Q==",
                             PhoneNumber = "0348310590",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -766,7 +766,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Nguyễn Văn Hùng",
                             NormalizedEmail = "NguyenVanHung@gmail.com",
                             NormalizedUserName = "Nguyễn Văn Hùng",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEr3iwe/U3WJ/t0a+Hd/DOywIQYnZ6pqDLK4SILz+9d3li5mQdK7Us5iWjbKudjaQg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJcmrwd8Z5cAQ/ImTEzNlRqXukiD2rEkyhaLx3ScO8agEfN9/epMaVMNehul/bWfGg==",
                             PhoneNumber = "0325874156",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -793,7 +793,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Trần Văn Quang",
                             NormalizedEmail = "TranVanQuang@gmail.com",
                             NormalizedUserName = "Trần Văn Quang",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBHd56REoWiwBlEwWcaBHuy/nKrVYgbZ3J/dE58KSyhZFqZHXC7fy+BSVRpFYtAqmw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJM1bbcenmVCc1FGs6DJwaEgXdHF7byDfjQgPWAOWuqlW1ufCptNvMDuNN6EJllaCw==",
                             PhoneNumber = "0325855156",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -820,7 +820,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Phạm Thị Nhung",
                             NormalizedEmail = "PhamThiNhung@gmail.com",
                             NormalizedUserName = "Phạm Thị Nhung",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF6Dtcf+OoP0/Zqy4mIdR4K9vx7tCxSRNgFOb2yTW/7PUNeDiiMOILpE37oFI54DLA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIWqoIxGgD7lrajTMW/AFABQNxg2XtGx3WfNapEZIsXiVOEKngbPyIe3Pq6KQACrnA==",
                             PhoneNumber = "0326675156",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -847,7 +847,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Phan Thị Thủy",
                             NormalizedEmail = "PhanThiThuy@gmail.com",
                             NormalizedUserName = "Phan Thị Thủy",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJEvZBZ5KYodQvIyFWAutiatpH74cc+6zM8430aZpmo+SxUeQLjlSMw2CsD5IOCYPA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB1Z0ODzrIGFqDlgGcwyBqpz4dnwZ6ukMhd01UTMv9LBuDeQmWxsUcXszgW0sOK0BA==",
                             PhoneNumber = "0326675233",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -874,7 +874,7 @@ namespace ACADEMY.WebApi.Migrations
                             Name = "Hồ Quang Phú",
                             NormalizedEmail = "HoQuangPhu@gmail.com",
                             NormalizedUserName = "Hồ Quang Phú",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHchBppQuzaytro6wgN+zfioh01Bcpz2ccmBIFps9+oxmdd8O2v1jLuo8uORTWvd8A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHBBlGIUCAfDnVQsvOBAs47ZT9zsvXifQQVbMfCtYNN1/plFVL3svGBxzKga9fR/oA==",
                             PhoneNumber = "0326676666",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -929,50 +929,50 @@ namespace ACADEMY.WebApi.Migrations
                             Id = 1L,
                             CourseId = 1L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(461),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(7788),
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(691)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8052)
                         },
                         new
                         {
                             Id = 2L,
                             CourseId = 2L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1578),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8843),
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1606)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8869)
                         },
                         new
                         {
                             Id = 3L,
                             CourseId = 3L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1643),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8892),
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1644)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8893)
                         },
                         new
                         {
                             Id = 4L,
                             CourseId = 4L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1646),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8895),
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1647)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8896)
                         },
                         new
                         {
                             Id = 5L,
                             CourseId = 5L,
                             CreatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            CreatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1648),
+                            CreatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8897),
                             StudentId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             UpdatedBy = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            UpdatedDate = new DateTime(2021, 1, 10, 1, 1, 34, 325, DateTimeKind.Local).AddTicks(1649)
+                            UpdatedDate = new DateTime(2021, 1, 10, 0, 59, 2, 999, DateTimeKind.Local).AddTicks(8898)
                         });
                 });
 

@@ -24,6 +24,8 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
 
         public int? NumOfStudent { get; set; }
 
+        public int NumOfView { get; set; }
+
         public string Status { get; set; }
 
         public string CreatedDate { get; set; }

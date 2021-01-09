@@ -55,6 +55,7 @@ namespace ACADEMY.Data.Entities
         public ICollection<StudentCourse> StudentCourses { get; set; }
 
         public ICollection<CourseDetail> CourseDetails { get; set; }
+        public int NumOfView { get; set; }
 
         #endregion
     }

@@ -19,6 +19,8 @@ namespace ACADEMY.Data.EF.Configurations
 
             builder.Property(e => e.Status).HasDefaultValue(CourseStatus.Incomplete);
 
+            builder.Property(e => e.NumOfView).HasDefaultValue(0);
+
             builder
                 .Property(e => e.DetailDescription)
                 .HasColumnType("ntext");

@@ -90,6 +90,8 @@ namespace ACADEMY.WebApi
 
             services.AddTransient<IStorageService, StorageService>();
 
+            services.AddTransient<IStatisticService, StatisticService>();
+
             #endregion
 
             services.AddControllers();
