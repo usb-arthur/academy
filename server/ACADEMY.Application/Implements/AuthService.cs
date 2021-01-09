@@ -7,11 +7,13 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.Requests.Common;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
 using ACADEMY.Data.Entities;
 using ACADEMY.Data.Enums;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -27,14 +29,15 @@ namespace ACADEMY.Application.Implements
         private readonly UserManager<User> _userManager;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMapper _mapper;
 
-
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IHttpContextAccessor httpContextAccessor)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _config = config;
             _httpContextAccessor = httpContextAccessor;
+            _mapper = mapper;
         }
 
         public async Task<ApiResponse<AuthVm>> SignInAsync(SignInRequest request)
@@ -116,6 +119,37 @@ namespace ACADEMY.Application.Implements
             }
 
             return new ApiErrorResponse<bool>(result.Errors.ToString(), HttpStatusCode.BadRequest);
+        }
+
+        public async Task<ApiResponse<UserVm>> RegisterAsync(RegisterRequest request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user != null)
+                return new ApiErrorResponse<UserVm>("Email đã được dùng để đăng ký tài khoản khác",
+                    HttpStatusCode.Conflict);
+
+            user = _mapper.Map<RegisterRequest, User>(request);
+            
+            user.CreatedDate = user.UpdatedDate = DateTime.Now;
+            
+            user.FirstLogin = false;
+            user.UserName = request.Email;
+            user.NormalizedEmail = user.NormalizedUserName = _userManager.NormalizeEmail(request.Email);
+            var result = await _userManager.CreateAsync(user, request.Password);
+
+            if (!result.Succeeded)
+                return new ApiErrorResponse<UserVm>("Thao tác tạo user không thành công",
+                    HttpStatusCode.InternalServerError);
+
+            result = await _userManager.AddToRoleAsync(user, "Student");
+
+            if (result.Succeeded)
+                return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user))
+                    {StatusCode = HttpStatusCode.Created};
+
+            return new ApiErrorResponse<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}",
+                HttpStatusCode.InternalServerError);
         }
 
         private static JwtSecurityToken DecodeToken(string token)

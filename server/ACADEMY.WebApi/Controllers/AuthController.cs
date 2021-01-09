@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.Requests.Common;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -64,6 +65,20 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int)response.StatusCode, response);
         }
 
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessage());
+            }
+
+            var response = await _authService.RegisterAsync(request);
+
+            return StatusCode((int)response.StatusCode, response);
+        }
+        
         private void SetTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
