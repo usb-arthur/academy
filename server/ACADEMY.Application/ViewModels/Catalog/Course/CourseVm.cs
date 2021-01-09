@@ -14,6 +14,10 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
 
         public string DetailDescription { get; set; }
 
+        public double? Sale { get; set; }
+
+        public string SaleDate { get; set; }
+
         public double? Rate { get; set; }
 
         public int? NumOfFeedback { get; set; }
