@@ -3,7 +3,7 @@ import router from "@/router";
 
 axios.interceptors.request.use(
   config => {
-    const token = localStorage.getItem("accessToKen");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
