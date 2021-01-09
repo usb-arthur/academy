@@ -4,9 +4,11 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.Requests.Student;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
+using ACADEMY.Data.EF;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
 using AutoMapper;
@@ -21,18 +23,24 @@ namespace ACADEMY.Application.Implements
     {
         private readonly UserManager<User> _userManager;
 
+        private readonly AcademyDbContext _context;
+
         private readonly IRepository<Course, long> _courseRepository;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly IMapper _mapper;
 
-        public StudentService(UserManager<User> userManager, IRepository<Course, long> courseRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public StudentService(UserManager<User> userManager, IRepository<Course, long> courseRepository, IHttpContextAccessor httpContextAccessor, IMapper mapper, AcademyDbContext context, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _courseRepository = courseRepository;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _context = context;
+            _unitOfWork = unitOfWork;
         }
         
         public async Task<ApiResponse<UserVm>> GetInformationAsync()
@@ -56,6 +64,18 @@ namespace ACADEMY.Application.Implements
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+        }
+
+        public async Task<ApiResponse<StudentCourse>> RegisterCourseAsync(long courseId)
+        {
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            var studentCourse = await _context.StudentCourses.AddAsync(new StudentCourse
+            {
+                CourseId = courseId,
+                StudentId = userId
+            });
+            await _unitOfWork.CommitAsync();
+            return new ApiSucceedResponse<StudentCourse>(studentCourse.Entity);
         }
     }
 }

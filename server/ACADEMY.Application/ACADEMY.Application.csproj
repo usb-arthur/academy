@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ACADEMY.Data.EF\ACADEMY.Data.EF.csproj" />
     <ProjectReference Include="..\ACADEMY.Data\ACADEMY.Data.csproj" />
     <ProjectReference Include="..\ACADEMY.Infrastructure\ACADEMY.Infrastructure.csproj" />
     <ProjectReference Include="..\ACADEMY.Utilities\ACADEMY.Utilities.csproj" />
