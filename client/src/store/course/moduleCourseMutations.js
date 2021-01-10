@@ -14,5 +14,8 @@ export default {
   SET_COURSES_PAGING: (state, payload) => {
     console.log(payload);
     state.coursesPaging = payload;
+  },
+  SET_COURSES_BY_CATEGORY: (state, payload) => {
+    state.coursesByCategory = payload;
   }
 };

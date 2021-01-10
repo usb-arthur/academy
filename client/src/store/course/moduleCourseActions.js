@@ -216,5 +216,25 @@ export default {
           reject(err);
         });
     });
+  },
+  getCoursesByCategory: ({ commit }, payload) => {
+    return new Promise((resolve, reject) => {
+      let url = `/courses/paging/categories/${payload.id}`;
+      if (payload.page) {
+        url = `${url}?page=${payload.page}`;
+      }
+      if (payload.limit) {
+        url = `${url}&limit=${payload.limit}`;
+      }
+      axios
+        .get(url)
+        .then(res => {
+          commit("SET_COURSES_BY_CATEGORY", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 };

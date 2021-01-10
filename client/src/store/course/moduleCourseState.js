@@ -3,5 +3,6 @@ export default {
   coursesPaging: [],
   course: {},
   courseDetails: [],
-  wishList: []
+  wishList: [],
+  coursesByCategory: []
 };

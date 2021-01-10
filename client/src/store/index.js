@@ -8,7 +8,7 @@ import auth from "./auth/moduleAuth";
 import course from "./course/moduleCourse";
 import categories from "./categories/moduleCategory";
 import account from "./account/accountModule";
-import feedback from './feedback/moduleFeedback';
+import feedback from "./feedback/moduleFeedback";
 
 Vue.use(Vuex);
 

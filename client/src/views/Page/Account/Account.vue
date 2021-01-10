@@ -52,7 +52,7 @@ export default {
     tab: null,
     coursePage: 1,
     wishListPage: 1,
-    limit: constant.LIMIT,
+    limit: constant.LIMIT
   }),
   watch: {
     coursePage(val) {
@@ -66,7 +66,7 @@ export default {
     wishListPage(val) {
       if (!this.has("teacher"))
         this.getAllWishList({ page: val, limit: this.limit });
-    },
+    }
   },
   created() {
     if (this.has("teacher")) {
@@ -78,15 +78,15 @@ export default {
   },
   computed: {
     ...mapState("course", ["coursesPaging", "wishList"]),
-    ...mapState("auth", ["has"]),
+    ...mapState("auth", ["has"])
   },
   methods: {
     ...mapActions("course", [
       "getCoursesPaging",
       "getAllWishList",
-      "getSubscribeCourse",
-    ]),
+      "getSubscribeCourse"
+    ])
   },
-  components: { ChangePassword, DetailAccount, MyCourseList },
+  components: { ChangePassword, DetailAccount, MyCourseList }
 };
 </script>

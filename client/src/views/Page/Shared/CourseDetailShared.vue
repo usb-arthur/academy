@@ -36,7 +36,9 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
+                                :src="
+                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
+                                "
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -241,13 +243,13 @@ export default {
     id: -1,
     text: "",
     snackbar: false,
-    video: false,
+    video: false
   }),
   updated() {},
   watch: {
     text() {
       this.snackbar = true;
-    },
+    }
   },
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
@@ -269,7 +271,7 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    },
+    }
   },
   created() {
     const { id } = this.$route.params;
@@ -281,12 +283,12 @@ export default {
     ...mapActions("course", [
       "getCourseById",
       "getCourseDetailByCourseId",
-      "deleteCourseDetail",
+      "deleteCourseDetail"
     ]),
     ...mapActions("feedback", ["getFeedbacksByCourseId"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
           e.isPlaying = false;
           e.pause();
           return e;
@@ -302,13 +304,13 @@ export default {
     deleteCourseConfirm() {
       this.deleteCourseDetail({
         courseDetailId: this.id,
-        courseId: this.$route.params.id,
+        courseId: this.$route.params.id
       })
         .then(() => {
           this.text = "Thao tác thành công";
           this.closeDelete();
         })
-        .catch((err) => {
+        .catch(err => {
           alert(err);
           this.text =
             err.response.statusText ||
@@ -318,8 +320,8 @@ export default {
     removeItem(id) {
       this.id = id;
       this.dialogDelete = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

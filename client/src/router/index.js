@@ -81,7 +81,7 @@ const routes = [
             path: "khoa-hoc-cua-toi",
             name: "MyCourseList",
             component: () => import("../views/Page/Teacher/MyCourseList")
-          },
+          }
         ]
       }
     ]
