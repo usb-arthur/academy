@@ -1,9 +1,10 @@
 import axios from "@/axios";
 import router from "@/router";
+import constant from "@/constants/token";
 
 axios.interceptors.request.use(
   config => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem(constant.ACCESS_TOKEN);
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -25,11 +26,14 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
       return axios
         .post("auth/refresh-token", {
-          accessToken: localStorage.getItem("accessToken")
+          accessToken: localStorage.getItem(constant.ACCESS_TOKEN)
         })
         .then(res => {
           if (res.status === 200) {
-            localStorage.setItem("accessToken", res.data.objResult.accessToken);
+            localStorage.setItem(
+              constant.ACCESS_TOKEN,
+              res.data.objResult.accessToken
+            );
             axios.defaults.headers.common["Authorization"] =
               res.data.objResult.accessToken;
             return axios(originalRequest);

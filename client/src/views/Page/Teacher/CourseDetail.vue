@@ -27,7 +27,11 @@
                       max-width="900"
                     >
                       <template v-slot:activator="{ on, attrs }">
-                        <v-icon v-bind="attrs" v-on="on" small class="mr-2"
+                        <v-icon
+                          v-bind="attrs"
+                          v-on="on"
+                          small
+                          class="mr-2"
                           >mdi-eye</v-icon
                         >
                       </template>
@@ -37,6 +41,7 @@
                             <v-col cols="12">
                               <vue-core-video-player
                                 type="video/webm"
+                                ref="videoPlayer"
                                 :src="
                                   `https://localhost:5001/course-details/${courseDetail.id}/videos`
                                 "
@@ -46,7 +51,7 @@
                           <v-btn
                             class="mt-2"
                             block
-                            @click="dialog.value = false"
+                            @click="dialog.value = closeDialog()"
                             >Đóng</v-btn
                           >
                         </v-container>
@@ -172,8 +177,10 @@ export default {
     dialogDelete: false,
     id: -1,
     text: "",
-    snackbar: false
+    snackbar: false,
+    video: false
   }),
+  updated() {},
   watch: {
     text() {
       this.snackbar = true;
@@ -195,6 +202,9 @@ export default {
         (this.course.courseFee * this.course.sale) / 100 ||
         this.course.courseFee
       );
+    },
+    player() {
+      return this.$refs.videoPlayer;
     }
   },
   created() {
@@ -208,6 +218,15 @@ export default {
       "getCourseDetailByCourseId",
       "deleteCourseDetail"
     ]),
+    closeDialog() {
+      if (this.$refs.videoPlayer) {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
+          e.isPlaying = false;
+          e.pause();
+          return e;
+        });
+      }
+    },
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
