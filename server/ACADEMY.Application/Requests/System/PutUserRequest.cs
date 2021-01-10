@@ -9,7 +9,7 @@ namespace ACADEMY.Application.Requests.System
 
         public UserGender Gender { get; set; }
 
-        public string Contact { get; set; }
+        public string PhoneNumber { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
     }
