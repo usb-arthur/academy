@@ -7,7 +7,9 @@
             <router-link to="/thong-tin-ca-nhan">
               <v-list-item>Thông tin cá nhân</v-list-item>
             </router-link>
-            <v-list-item>Khóa học của tôi</v-list-item>
+            <router-link to="/thong-tin-ca-nhan/khoa-hoc-cua-toi">
+              <v-list-item>Khóa học của tôi</v-list-item>
+            </router-link>
             <v-list-item>Danh sách yêu thích của tôi</v-list-item>
             <router-link to="/thong-tin-ca-nhan/doi-mat-khau">
               <v-list-item>Đổi mật khẩu</v-list-item>

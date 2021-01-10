@@ -68,6 +68,11 @@ const routes = [
             path: "doi-mat-khau",
             name: "ChangePassword",
             component: () => import("../views/Page/Account/ChangePassword")
+          },
+          {
+            path: "khoa-hoc-cua-toi",
+            name: "MyCourseList",
+            component: () => import("../views/Page/Teacher/MyCourseList")
           }
         ]
       }
