@@ -23,7 +23,8 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet("courses/{id:long}")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCourseDetails(long id)
         {
             var response = await _courseDetailService.GetAllAsync(id);

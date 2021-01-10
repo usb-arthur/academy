@@ -5,7 +5,7 @@
         <v-tabs fixed-tabs v-model="tab">
           <v-tab>Thông tin cá nhân</v-tab>
           <v-tab>Khóa học của tôi</v-tab>
-          <v-tab v-if="isHas('student')">Danh sách yêu thích của tôi</v-tab>
+          <v-tab v-if="has('student')">Danh sách yêu thích của tôi</v-tab>
           <v-tab>Đổi mật khẩu</v-tab>
         </v-tabs>
       </v-col>
@@ -23,7 +23,7 @@
               :courses="coursesPaging.content"
             ></MyCourseList>
           </v-tab-item>
-          <v-tab-item v-if="isHas('student')">
+          <v-tab-item v-if="has('student')">
             <MyCourseList
               title="có khoá học yêu thích"
               :currentPage="wishList.page"
@@ -52,11 +52,11 @@ export default {
     tab: null,
     coursePage: 1,
     wishListPage: 1,
-    limit: constant.LIMIT
+    limit: constant.LIMIT,
   }),
   watch: {
     coursePage(val) {
-      if (this.isHas("teacher")) {
+      if (this.has("teacher")) {
         this.getCoursesPaging({ page: val, limit: this.limit });
       } else {
         this.getSubscribeCourse({ page: val, limit: this.limit });
@@ -64,12 +64,12 @@ export default {
     },
 
     wishListPage(val) {
-      if (!this.isHas("teacher"))
+      if (!this.has("teacher"))
         this.getAllWishList({ page: val, limit: this.limit });
-    }
+    },
   },
   created() {
-    if (this.isHas("teacher")) {
+    if (this.has("teacher")) {
       this.getCoursesPaging({ page: this.coursePage, limit: this.limit });
     } else {
       this.getSubscribeCourse({ page: this.coursePage, limit: this.limit });
@@ -78,15 +78,15 @@ export default {
   },
   computed: {
     ...mapState("course", ["coursesPaging", "wishList"]),
-    ...mapState("auth", ["isHas"])
+    ...mapState("auth", ["has"]),
   },
   methods: {
     ...mapActions("course", [
       "getCoursesPaging",
       "getAllWishList",
-      "getSubscribeCourse"
-    ])
+      "getSubscribeCourse",
+    ]),
   },
-  components: { ChangePassword, DetailAccount, MyCourseList }
+  components: { ChangePassword, DetailAccount, MyCourseList },
 };
 </script>

@@ -56,10 +56,8 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<CourseVm>> GetByIdAsync(long id)
         {
-            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-
-            var course = await _courseRepository.FindSingleAsync(e => e.Id == id && e.TeacherId == userId,
-                e => e.Category, e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            var course = await _courseRepository.FindByIdAsync(id, e => e.Category, e => e.Teacher, e => e.Feedbacks,
+                e => e.StudentCourses);
 
             if (course == null)
                 return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",

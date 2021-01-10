@@ -11,5 +11,7 @@
         public string UpdatedDate { get; set; }
 
         public bool IsReview { get; set; }
+
+        public bool IsPreview { get; set; }
     }
 }

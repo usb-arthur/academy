@@ -2,6 +2,7 @@
 using System.Linq;
 using ACADEMY.Application.ViewModels.Catalog.Category;
 using ACADEMY.Application.ViewModels.Catalog.Course;
+using ACADEMY.Application.ViewModels.Student;
 using ACADEMY.Application.ViewModels.System;
 using ACADEMY.Data.Entities;
 using ACADEMY.Data.Enums.Extensions;
@@ -37,11 +38,14 @@ namespace ACADEMY.Application.AutoMapper
                 .ForMember(des => des.NumOfStudent,
                     options => options.Condition(src => src.StudentCourses != null && src.StudentCourses.Count > 0))
                 .ForMember(des => des.NumOfStudent,
-                    options => options.MapFrom(src => (int?) src.StudentCourses.Count));
+                    options => options.MapFrom(src => (int?) src.StudentCourses.Count))
+                .ForMember(des => des.User, options => options.MapFrom(src => src.Teacher));
 
             CreateMap<Category, CategoryVm>()
                 .ForMember(des => des.CreatedBy, options => options.MapFrom(src => src.CreatedUser.Name))
                 .ForMember(des => des.UpdatedBy, options => options.MapFrom(src => src.UpdatedUser.Name));
+
+            CreateMap<Feedback, FeedbackVm>();
         }
     }
 }

@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.Application.StorageService;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
+using ACADEMY.Data.EF;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Application.Implements
@@ -24,22 +29,69 @@ namespace ACADEMY.Application.Implements
 
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private readonly AcademyDbContext _context;
+
         public CourseDetailService(IMapper mapper,
             IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork,
-            IStorageService storageService)
+            IStorageService storageService, IHttpContextAccessor httpContextAccessor, AcademyDbContext context)
         {
             _mapper = mapper;
             _courseDetailRepository = courseDetailRepository;
             _unitOfWork = unitOfWork;
             _storageService = storageService;
+            _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
 
         public async Task<ApiResponse<ICollection<CourseDetailVm>>> GetAllAsync(long courseId)
         {
+            var hasUser = Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid),
+                out var userId);
+            
             var courseDetails = await _courseDetailRepository.FindAllAsync(e => e.CourseId == courseId, e => e.Course);
 
-            return new ApiSucceedResponse<ICollection<CourseDetailVm>>(await courseDetails
-                .ProjectTo<CourseDetailVm>(_mapper.ConfigurationProvider).ToListAsync());
+            var result = await courseDetails
+                .ProjectTo<CourseDetailVm>(_mapper.ConfigurationProvider).ToListAsync();
+            
+            if (hasUser)
+            {
+                var roles = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+                if (roles.Contains("student", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (await _context.StudentCourses.CountAsync(e => e.CourseId == courseId && e.StudentId == userId) > 0)
+                    {
+                        foreach (var courseDetail in result)
+                        {
+                            courseDetail.IsPreview = true;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var courseDetail in result)
+                        {
+                            courseDetail.IsPreview = courseDetail.IsReview;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var courseDetail in result)
+                    {
+                        courseDetail.IsPreview = courseDetail.IsReview;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var courseDetail in result)
+                {
+                    courseDetail.IsPreview = courseDetail.IsReview;
+                }
+            }
+            
+            return new ApiSucceedResponse<ICollection<CourseDetailVm>>(result);
         }
 
         public async Task<ApiResponse<CourseDetailVm>> GetByIdAsync(long id)

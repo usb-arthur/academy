@@ -11,24 +11,22 @@
           </v-col>
           <v-col cols="12">
             <v-card color="content-course">
-              <v-card-title>
-                Nội dung khóa học
-              </v-card-title>
-              <v-card-text >
-                <v-list >
+              <v-card-title> Nội dung khóa học </v-card-title>
+              <v-card-text>
+                <v-list>
                   <v-list-item
-                      :key="courseDetail.id"
-                      v-for="courseDetail in courseDetails"
+                    :key="courseDetail.id"
+                    v-for="courseDetail in courseDetails"
                   >
                     <span>{{ courseDetail.content }}</span>
                     <v-spacer></v-spacer>
                     <v-dialog
-                        transition="dialog-bottom-transition"
-                        max-width="900"
+                      transition="dialog-bottom-transition"
+                      max-width="900"
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <v-icon v-bind="attrs" v-on="on" small class="mr-2"
-                        >mdi-eye</v-icon
+                          >mdi-eye</v-icon
                         >
                       </template>
                       <template v-slot:default="dialog">
@@ -36,48 +34,36 @@
                           <v-row>
                             <v-col cols="12">
                               <vue-core-video-player
-                                  type="video/webm"
-                                  ref="videoPlayer"
-                                  :src="
-                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
-                                "
+                                type="video/webm"
+                                ref="videoPlayer"
+                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
                           <v-btn
-                              class="mt-2"
-                              block
-                              @click="dialog.value = closeDialog()"
-                          >Đóng</v-btn
+                            class="mt-2"
+                            block
+                            @click="dialog.value = closeDialog()"
+                            >Đóng</v-btn
                           >
                         </v-container>
                       </template>
                     </v-dialog>
-                    <v-icon small class="mr-2">mdi-pencil</v-icon>
-                    <v-icon @click="removeItem(courseDetail.id)" small
-                    >mdi-delete</v-icon
-                    >
                   </v-list-item>
-                  <v-add-course-detail
-                      @handleSuccess="text = 'Thêm nội dung thành công'"
-                      @handleError="text = $event"
-                  ></v-add-course-detail>
                 </v-list>
               </v-card-text>
             </v-card>
           </v-col>
           <v-col cols="12">
             <v-card class="content-detail">
-              <v-card-title>
-                Giới thiệu giảng viên
-              </v-card-title>
+              <v-card-title> Giới thiệu giảng viên </v-card-title>
               <div class="grey--text ml-4">
                 <div class="row">
                   <div class="col-3">
                     <span class="title-detail-teacher">Tên giảng viên:</span>
                   </div>
                   <div class="col-9">
-                    <span class="content-teacher">La Chí Thành</span>
+                    <span class="content-teacher">{{ course.user.name }}</span>
                   </div>
                 </div>
               </div>
@@ -87,7 +73,9 @@
                     <span class="title-detail-teacher">Số điện thoại:</span>
                   </div>
                   <div class="col-9">
-                    <span class="content-teacher">0354026893</span>
+                    <span class="content-teacher">{{
+                      course.user.phoneNumber
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -97,7 +85,7 @@
                     <span class="title-detail-teacher">Email:</span>
                   </div>
                   <div class="col-9">
-                    <span class="content-teacher">La Chí Thành</span>
+                    <span class="content-teacher">{{ course.user.email }}</span>
                   </div>
                 </div>
               </div>
@@ -107,7 +95,9 @@
                     <span class="title-detail-teacher">Giới tính:</span>
                   </div>
                   <div class="col-9">
-                    <span class="content-teacher">Nam</span>
+                    <span class="content-teacher">{{
+                      course.user.gender
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -115,49 +105,31 @@
           </v-col>
           <v-col cols="12">
             <v-card class="content-cmt">
-              <v-card-title>
-                Bình luận
-              </v-card-title>
+              <v-card-title> Bình luận </v-card-title>
               <div class="grey--text ml-4">
-                <div class="box-cmt">
+                <div
+                  class="box-cmt"
+                  v-for="feedback in feedbacks"
+                  :key="feedback.id"
+                >
                   <div class="mt-2 ml-2">
-                    <span class="box-cmt-name">La Chí Thành</span>
+                    <span class="box-cmt-name">{{
+                      feedback.student.name
+                    }}</span>
                   </div>
                   <div class="mt-2 ml-2">
                     <v-rating
-                        :value="rate"
-                        color="amber"
-                        dense
-                        half-increments
-                        readonly
-                        size="14"
+                      :value="feedback.rate / 2"
+                      color="amber"
+                      dense
+                      half-increments
+                      readonly
+                      size="14"
                     ></v-rating>
                   </div>
                   <div class="mt-2 ml-2">
                     <span class="box-cmt-content">
-                      Not the best one but good to start.Some times it's difficult to follow instructor,mainly when you install new plugins.
-                      And this course is about attacks to wifi and pc,nothing about mobile!
-                    </span>
-                  </div>
-                </div>
-                <div class="box-cmt">
-                  <div class="mt-2 ml-2">
-                    <span class="box-cmt-name">La Chí Thành</span>
-                  </div>
-                  <div class="mt-2 ml-2">
-                    <v-rating
-                        :value="rate"
-                        color="amber"
-                        dense
-                        half-increments
-                        readonly
-                        size="14"
-                    ></v-rating>
-                  </div>
-                  <div class="mt-2 ml-2">
-                    <span class="box-cmt-content">
-                      Not the best one but good to start.Some times it's difficult to follow instructor,mainly when you install new plugins.
-                      And this course is about attacks to wifi and pc,nothing about mobile!
+                      {{ feedback.content }}
                     </span>
                   </div>
                 </div>
@@ -168,22 +140,21 @@
       </v-col>
       <v-col cols="6">
         <v-card
-            :loading="loading"
-            max-width="600"
-            class="mx-auto position-fixed"
+          :loading="loading"
+          max-width="600"
+          class="mx-auto position-fixed"
         >
           <template slot="progress">
             <v-progress-linear
-                color="deep-purple"
-                height="10"
-                indeterminate
+              color="deep-purple"
+              height="10"
+              indeterminate
             ></v-progress-linear>
           </template>
 
           <v-img
-              height="250"
-
-              :src="`https://localhost:5001/courses/${$route.params.id}/images`"
+            height="250"
+            :src="`https://localhost:5001/courses/${$route.params.id}/images`"
           ></v-img>
 
           <v-card-title>{{ course.courseName }}</v-card-title>
@@ -191,12 +162,12 @@
           <v-card-text>
             <v-row align="center" class="mx-0">
               <v-rating
-                  :value="rate"
-                  color="amber"
-                  dense
-                  half-increments
-                  readonly
-                  size="14"
+                :value="rate"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size="14"
               ></v-rating>
 
               <div class="grey--text ml-4">
@@ -222,10 +193,10 @@
 
           <v-card-text>
             <v-chip-group
-                v-model="selection"
-                active-class="deep-purple accent-4 white--text"
-                column
-                v-if="course.sale"
+              v-model="selection"
+              active-class="deep-purple accent-4 white--text"
+              column
+              v-if="course.sale"
             >
               <v-chip>Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip>
             </v-chip-group>
@@ -236,13 +207,13 @@
     <v-dialog v-model="dialogDelete" max-width="540px">
       <v-card>
         <v-card-title class="headline"
-        >Bạn có chắc chắn muốn xóa nội dung này?</v-card-title
+          >Bạn có chắc chắn muốn xóa nội dung này?</v-card-title
         >
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="closeDelete">Không</v-btn>
           <v-btn color="blue darken-1" text @click="deleteCourseConfirm"
-          >Có</v-btn
+            >Có</v-btn
           >
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -261,10 +232,8 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import VAddCourseDetail from "@/components/Teacher/vAddCourseDetail";
 
 export default {
-  components: { VAddCourseDetail },
   data: () => ({
     loading: false,
     selection: 1,
@@ -272,16 +241,17 @@ export default {
     id: -1,
     text: "",
     snackbar: false,
-    video: false
+    video: false,
   }),
   updated() {},
   watch: {
     text() {
       this.snackbar = true;
-    }
+    },
   },
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
+    ...mapState("feedback", ["feedbacks"]),
     rate() {
       return this.course.rate / 2 || 0;
     },
@@ -293,28 +263,30 @@ export default {
     },
     price() {
       return (
-          (this.course.courseFee * this.course.sale) / 100 ||
-          this.course.courseFee
+        (this.course.courseFee * this.course.sale) / 100 ||
+        this.course.courseFee
       );
     },
     player() {
       return this.$refs.videoPlayer;
-    }
+    },
   },
   created() {
     const { id } = this.$route.params;
     this.getCourseById(id);
     this.getCourseDetailByCourseId(id);
+    this.getFeedbacksByCourseId(id);
   },
   methods: {
     ...mapActions("course", [
       "getCourseById",
       "getCourseDetailByCourseId",
-      "deleteCourseDetail"
+      "deleteCourseDetail",
     ]),
+    ...mapActions("feedback", ["getFeedbacksByCourseId"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
           e.isPlaying = false;
           e.pause();
           return e;
@@ -330,24 +302,24 @@ export default {
     deleteCourseConfirm() {
       this.deleteCourseDetail({
         courseDetailId: this.id,
-        courseId: this.$route.params.id
+        courseId: this.$route.params.id,
       })
-          .then(() => {
-            this.text = "Thao tác thành công";
-            this.closeDelete();
-          })
-          .catch(err => {
-            alert(err);
-            this.text =
-                err.response.statusText ||
-                "Có lỗi xảy ra. Vui lòng liên hệ admin để biết thêm chi tiết";
-          });
+        .then(() => {
+          this.text = "Thao tác thành công";
+          this.closeDelete();
+        })
+        .catch((err) => {
+          alert(err);
+          this.text =
+            err.response.statusText ||
+            "Có lỗi xảy ra. Vui lòng liên hệ admin để biết thêm chi tiết";
+        });
     },
     removeItem(id) {
       this.id = id;
       this.dialogDelete = true;
     },
-  }
+  },
 };
 </script>
 
@@ -355,37 +327,37 @@ export default {
 .play-pause-layer {
   display: none !important;
 }
-.content-course{
+.content-course {
   height: 350px;
   overflow: auto;
 }
-.content-detail{
+.content-detail {
   height: 220px;
 }
-.content-cmt{
+.content-cmt {
   height: 450px;
 }
-.title-detail-teacher{
+.title-detail-teacher {
   color: #333;
 }
-.content-teacher{
+.content-teacher {
   font-weight: 700;
   color: #000000a3;
 }
-.box-cmt{
+.box-cmt {
   height: 100%;
   width: 100%;
   padding-right: 20px;
   margin-bottom: 20px;
 }
-.box-cmt-name{
+.box-cmt-name {
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: -.02rem;
+  letter-spacing: -0.02rem;
   font-size: 1rem;
 }
-.box-cmt-content{
-  font-size: 0.8rem ;
+.box-cmt-content {
+  font-size: 0.8rem;
   font-weight: 400;
 }
 </style>
