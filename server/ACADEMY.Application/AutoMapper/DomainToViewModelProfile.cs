@@ -13,7 +13,9 @@ namespace ACADEMY.Application.AutoMapper
     {
         public DomainToViewModelProfile()
         {
-            CreateMap<User, UserVm>();
+            CreateMap<User, UserVm>()
+                .ForMember(des => des.UserGender,
+                    options => options.MapFrom(src => src.Gender));
 
             CreateMap<CourseDetail, CourseDetailVm>();
 

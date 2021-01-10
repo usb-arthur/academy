@@ -1,4 +1,5 @@
 ﻿using System;
+using ACADEMY.Data.Enums;
 
 namespace ACADEMY.Application.ViewModels.System
 {
@@ -11,6 +12,8 @@ namespace ACADEMY.Application.ViewModels.System
         public string Email { get; set; }
 
         public string Gender { get; set; }
+
+        public UserGender UserGender { get; set; }
 
         public string DateOfBirth { get; set; }
 
