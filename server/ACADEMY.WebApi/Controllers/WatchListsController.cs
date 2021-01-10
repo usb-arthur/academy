@@ -20,9 +20,9 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetWatchLists()
+        public async Task<IActionResult> GetWatchLists(GetCoursesPagingRequest request)
         {
-            var response = await _watchListService.GetAllAsync();
+            var response = await _watchListService.GetAllAsync(request);
 
             return StatusCode((int) response.StatusCode, response);
         }

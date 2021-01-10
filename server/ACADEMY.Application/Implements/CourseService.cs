@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
+using ACADEMY.Utilities.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
@@ -130,7 +132,33 @@ namespace ACADEMY.Application.Implements
                 .ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        private string GetFileName(IFormFile file, long id)
+        public async Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(long categoryId, GetCoursesPagingRequest request)
+        {
+            var courses = await _courseRepository.FindAllAsync(e => e.CategoryId == categoryId,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                courses = courses.Where(e =>
+                    e.CourseName.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+            }
+
+            var total = await courses.CountAsync();
+
+            courses = courses.Skip((request.Page - 1) * request.Limit)
+                .Take(request.Limit);
+
+            var result = new PagedResult<CourseVm>
+            {
+                Content = await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync(),
+                Limit = request.Limit,
+                Page = request.Page,
+                Total = total
+            };
+
+            return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
+        }
+
+        private static string GetFileName(IFormFile file, long id)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString()
                 .Trim('"');

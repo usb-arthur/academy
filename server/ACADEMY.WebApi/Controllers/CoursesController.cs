@@ -33,7 +33,18 @@ namespace ACADEMY.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllCourses()
         {
-            return Ok(await _courseService.GetAllAsync());
+            var response = await _courseService.GetAllAsync();
+            
+            return StatusCode((int)response.StatusCode, response);
+        }
+        
+        [HttpGet("paging/categories/:id")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllCourses(long id, GetCoursesPagingRequest request)
+        {
+            var response = await _courseService.GetPagingAsync(id, request);
+            
+            return StatusCode((int)response.StatusCode, response);
         }
 
         [HttpGet("{id}")]
