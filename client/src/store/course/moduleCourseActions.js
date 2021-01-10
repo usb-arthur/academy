@@ -1,12 +1,40 @@
 import axios from "@/http/axios";
 
 export default {
-  getAllWishList: ({ commit }) => {
+  getAllWishList: ({ commit }, payload) => {
     return new Promise((resolve, reject) => {
+      let url = "/watch-lists";
+      if (payload.page) {
+        url = url + "?page=" + payload.page;
+      }
+      if (payload.limit) {
+        url = url + "&limit=" + payload.limit;
+      }
       axios
-        .get("/watch-list")
+        .get(url)
         .then(res => {
           commit("SET_WISH_LIST", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  getSubscribeCourse({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      let url = "/students/courses";
+      if (payload.page) {
+        url = url + "?page=" + payload.page;
+      }
+      if (payload.limit) {
+        url = url + "&limit=" + payload.limit;
+      }
+      console.log(url, payload);
+      axios
+        .get(url)
+        .then(res => {
+          commit("SET_COURSES", res.data.objResult);
           resolve(res);
         })
         .catch(err => {
@@ -20,6 +48,26 @@ export default {
         .get("/courses")
         .then(res => {
           commit("SET_COURSES", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
+  getCoursesPaging: ({ commit }, payload) => {
+    return new Promise((resolve, reject) => {
+      let url = "/courses/paging/teachers";
+      if (payload.page) {
+        url = `${url}?page=${payload.page}`;
+      }
+      if (payload.limit) {
+        url = `${url}&limit=${payload.limit}`;
+      }
+      axios
+        .get(url)
+        .then(res => {
+          commit("SET_COURSES_PAGING", res.data.objResult);
           resolve(res);
         })
         .catch(err => {

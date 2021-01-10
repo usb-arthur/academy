@@ -10,5 +10,9 @@ export default {
   },
   SET_WISH_LIST: (state, payload) => {
     state.wishList = payload;
+  },
+  SET_COURSES_PAGING: (state, payload) => {
+    console.log(payload);
+    state.coursesPaging = payload;
   }
 };

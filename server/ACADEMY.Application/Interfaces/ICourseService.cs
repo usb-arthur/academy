@@ -20,5 +20,6 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<bool>> DeleteAsync(int id);
         Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync();
         Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(long categoryId, GetCoursesPagingRequest request);
+        Task<ApiResponse<PagedResult<CourseVm>>> GetPagingByTeacherAsync(GetCoursesPagingRequest request);
     }
 }

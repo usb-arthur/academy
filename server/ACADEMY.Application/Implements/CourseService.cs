@@ -158,6 +158,34 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
         }
 
+        public async Task<ApiResponse<PagedResult<CourseVm>>> GetPagingByTeacherAsync(GetCoursesPagingRequest request)
+        {
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                courses = courses.Where(e =>
+                    e.CourseName.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+            }
+
+            var total = await courses.CountAsync();
+
+            courses = courses.Skip((request.Page - 1) * request.Limit)
+                .Take(request.Limit);
+
+            var result = new PagedResult<CourseVm>
+            {
+                Content = await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync(),
+                Limit = request.Limit,
+                Page = request.Page,
+                Total = total
+            };
+
+            return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
+        }
+
         private static string GetFileName(IFormFile file, long id)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString()

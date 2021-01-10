@@ -1,10 +1,8 @@
-import constant from "@/constants/token";
+import constant from "@/constants";
 
 export default {
-  isAuthenticated: () => {
-    return (
-      localStorage.getItem(constant.ACCESS_TOKEN) &&
-      localStorage.getItem("userInfo")
-    );
+  isHas: role => {
+    var roles = localStorage.getItem(constant.ROLES);
+    return roles.toLocaleLowerCase().includes(role);
   }
 };

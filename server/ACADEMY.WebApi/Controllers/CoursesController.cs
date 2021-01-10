@@ -38,6 +38,15 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int)response.StatusCode, response);
         }
         
+        [HttpGet("paging/teachers")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> GetPagingByTeacher([FromQuery] GetCoursesPagingRequest request)
+        {
+            var response = await _courseService.GetPagingByTeacherAsync(request);
+            
+            return StatusCode((int)response.StatusCode, response);
+        }
+        
         [HttpGet("paging/categories/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllCourses(long id, [FromQuery] GetCoursesPagingRequest request)

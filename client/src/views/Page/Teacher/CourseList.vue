@@ -30,18 +30,12 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <router-link :to="`/giang-vien/chi-tiet-khoa-hoc/${item.id}`">
-          <v-icon small class="mr-2">
-            mdi-eye
-          </v-icon>
+          <v-icon small class="mr-2"> mdi-eye </v-icon>
         </router-link>
         <router-link :to="`/giang-vien/cap-nhat-khoa-hoc/${item.id}`">
-          <v-icon small class="mr-2">
-            mdi-pencil
-          </v-icon>
+          <v-icon small class="mr-2"> mdi-pencil </v-icon>
         </router-link>
-        <v-icon small @click="deleteItem(item.id)">
-          mdi-delete
-        </v-icon>
+        <v-icon small @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
     <v-snackbar v-model="snackbar" timeout="2000">
