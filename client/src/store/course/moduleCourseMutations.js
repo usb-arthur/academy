@@ -7,5 +7,8 @@ export default {
   },
   SET_COURSE_DETAILS: (state, payload) => {
     state.courseDetails = payload;
+  },
+  SET_WISH_LIST: (state, payload) => {
+    state.wishList = payload;
   }
 };

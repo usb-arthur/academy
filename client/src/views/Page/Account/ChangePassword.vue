@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <v-card-title>Đổi mật khẩu</v-card-title>
     <v-divider></v-divider>
     <v-card-text>
       <v-container>

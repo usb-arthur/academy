@@ -1,6 +1,19 @@
 import axios from "@/http/axios";
 
 export default {
+  getAllWishList: ({ commit }) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("/watch-list")
+        .then(res => {
+          commit("SET_WISH_LIST", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  },
   getAllCourses: ({ commit }) => {
     return new Promise((resolve, reject) => {
       axios

@@ -9,7 +9,7 @@ namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
     [Route("watch-lists")]
-    [Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student,Teacher")]
     public class WatchListsController : ControllerBase
     {
         private readonly IWatchListService _watchListService;
