@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace ACADEMY.Application.ViewModels.System
@@ -12,6 +13,8 @@ namespace ACADEMY.Application.ViewModels.System
         public string Name { get; set; }
 
         public string AccessToken { get; set; }
+
+        public string Roles { get; set; }
 
         [JsonIgnore] public string RefreshToken { get; set; }
     }

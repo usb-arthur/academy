@@ -5,7 +5,7 @@
         <v-tabs fixed-tabs v-model="tab">
           <v-tab>Thông tin cá nhân</v-tab>
           <v-tab>Khóa học của tôi</v-tab>
-          <v-tab>Danh sách yêu thích của tôi</v-tab>
+          <v-tab v-if="isHas('student')">Danh sách yêu thích của tôi</v-tab>
           <v-tab>Đổi mật khẩu</v-tab>
         </v-tabs>
       </v-col>
@@ -15,10 +15,22 @@
             <DetailAccount></DetailAccount>
           </v-tab-item>
           <v-tab-item>
-            <MyCourseList :courses="myCoursesList"></MyCourseList>
+            <MyCourseList
+              title="khoá học"
+              :currentPage="coursesPaging.page"
+              :length="coursesPaging.nPage"
+              @pageChange="coursePage = $event"
+              :courses="coursesPaging.content"
+            ></MyCourseList>
           </v-tab-item>
-          <v-tab-item>
-            <MyCourseList :courses="myWishList"></MyCourseList>
+          <v-tab-item v-if="isHas('student')">
+            <MyCourseList
+              title="có khoá học yêu thích"
+              :currentPage="wishList.page"
+              :length="wishList.nPage"
+              @pageChange="wishListPage = $event"
+              :courses="wishList.content"
+            ></MyCourseList>
           </v-tab-item>
           <v-tab-item>
             <ChangePassword></ChangePassword>
@@ -32,26 +44,48 @@
 import DetailAccount from "@/views/Page/Account/DetailAccount";
 import MyCourseList from "@/views/Page/Teacher/MyCourseList";
 import ChangePassword from "@/views/Page/Account/ChangePassword";
+import constant from "@/constants";
 import { mapActions, mapState } from "vuex";
+
 export default {
   data: () => ({
     tab: null,
-    myCoursesList: [],
-    myWishList: []
+    coursePage: 1,
+    wishListPage: 1,
+    limit: constant.LIMIT
   }),
+  watch: {
+    coursePage(val) {
+      if (this.isHas("teacher")) {
+        this.getCoursesPaging({ page: val, limit: this.limit });
+      } else {
+        this.getSubscribeCourse({ page: val, limit: this.limit });
+      }
+    },
+
+    wishListPage(val) {
+      if (!this.isHas("teacher"))
+        this.getAllWishList({ page: val, limit: this.limit });
+    }
+  },
   created() {
-    this.getAllCourses().then(() => {
-      this.myCoursesList = this.courses;
-    });
-    this.getAllWishList().then(() => {
-      this.myWishList = this.wishList;
-    });
+    if (this.isHas("teacher")) {
+      this.getCoursesPaging({ page: this.coursePage, limit: this.limit });
+    } else {
+      this.getSubscribeCourse({ page: this.coursePage, limit: this.limit });
+      this.getAllWishList({ page: this.wishListPage, limit: this.limit });
+    }
   },
   computed: {
-    ...mapState("course", ["courses", "wishList"])
+    ...mapState("course", ["coursesPaging", "wishList"]),
+    ...mapState("auth", ["isHas"])
   },
   methods: {
-    ...mapActions("course", ["getAllCourses", "getAllWishList"])
+    ...mapActions("course", [
+      "getCoursesPaging",
+      "getAllWishList",
+      "getSubscribeCourse"
+    ])
   },
   components: { ChangePassword, DetailAccount, MyCourseList }
 };

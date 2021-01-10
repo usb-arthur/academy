@@ -1,6 +1,6 @@
 import axios from "@/http/axios";
 import router from "@/router";
-import constant from "@/constants/token";
+import constant from "@/constants";
 
 export default {
   loginJWT({ commit }, payload) {
@@ -18,6 +18,7 @@ export default {
               constant.ACCESS_TOKEN,
               res.data.objResult.accessToken
             );
+            localStorage.setItem(constant.ROLES, res.data.objResult.roles);
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }

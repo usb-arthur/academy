@@ -1,6 +1,6 @@
 import axios from "@/axios";
 import router from "@/router";
-import constant from "@/constants/token";
+import constant from "@/constants";
 
 axios.interceptors.request.use(
   config => {

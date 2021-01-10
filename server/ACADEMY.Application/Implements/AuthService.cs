@@ -68,13 +68,15 @@ namespace ACADEMY.Application.Implements
             if (!succeed.Succeeded)
                 return new ApiErrorResponse<AuthVm>("Không thể khởi tạo token", HttpStatusCode.InternalServerError);
 
+            var roles = await _userManager.GetRolesAsync(user);
             return new ApiSucceedResponse<AuthVm>(new AuthVm
             {
                 AccessToken = token,
                 Email = user.Email,
                 Name = user.Name,
                 Id = user.Id,
-                RefreshToken = user.RefreshToken
+                RefreshToken = user.RefreshToken,
+                Roles = string.Join(",", roles)
             });
         }
 

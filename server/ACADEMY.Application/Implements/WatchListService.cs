@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
+using ACADEMY.Utilities.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
@@ -25,24 +27,48 @@ namespace ACADEMY.Application.Implements
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<WatchList, long> _watchListRepository;
 
+        private readonly IRepository<Course, long> _courseRepository;
+
         public WatchListService(IRepository<WatchList, long> watchListRepository, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork)
+            IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork, IRepository<Course, long> courseRepository)
         {
             _watchListRepository = watchListRepository;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _unitOfWork = unitOfWork;
+            _courseRepository = courseRepository;
         }
 
-        public async Task<ApiResponse<ICollection<WatchListVm>>> GetAllAsync()
+        public async Task<ApiResponse<PagedResult<CourseVm>>> GetAllAsync(
+            GetCoursesPagingRequest request)
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
-            var watchLists =
-                await _watchListRepository.FindAllAsync(e => e.StudentId == userId, e => e.Course, e => e.User);
+            var courses =
+                await _courseRepository.FindAllAsync(e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
-            return new ApiSucceedResponse<ICollection<WatchListVm>>(await watchLists
-                .ProjectTo<WatchListVm>(_mapper.ConfigurationProvider).ToListAsync());
+            courses = courses.Where(e => e.WatchLists.Count(watchList => watchList.StudentId == userId) > 0);
+            
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                courses = courses.Where(e =>
+                    e.CourseName.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+            }
+
+            var total = await courses.CountAsync();
+
+            courses = courses.Skip((request.Page - 1) * request.Limit)
+                .Take(request.Limit);
+
+            var result = new PagedResult<CourseVm>
+            {
+                Content = await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync(),
+                Limit = request.Limit,
+                Page = request.Page,
+                Total = total
+            };
+
+            return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
         }
 
         public async Task<ApiResponse<WatchListVm>> GetByIdAsync(long id)
