@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import linhvuc from "./linhvuc/linhvuc.js";
+import linhvuc from "./modules/linhvuc.js";
 import khoahoc from "./modules/khoahoc.js";
 import user from "./modules/user.js";
 import paths from "./modules/path.js";
