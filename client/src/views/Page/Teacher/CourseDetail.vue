@@ -27,11 +27,7 @@
                       max-width="900"
                     >
                       <template v-slot:activator="{ on, attrs }">
-                        <v-icon
-                          v-bind="attrs"
-                          v-on="on"
-                          small
-                          class="mr-2"
+                        <v-icon v-bind="attrs" v-on="on" small class="mr-2"
                           >mdi-eye</v-icon
                         >
                       </template>

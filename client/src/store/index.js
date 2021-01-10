@@ -7,6 +7,7 @@ import paths from "./modules/path.js";
 import auth from "./auth/moduleAuth";
 import course from "./course/moduleCourse";
 import categories from "./categories/moduleCategory";
+import account from "./account/accountModule";
 
 Vue.use(Vuex);
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     paths,
     auth,
     course,
-    categories
+    categories,
+    account
   }
 });
