@@ -7,7 +7,7 @@ namespace ACADEMY.Application.AutoMapper
     {
         public DateTimeToStringProfile()
         {
-            CreateMap<DateTime, string>().ConvertUsing(dt => dt.ToString("dd-MM-yyyy hh:mm:ss"));
+            CreateMap<DateTime, string>().ConvertUsing(dt => dt.ToString("yyyy-MM-dd"));
         }
     }
 }
