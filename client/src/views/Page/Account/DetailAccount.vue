@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <v-card-title>Thông tin cá nhân</v-card-title>
     <v-divider></v-divider>
     <v-card-text>
       <v-container>
