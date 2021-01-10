@@ -113,7 +113,7 @@ namespace ACADEMY.Application.Implements
 
             if (result.Succeeded) return new ApiSucceedResponse<bool>(true);
 
-            return new ApiErrorResponse<bool>(result.Errors.ToString(), HttpStatusCode.BadRequest);
+            return new ApiErrorResponse<bool>(result.Errors.ToList()[0].Description, HttpStatusCode.BadRequest);
         }
 
         public async Task<ApiResponse<UserVm>> RegisterAsync(RegisterRequest request)

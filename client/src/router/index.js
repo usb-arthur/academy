@@ -63,6 +63,11 @@ const routes = [
             path: "",
             name: "DetailAccount",
             component: () => import("../views/Page/Account/DetailAccount")
+          },
+          {
+            path: "doi-mat-khau",
+            name: "ChangePassword",
+            component: () => import("../views/Page/Account/ChangePassword")
           }
         ]
       }

@@ -26,5 +26,8 @@ export default {
           reject(err);
         });
     });
+  },
+  changePassword(_, payload) {
+    return axios.post("/auth/change-password", payload);
   }
 };
