@@ -15,6 +15,8 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResponse<ICollection<UserVm>>> GetAllAsync();
 
+        Task<ApiResponse<UserVm>> GetInformationAsync();
+
         Task<ApiResponse<UserVm>> GetByIdAsync(Guid id);
 
         Task<ApiResponse<UserVm>> UpdateAsync(Guid id, PutUserRequest request);

@@ -26,6 +26,15 @@ namespace ACADEMY.WebApi.Controllers
 
             return StatusCode((int) result.StatusCode, result);
         }
+        
+        [HttpGet("information")]
+        [Authorize]
+        public async Task<IActionResult> GetInformation()
+        {
+            var response = await _userService.GetInformationAsync();
+
+            return StatusCode((int) response.StatusCode, response);
+        }
 
         [Authorize]
         [HttpGet("{id}")]

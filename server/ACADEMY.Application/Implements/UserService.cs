@@ -95,6 +95,18 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResponse<ICollection<UserVm>>(await users.ToListAsync());
         }
 
+        public async Task<ApiResponse<UserVm>> GetInformationAsync()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return new ApiErrorResponse<UserVm>("Người dùng không tồn tại hoặc đã bị xoá", HttpStatusCode.NotFound);
+
+            return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
+        }
+
         public async Task<ApiResponse<UserVm>> GetByIdAsync(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
