@@ -29,7 +29,7 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpGet("courses")]
-        public async Task<IActionResult> GetCourses(GetCoursesPagingRequest request)
+        public async Task<IActionResult> GetCourses([FromQuery]GetCoursesPagingRequest request)
         {
             var response = await _teacherService.GetCoursesAsync(request);
 

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
+using ACADEMY.Application.Requests.Catalog.Course;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,9 +35,9 @@ namespace ACADEMY.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("courses")]
-        public async Task<IActionResult> GetRegisteredCourses()
+        public async Task<IActionResult> GetRegisteredCourses([FromQuery] GetCoursesPagingRequest request)
         {
-            var response = await _studentService.GetRegisteredCourseAsync();
+            var response = await _studentService.GetRegisteredCourseAsync(request);
 
             return StatusCode((int) response.StatusCode, response);
         }
