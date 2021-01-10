@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
-    [AllowAnonymous]
     [Route("auth")]
     public class AuthController : ControllerBase
     {
@@ -52,7 +51,7 @@ namespace ACADEMY.WebApi.Controllers
 
         [HttpPost]
         [Route("change-password")]
-        [Authorize]
+        [Authorize(Roles = "Teacher,Student,Admin")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
