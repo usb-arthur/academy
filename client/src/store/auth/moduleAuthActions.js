@@ -1,5 +1,6 @@
 import axios from "@/http/axios";
 import router from "@/router";
+import constant from "@/constants/token";
 
 export default {
   loginJWT({ commit }, payload) {
@@ -13,7 +14,10 @@ export default {
         .then(res => {
           if (res.status === 200) {
             router.push(router.currentRoute.query.to || "/");
-            localStorage.setItem("accessToken", res.data.objResult.accessToken);
+            localStorage.setItem(
+              constant.ACCESS_TOKEN,
+              res.data.objResult.accessToken
+            );
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }
