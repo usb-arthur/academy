@@ -16,6 +16,10 @@ const routes = [
     component: Layout,
     children: [
       {
+        path: "/chi-tiet-khoa-hoc/:id",
+        component: () => import("@/views/Page/Shared/CourseDetailShared")
+      },
+      {
         path: "/giang-vien",
         redirect: { name: "Course" },
         component: TeacherLayout,
@@ -73,7 +77,7 @@ const routes = [
             path: "khoa-hoc-cua-toi",
             name: "MyCourseList",
             component: () => import("../views/Page/Teacher/MyCourseList")
-          }
+          },
         ]
       }
     ]
