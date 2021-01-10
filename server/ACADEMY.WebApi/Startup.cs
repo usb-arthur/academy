@@ -72,9 +72,9 @@ namespace ACADEMY.WebApi
 
             services.AddTransient<IAuthService, AuthService>();
 
-            services.AddTransient(typeof(IUnitOfWork), typeof(EFUnitOfWork));
+            services.AddTransient(typeof(IUnitOfWork), typeof(EfUnitOfWork));
 
-            services.AddTransient(typeof(IRepository<,>), typeof(EFRepository<,>));
+            services.AddTransient(typeof(IRepository<,>), typeof(EfRepository<,>));
 
             services.AddTransient<ICourseService, CourseService>();
 

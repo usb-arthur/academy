@@ -25,13 +25,14 @@ namespace ACADEMY.Application.Implements
     {
         private readonly IConfiguration _config;
 
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
-
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config,
+            IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,11 +49,9 @@ namespace ACADEMY.Application.Implements
                 return new ApiErrorResponse<AuthVm>($"User {request.Email} không tồn tại", HttpStatusCode.NotFound);
 
             if (user.Status == UserStatus.Deactivated)
-            {
                 return new ApiErrorResponse<AuthVm>(
-                    $"Tài khoản của bạn hiện tại đang bị khoá. Vui lòng liên hệ admin để mở khoá tài khoản",
+                    "Tài khoản của bạn hiện tại đang bị khoá. Vui lòng liên hệ admin để mở khoá tài khoản",
                     HttpStatusCode.BadRequest);
-            }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
@@ -68,7 +67,6 @@ namespace ACADEMY.Application.Implements
 
             if (!succeed.Succeeded)
                 return new ApiErrorResponse<AuthVm>("Không thể khởi tạo token", HttpStatusCode.InternalServerError);
-            ;
 
             return new ApiSucceedResponse<AuthVm>(new AuthVm
             {
@@ -113,10 +111,7 @@ namespace ACADEMY.Application.Implements
 
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-            if (result.Succeeded)
-            {
-                return new ApiSucceedResponse<bool>(true);
-            }
+            if (result.Succeeded) return new ApiSucceedResponse<bool>(true);
 
             return new ApiErrorResponse<bool>(result.Errors.ToString(), HttpStatusCode.BadRequest);
         }
@@ -130,9 +125,9 @@ namespace ACADEMY.Application.Implements
                     HttpStatusCode.Conflict);
 
             user = _mapper.Map<RegisterRequest, User>(request);
-            
+
             user.CreatedDate = user.UpdatedDate = DateTime.Now;
-            
+
             user.FirstLogin = false;
             user.UserName = request.Email;
             user.NormalizedEmail = user.NormalizedUserName = _userManager.NormalizeEmail(request.Email);

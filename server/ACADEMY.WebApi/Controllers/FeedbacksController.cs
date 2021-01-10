@@ -31,13 +31,10 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> PostFeedback([FromBody] PostFeedbackRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var result = await _feedbackService.WriteFeedbackAsync(request);
-            
+
             return StatusCode((int) result.StatusCode, result);
         }
 
@@ -45,22 +42,19 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> PutFeedback(long id, [FromBody] PutFeedbackRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
-            
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
             var result = await _feedbackService.EditFeedbackAsync(id, request);
-            
+
             return StatusCode((int) result.StatusCode, result);
         }
-        
+
         [HttpDelete("{id:long}")]
         [Authorize(Roles = "Student")]
         public async Task<IActionResult> DeleteFeedback(long id)
         {
             var result = await _feedbackService.RemoveFeedbackAsync(id);
-            
+
             return StatusCode((int) result.StatusCode, result);
         }
     }

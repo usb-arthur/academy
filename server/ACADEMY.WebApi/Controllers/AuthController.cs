@@ -55,30 +55,24 @@ namespace ACADEMY.WebApi.Controllers
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var response = await _authService.ChangePasswordAsync(request);
 
-            return StatusCode((int)response.StatusCode, response);
+            return StatusCode((int) response.StatusCode, response);
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState.GetErrorMessage());
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var response = await _authService.RegisterAsync(request);
 
-            return StatusCode((int)response.StatusCode, response);
+            return StatusCode((int) response.StatusCode, response);
         }
-        
+
         private void SetTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions

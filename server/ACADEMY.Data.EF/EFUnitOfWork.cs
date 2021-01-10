@@ -3,11 +3,11 @@ using ACADEMY.Infrastructure.Interfaces;
 
 namespace ACADEMY.Data.EF
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IUnitOfWork
     {
         private readonly AcademyDbContext _context;
 
-        public EFUnitOfWork(AcademyDbContext context)
+        public EfUnitOfWork(AcademyDbContext context)
         {
             _context = context;
         }

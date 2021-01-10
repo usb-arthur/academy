@@ -27,9 +27,9 @@ namespace ACADEMY.Application.Implements
 
         private readonly IMapper _mapper;
 
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IStorageService _storageService;
+
+        private readonly IUnitOfWork _unitOfWork;
 
         public CourseService(IRepository<Course, long> courseRepository, IMapper mapper, IUnitOfWork unitOfWork,
             IHttpContextAccessor httpContextAccessor, IStorageService storageService)
@@ -48,8 +48,6 @@ namespace ACADEMY.Application.Implements
             var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
-            var result = courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider);
-
             return new ApiSucceedResponse<ICollection<CourseVm>>(
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
@@ -67,7 +65,7 @@ namespace ACADEMY.Application.Implements
 
             course.NumOfView += 1;
             course = await _courseRepository.UpdateAsync(course);
-            
+
             return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
@@ -81,18 +79,10 @@ namespace ACADEMY.Application.Implements
             await _unitOfWork.CommitAsync();
 
             var fileName = GetFileName(request.Image, course.Id);
-            
-            await _storageService.SaveFileAsync(request.Image.OpenReadStream(), "Courses", fileName);
-            
-            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course), HttpStatusCode.Created);
-        }
 
-        private string GetFileName(IFormFile file, long id)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString()
-                .Trim('"');
-            var fileName = $"{id}{Path.GetExtension(originalFileName)}";
-            return fileName;
+            await _storageService.SaveFileAsync(request.Image.OpenReadStream(), "Courses", fileName);
+
+            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course), HttpStatusCode.Created);
         }
 
         public async Task<ApiResponse<CourseVm>> UpdateAsync(long id, PutCourseRequest request)
@@ -109,7 +99,7 @@ namespace ACADEMY.Application.Implements
             await _unitOfWork.CommitAsync();
 
             if (request.Image == null) return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
-            
+
             await _storageService.DeleteFileAsync("Courses", $"{course.Id}.jpg");
             var fileName = GetFileName(request.Image, course.Id);
             await _storageService.SaveFileAsync(request.Image.OpenReadStream(), "Courses", fileName);
@@ -127,7 +117,7 @@ namespace ACADEMY.Application.Implements
             await _unitOfWork.CommitAsync();
 
             await _storageService.DeleteFileAsync("Courses", $"{id}.jpg");
-            
+
             return new ApiSucceedResponse<bool>(true);
         }
 
@@ -138,6 +128,14 @@ namespace ACADEMY.Application.Implements
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(await courses
                 .ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+        }
+
+        private string GetFileName(IFormFile file, long id)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.ToString()
+                .Trim('"');
+            var fileName = $"{id}{Path.GetExtension(originalFileName)}";
+            return fileName;
         }
     }
 }

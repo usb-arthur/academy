@@ -80,7 +80,7 @@ namespace ACADEMY.WebApi.Controllers
             var image = System.IO.File.OpenRead(imagePath);
             return File(image, "image/jpeg");
         }
-        
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Teacher,Admin")]
         public async Task<IActionResult> DeleteCourse(int id)

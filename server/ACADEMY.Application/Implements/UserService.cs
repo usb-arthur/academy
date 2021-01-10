@@ -90,7 +90,8 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<ICollection<UserVm>>> GetAllAsync()
         {
-            var users = _userManager.Users.Where(e => e.Status != UserStatus.Deactivated).ProjectTo<UserVm>(_mapper.ConfigurationProvider);
+            var users = _userManager.Users.Where(e => e.Status != UserStatus.Deactivated)
+                .ProjectTo<UserVm>(_mapper.ConfigurationProvider);
             return new ApiSucceedResponse<ICollection<UserVm>>(await users.ToListAsync());
         }
 

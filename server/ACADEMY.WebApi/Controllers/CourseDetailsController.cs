@@ -15,7 +15,7 @@ namespace ACADEMY.WebApi.Controllers
         private readonly ICourseDetailService _courseDetailService;
 
         private readonly IStorageService _storageService;
-        
+
         public CourseDetailsController(ICourseDetailService courseDetailService, IStorageService storageService)
         {
             _courseDetailService = courseDetailService;
@@ -58,10 +58,7 @@ namespace ACADEMY.WebApi.Controllers
         public async Task<IActionResult> GetCourseDetailVideo(long id)
         {
             var videoPath = await _storageService.GetFilePathAsync("CourseDetails", $"{id}.mp4");
-            if (!System.IO.File.Exists(videoPath))
-            {
-                return NotFound("Không tìm thấy video");
-            }
+            if (!System.IO.File.Exists(videoPath)) return NotFound("Không tìm thấy video");
             var video = System.IO.File.OpenRead(videoPath);
             return File(video, "video/webm", true);
         }

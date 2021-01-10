@@ -20,12 +20,13 @@ namespace ACADEMY.Application.Implements
 
         private readonly IMapper _mapper;
 
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IStorageService _storageService;
 
+        private readonly IUnitOfWork _unitOfWork;
+
         public CourseDetailService(IMapper mapper,
-            IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork, IStorageService storageService)
+            IRepository<CourseDetail, long> courseDetailRepository, IUnitOfWork unitOfWork,
+            IStorageService storageService)
         {
             _mapper = mapper;
             _courseDetailRepository = courseDetailRepository;
@@ -66,7 +67,7 @@ namespace ACADEMY.Application.Implements
 
             await _storageService.SaveFileAsync(request.Video.OpenReadStream(), "CourseDetails",
                 $"{courseDetail.Id}.mp4");
-            
+
             return new ApiSucceedResponse<CourseDetailVm>(_mapper.Map<CourseDetail, CourseDetailVm>(courseDetail),
                 HttpStatusCode.Created);
         }

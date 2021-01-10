@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace ACADEMY.Data.Enums.Extensions
 {
@@ -12,9 +10,9 @@ namespace ACADEMY.Data.Enums.Extensions
             where TAttribute : Attribute
         {
             return enumValue.GetType()
-                            .GetMember(enumValue.ToString())
-                            .First()
-                            .GetCustomAttribute<TAttribute>();
+                .GetMember(enumValue.ToString())
+                .First()
+                .GetCustomAttribute<TAttribute>();
         }
     }
 }

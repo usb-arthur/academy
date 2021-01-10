@@ -20,20 +20,21 @@ namespace ACADEMY.Application.Implements
     {
         private readonly IRepository<Feedback, long> _feedbackRepository;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly IMapper _mapper;
 
         private readonly IUnitOfWork _unitOfWork;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public FeedbackService(IRepository<Feedback, long> feedbackRepository, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
+        public FeedbackService(IRepository<Feedback, long> feedbackRepository, IMapper mapper, IUnitOfWork unitOfWork,
+            IHttpContextAccessor httpContextAccessor)
         {
             _feedbackRepository = feedbackRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
         }
-        
+
         public async Task<ApiResponse<ICollection<FeedbackVm>>> GetAllAsync(long courseId)
         {
             var feedbacks = await _feedbackRepository.FindAllAsync(e => e.CourseId == courseId);
@@ -56,17 +57,14 @@ namespace ACADEMY.Application.Implements
         {
             var feedback = await _feedbackRepository.FindByIdAsync(id);
             if (feedback == null)
-            {
-                return new ApiErrorResponse<FeedbackVm>("Comment này không tồn tại hoặc đã bị gỡ bỏ", HttpStatusCode.NotFound);
-            }
+                return new ApiErrorResponse<FeedbackVm>("Comment này không tồn tại hoặc đã bị gỡ bỏ",
+                    HttpStatusCode.NotFound);
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-            
+
             if (feedback.StudentId != userId)
-            {
                 return new ApiErrorResponse<FeedbackVm>("Bạn không có quyền sửa comment này",
                     HttpStatusCode.BadRequest);
-            }
-            
+
             feedback = _mapper.Map(request, feedback);
 
             feedback.UpdatedDate = DateTime.Now;
@@ -79,16 +77,13 @@ namespace ACADEMY.Application.Implements
         {
             var feedback = await _feedbackRepository.FindByIdAsync(feedbackId);
             if (feedback == null)
-            {
-                return new ApiErrorResponse<bool>("Comment này không tồn tại hoặc đã bị gỡ bỏ", HttpStatusCode.NotFound);
-            }
+                return new ApiErrorResponse<bool>("Comment này không tồn tại hoặc đã bị gỡ bỏ",
+                    HttpStatusCode.NotFound);
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
-            
+
             if (feedback.StudentId != userId)
-            {
                 return new ApiErrorResponse<bool>("Bạn không có quyền sửa comment này",
                     HttpStatusCode.BadRequest);
-            }
 
             await _feedbackRepository.RemoveAsync(feedback);
             await _unitOfWork.CommitAsync();

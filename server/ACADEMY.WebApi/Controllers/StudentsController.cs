@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
-using ACADEMY.Application.Requests.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,7 +37,7 @@ namespace ACADEMY.WebApi.Controllers
         public async Task<IActionResult> GetRegisteredCourses()
         {
             var response = await _studentService.GetRegisteredCourseAsync();
-            
+
             return StatusCode((int) response.StatusCode, response);
         }
 
@@ -59,7 +58,7 @@ namespace ACADEMY.WebApi.Controllers
         public async Task<IActionResult> UnsubscribeCourse(long id)
         {
             var result = await _studentService.UnsubscribeCourseAsync(id);
-            
+
             return StatusCode((int) result.StatusCode, result);
         }
     }

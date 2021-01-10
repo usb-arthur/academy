@@ -20,7 +20,7 @@ namespace ACADEMY.Data.EF.Configurations
                 .HasOne(e => e.Course)
                 .WithMany(e => e.StudentCourses)
                 .HasForeignKey(e => e.CourseId);
-            
+
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");

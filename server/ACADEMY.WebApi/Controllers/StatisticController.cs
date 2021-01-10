@@ -21,10 +21,7 @@ namespace ACADEMY.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStatistic([FromQuery] GetStatisticRequest request)
         {
-            if (request.Payload == null || request.Criteria == null)
-            {
-                return BadRequest();
-            }
+            if (request.Payload == null || request.Criteria == null) return BadRequest();
 
             var result = await _statisticService.GetPopularAsync(request.Payload.Value, request.Criteria.Value);
 

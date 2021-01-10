@@ -1,6 +1,4 @@
-﻿using ACADEMY.Data.Enums;
-
-namespace ACADEMY.Application.ViewModels.Catalog.Course
+﻿namespace ACADEMY.Application.ViewModels.Catalog.Course
 {
     public class CourseVm
     {

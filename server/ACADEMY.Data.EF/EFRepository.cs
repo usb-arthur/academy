@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ACADEMY.Data.EF
 {
-    public class EFRepository<T, TK> : IRepository<T, TK>, IDisposable where T : DomainEntity<TK>
+    public class EfRepository<T, TK> : IRepository<T, TK>, IDisposable where T : DomainEntity<TK>
     {
         private readonly AcademyDbContext _context;
 
-        public EFRepository(AcademyDbContext context)
+        public EfRepository(AcademyDbContext context)
         {
             _context = context;
         }
