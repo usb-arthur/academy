@@ -7,7 +7,7 @@ namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
     [Route("students")]
-    [Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student,Admin,Teacher")]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _studentService;
