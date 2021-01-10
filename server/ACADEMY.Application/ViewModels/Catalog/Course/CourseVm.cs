@@ -1,4 +1,6 @@
-﻿namespace ACADEMY.Application.ViewModels.Catalog.Course
+﻿using ACADEMY.Application.ViewModels.System;
+
+namespace ACADEMY.Application.ViewModels.Catalog.Course
 {
     public class CourseVm
     {
@@ -24,6 +26,8 @@
 
         public int NumOfView { get; set; }
 
+        public UserVm User { get; set; }
+        
         public string Status { get; set; }
 
         public string CreatedDate { get; set; }
