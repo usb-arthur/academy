@@ -20,6 +20,10 @@ const routes = [
         component: () => import("@/views/Page/Shared/CourseDetailShared")
       },
       {
+        path: "/danh-sach-khoa-hoc/:id",
+        component: () => import("@/views/Page/Shared/ListCouser")
+      },
+      {
         path: "/giang-vien",
         redirect: { name: "Course" },
         component: TeacherLayout,
