@@ -38,12 +38,14 @@
             <v-list-item-title>Courses</v-list-item-title>
           </v-list-item>
         </router-link>
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-account</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Account</v-list-item-title>
-        </v-list-item>
+        <router-link to="/thong-tin-ca-nhan">
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Tài khoản</v-list-item-title>
+          </v-list-item>
+        </router-link>
       </v-list-item-group>
     </v-navigation-drawer>
     <v-main id="main">

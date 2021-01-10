@@ -50,6 +50,21 @@ const routes = [
               )
           }
         ]
+      },
+      {
+        path: "/thong-tin-ca-nhan",
+        name: "PersonalAccount",
+        component: () =>
+          import(
+            /* webpackChunkName: "FullPageLayout" */ "../views/Page/Account/Account"
+          ),
+        children: [
+          {
+            path: "",
+            name: "DetailAccount",
+            component: () => import("../views/Page/Account/DetailAccount")
+          }
+        ]
       }
     ]
   },
