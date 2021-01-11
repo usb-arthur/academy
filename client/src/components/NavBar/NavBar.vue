@@ -10,9 +10,7 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-toolbar-title>
-        <h2>
-          ACADEMY
-        </h2>
+        <h2>ACADEMY</h2>
       </v-toolbar-title>
 
       <v-menu
@@ -22,9 +20,7 @@
         bottom
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on">
-            LĨNH VỰC
-          </v-btn>
+          <v-btn v-bind="attrs" v-on="on"> LĨNH VỰC </v-btn>
         </template>
 
         <v-list>
@@ -41,15 +37,17 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-item
+                <router-link
                   v-for="categorys in category.children"
                   :key="categorys.id"
-                  href="/"
+                  :to="`/danh-sach-khoa-hoc/${categorys.id}`"
                 >
-                  <v-list-item-title
-                    v-text="categorys.categoryName"
-                  ></v-list-item-title>
-                </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title
+                      v-text="categorys.categoryName"
+                    ></v-list-item-title>
+                  </v-list-item>
+                </router-link>
               </v-list>
             </v-menu>
           </v-list-item>
@@ -77,14 +75,14 @@
 export default {
   data() {
     return {
-      categories: []
+      categories: [],
     };
   },
   components: {},
   computed: {
     dslinhvucs() {
       return this.$store.state.categories.categories;
-    }
+    },
   },
   async created() {
     await this.$store
@@ -92,7 +90,7 @@ export default {
       .then(() => {
         this.categories = this.dslinhvucs;
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  },
 };
 </script>
