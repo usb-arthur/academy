@@ -1,6 +1,5 @@
 ﻿using System;
 using ACADEMY.Application.ViewModels.System;
-using ACADEMY.Data.Entities;
 
 namespace ACADEMY.Application.ViewModels.Student
 {

@@ -13,6 +13,7 @@ namespace ACADEMY.Application.Requests.Common
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Xác nhận mật khẩu không được để trống")]
+        [Compare("Password", ErrorMessage = "Hai mật khẩu không trùng nhau")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Tên không được bỏ để trống")]
@@ -24,6 +25,7 @@ namespace ACADEMY.Application.Requests.Common
         [Required(ErrorMessage = "Ngày sinh không được bỏ trống")]
         public DateTime DateOfBirth { get; set; }
 
+        [Required(ErrorMessage = "Số điện thoại không được bỏ trống")]
         public string PhoneNumber { get; set; }
     }
 }

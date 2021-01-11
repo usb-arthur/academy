@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace ACADEMY.Application.ViewModels.Common
 {
@@ -11,6 +11,11 @@ namespace ACADEMY.Application.ViewModels.Common
 
         public T ObjResult { get; set; }
 
-        [JsonIgnore] public HttpStatusCode StatusCode { get; set; }
+        [global::System.Text.Json.Serialization.JsonIgnore] public HttpStatusCode StatusCode { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

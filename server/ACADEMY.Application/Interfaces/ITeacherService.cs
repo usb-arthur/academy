@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Catalog.Course;

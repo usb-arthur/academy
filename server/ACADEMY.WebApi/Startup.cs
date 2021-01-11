@@ -9,17 +9,21 @@ using ACADEMY.Data.EF;
 using ACADEMY.Data.Entities;
 using ACADEMY.Infrastructure.Interfaces;
 using ACADEMY.Utilities.Constants;
+using ACADEMY.WebApi.Controllers;
+using ACADEMY.WebApi.Extensions;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -37,6 +41,11 @@ namespace ACADEMY.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            
             services.AddDbContext<AcademyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstant.ConnectionString)));
 
@@ -93,7 +102,6 @@ namespace ACADEMY.WebApi
             services.AddTransient<IStatisticService, StatisticService>();
             
             services.AddTransient<IFeedbackService, FeedbackService>();
-
 
             #endregion
 
@@ -161,10 +169,14 @@ namespace ACADEMY.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+            app.ConfigureExceptionHandler();
+
+            loggerFactory.AddFile($"Logs/{DateTime.Now:yyyyMMddhhmmss}.txt");
+            
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
