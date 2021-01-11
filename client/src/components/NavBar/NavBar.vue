@@ -1,50 +1,98 @@
 <template>
-  <div class="container-fluid">
-    <b-container class="bv-example-row full-height" fluid>
-      <b-row class="container-fluid" align-h="center">
-        <b-col>
-          <h3>ABC ACADEMY</h3>
-        </b-col>
-        <b-col>
-          <md-menu md-direction="bottom-start">
-            <md-button md-menu-trigger>Lĩnh vực</md-button>
+  <v-card>
+    <v-app-bar
+      app
+      color="white"
+      elevate-on-scroll
+      scroll-target="#scrolling-techniques-7"
+    >
+      <v-btn icon href="/">
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-toolbar-title>
+        <h2>
+          ACADEMY
+        </h2>
+      </v-toolbar-title>
 
-            <md-menu-content>
-              <md-menu-item v-for="item in dslinhvucs" :key="item.id">{{
-                item.catalogname
-              }}</md-menu-item>
-            </md-menu-content>
-          </md-menu>
-        </b-col>
-        <b-col>
-          <b-input-group>
-            <b-input-group-prepend>
-              <b-button variant="outline-secondary bg-white">
-                <md-icon>search</md-icon>
-              </b-button>
-            </b-input-group-prepend>
-            <b-form-input></b-form-input>
-          </b-input-group>
-        </b-col>
-        <b-col>
-          PLACE HOLDER
-        </b-col>
-        <b-col>
-          PLACE HOLDER
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+      <v-menu
+        offset-y
+        :close-on-content-click="false"
+        :close-on-click="true"
+        bottom
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on">
+            LĨNH VỰC
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="category in categories" :key="category.id">
+            <v-menu
+              offset-x
+              :close-on-content-click="false"
+              open-on-hover
+              bottom
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs" v-on="on" plain>
+                  {{ category.categoryName }}
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="categorys in category.children"
+                  :key="categorys.id"
+                  href="/"
+                >
+                  <v-list-item-title
+                    v-text="categorys.categoryName"
+                  ></v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+  </v-card>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      categories: []
+    };
+  },
   components: {},
   computed: {
     dslinhvucs() {
-      console.log(this.$store);
-      return this.$store.getters["linhvuc/ACatalog"];
+      return this.$store.state.categories.categories;
     }
+  },
+  async created() {
+    await this.$store
+      .dispatch("categories/getAllCategories")
+      .then(() => {
+        this.categories = this.dslinhvucs;
+      })
+      .catch(err => console.log(err));
   }
 };
 </script>

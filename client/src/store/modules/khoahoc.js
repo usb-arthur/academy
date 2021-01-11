@@ -41,6 +41,24 @@ const actions = {
           reject(err);
         });
     });
+  },
+  GetStaticsCourse: ({ commit }, lid) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get("/statistic", {
+          params: {
+            Payload: lid.Payload,
+            Criteria: lid.Criteria
+          }
+        })
+        .then(res => {
+          commit("SET_COURSES", res.data.objResult);
+          resolve(resolve);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 };
 

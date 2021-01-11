@@ -7,7 +7,7 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>
-                  <h3 class="font-weight-thin">ADMIN DASHBOARD</h3>
+                  <h3 class="font-weight-thin">ADMIN</h3>
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>

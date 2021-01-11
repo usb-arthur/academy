@@ -3,6 +3,10 @@ const state = () => ({
     { title: "LĨNH VỰC", href: "/admin/linhvuc", icon: "mdi-home-outline" },
     { title: "KHÓA HỌC", href: "/admin/khoahoc", icon: "mdi-shield-account" },
     { title: "NGƯỜI DÙNG", href: "/admin/user", icon: "mdi-palette-swatch" }
+  ],
+  NavBar: [
+    { title: "ACADEMY", href: "/", icon: "" },
+    { title: "Đăng nhập", href: "/dang-nhap", icon: "" }
   ]
 });
 
