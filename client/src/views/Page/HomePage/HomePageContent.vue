@@ -117,13 +117,13 @@
 export default {
   data() {
     return {
-      list2: [],
+      list2: []
     };
   },
   computed: {
     dsCourse() {
       return this.$store.state.khoahoc.items;
-    },
+    }
   },
   methods: {},
   async created() {
@@ -132,16 +132,16 @@ export default {
       await this.$store
         .dispatch("khoahoc/GetStaticsCourse", {
           Payload: 10,
-          Criteria: i,
+          Criteria: i
         })
         .then(() => {
           temp = this.dsCourse;
           this.list2.push(temp);
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
     }
     console.log(this.list2);
-  },
+  }
 };
 </script>
 

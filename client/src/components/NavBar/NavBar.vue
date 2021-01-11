@@ -75,14 +75,14 @@
 export default {
   data() {
     return {
-      categories: [],
+      categories: []
     };
   },
   components: {},
   computed: {
     dslinhvucs() {
       return this.$store.state.categories.categories;
-    },
+    }
   },
   async created() {
     await this.$store
@@ -90,7 +90,7 @@ export default {
       .then(() => {
         this.categories = this.dslinhvucs;
       })
-      .catch((err) => console.log(err));
-  },
+      .catch(err => console.log(err));
+  }
 };
 </script>
