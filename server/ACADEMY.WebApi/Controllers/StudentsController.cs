@@ -42,6 +42,16 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) response.StatusCode, response);
         }
 
+
+        [Authorize]
+        [HttpGet("courses/{id}")]
+        public async Task<IActionResult> IsInCourse(long id)
+        {
+            var isInCourse = await _studentService.IsInCourseAsync(id);
+
+            return Ok(isInCourse);
+        }
+
         /// <summary>
         ///     Đăng ký khoá học
         /// </summary>

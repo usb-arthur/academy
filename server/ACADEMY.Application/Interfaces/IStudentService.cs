@@ -16,5 +16,6 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResponse<StudentCourse>> SubscribeCourseAsync(long courseId);
         Task<ApiResponse<bool>> UnsubscribeCourseAsync(long courseId);
+        Task<bool> IsInCourseAsync(long id);
     }
 }

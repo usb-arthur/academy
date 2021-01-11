@@ -111,5 +111,12 @@ namespace ACADEMY.Application.Implements
             _context.StudentCourses.Remove(studentCourses);
             return new ApiSucceedResponse<bool>(true);
         }
+
+        public async Task<bool> IsInCourseAsync(long id)
+        {
+            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+
+            return await _context.StudentCourses.CountAsync(e => e.CourseId == id && e.StudentId == userId) > 0;
+        }
     }
 }
