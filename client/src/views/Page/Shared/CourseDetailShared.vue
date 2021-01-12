@@ -157,8 +157,14 @@
             :src="`https://localhost:5001/courses/${$route.params.id}/images`"
           ></v-img>
 
-          <v-card-title>{{ course.courseName }}</v-card-title>
-
+          <div class="d-flex justify-content-between" >
+            <v-card-title>{{ course.courseName }}</v-card-title>
+            <div  class="mt-3 mr-4">
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+            </div>
+          </div>
           <v-card-text>
             <v-row align="center" class="mx-0">
               <v-rating
