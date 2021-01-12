@@ -9,9 +9,9 @@ export default {
         .post("/auth/sign-in", {
           email: payload.email,
           password: payload.password,
-          rememberMe: payload.rememberMe
+          rememberMe: payload.rememberMe,
         })
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             router.push(router.currentRoute.query.to || "/");
             localStorage.setItem(
@@ -23,12 +23,15 @@ export default {
             resolve(res);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
   },
   changePassword(_, payload) {
     return axios.post("/auth/change-password", payload);
-  }
+  },
+  registerUser(_, payload) {
+    return axios.post("/auth/register", payload);
+  },
 };

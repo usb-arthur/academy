@@ -1,5 +1,6 @@
 ﻿using ACADEMY.Application.Requests.Catalog.Category;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.Requests.Common;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Data.Entities;
 using ACADEMY.Data.Enums;
@@ -16,6 +17,9 @@ namespace ACADEMY.Application.AutoMapper
                     options => options.NullSubstitute(UserStatus.Active));
 
             CreateMap<PutUserRequest, User>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<RegisterRequest, User>()
                 .ForAllMembers(options => options.UseDestinationValue());
 
             CreateMap<PostCourseRequest, Course>()
