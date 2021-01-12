@@ -1,5 +1,5 @@
 <template>
-  <div class="center max-height max-width main  ">
+  <div class="center max-height max-width main">
     <div class="center max-height">
       <div class="box--reg center">
         <div class="form--reg">
@@ -8,36 +8,59 @@
           </div>
           <div>
             <v-text-field
-              v-model="email"
+              v-model="user.email"
               label="Email"
               required
               type="email"
               append-icon="mdi-email"
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="user.name"
+              label="Họ tên"
+              required
+              type="text"
+              append-icon="mdi-lock"
+            ></v-text-field>
+            <v-select
+              v-model="user.gender"
+              label="Giới tính"
+              required
+              :items="genders"
+              item-text="value"
+              item-value="id"
+              append-icon="mdi-lock"
+            ></v-select>
+            <v-text-field
+              v-model="user.phoneNumber"
+              label="Số điện thoại"
+              required
+              type="number"
+              append-icon="mdi-lock"
+            ></v-text-field>
+            <v-text-field
+              v-model="user.dateOfBirth"
+              label="Ngáy sinh"
+              required
+              type="date"
+              append-icon="mdi-lock"
+            ></v-text-field>
+            <v-text-field
+              v-model="user.password"
               label="Mật khẩu"
               required
               type="password"
               append-icon="mdi-lock"
             ></v-text-field>
             <v-text-field
-              v-model="password"
+              v-model="user.confirmPassword"
               label="Nhập lại mật khẩu"
               required
               type="password"
               append-icon="mdi-lock"
             ></v-text-field>
           </div>
-          <div>
-            <v-checkbox
-              v-model="checkbox"
-              label="Tôi đồng ý với các điều khoản của Udemy"
-              required
-            ></v-checkbox>
-          </div>
           <div class="center">
-            <v-btn class="btn-submit mr-4 mt-4" @click="submit">
+            <v-btn class="btn-submit mr-4 mt-4" @click="submit(user)">
               Đăng ký
             </v-btn>
           </div>
@@ -51,7 +74,46 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+export default {
+  data: () => ({
+    genders: [
+      {
+        id: 0,
+        value: "Nam",
+      },
+      {
+        id: 1,
+        value: "Nữ",
+      },
+      {
+        id: 2,
+        value: "Khác",
+      },
+    ],
+    user: {
+      name: "",
+      email: "",
+      gender: 0,
+      phoneNumber: "",
+      dateOfBirth: Date.now(),
+      password: "",
+      confirmPassword: "",
+    },
+  }),
+  methods: {
+    ...mapActions("auth", ["registerUser"]),
+    submit(user) {
+      this.registerUser(user)
+        .then(() => {
+          this.$router.push("/dang-nhap");
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>

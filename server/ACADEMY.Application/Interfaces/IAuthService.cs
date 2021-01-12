@@ -14,5 +14,7 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResponse<bool>> ChangePasswordAsync(ChangePasswordRequest request);
         Task<ApiResponse<UserVm>> RegisterAsync(RegisterRequest request);
+        Task<ApiResponse<string>> GeneratePasswordResetTokenAsync(ForgotPasswordRequest request);
+        Task<ApiResponse<bool>> ResetPasswordAsync(ResetPasswordRequest request);
     }
 }
