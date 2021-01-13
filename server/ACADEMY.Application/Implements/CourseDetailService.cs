@@ -106,7 +106,7 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<CourseDetailVm>> CreateAsync(PostCourseDetailRequest request)
         {
-            var courseDetail = await _courseDetailRepository.FindSingleAsync(e => e.Content.Equals(request.Content));
+            var courseDetail = await _courseDetailRepository.FindSingleAsync(e => e.Content.Equals(request.Content) && e.CourseId == request.CourseId);
             if (courseDetail != null)
                 return new ApiErrorResponse<CourseDetailVm>("Nội dung chương này đã tồn tại", HttpStatusCode.Conflict);
 

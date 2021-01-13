@@ -1,4 +1,6 @@
-﻿using ACADEMY.Application.ViewModels.System;
+﻿using System;
+using ACADEMY.Application.ViewModels.Catalog.Category;
+using ACADEMY.Application.ViewModels.System;
 
 namespace ACADEMY.Application.ViewModels.Catalog.Course
 {
@@ -19,6 +21,34 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
         public string SaleDate { get; set; }
 
         public double? Rate { get; set; }
+
+        public CategoryVm Category { get; set; }
+
+        public double ActualPrice
+        {
+            get
+            {
+                if (Sale != null && !string.IsNullOrEmpty(SaleDate))
+                {
+                    return CourseFee * Sale.Value / 100;
+                }
+
+                return CourseFee;
+            }
+        }
+
+        public int? DateLeft
+        {
+            get
+            {
+                if (Sale != null && !string.IsNullOrEmpty(SaleDate))
+                {
+                    return (DateTime.Parse(SaleDate) - DateTime.Now).Days;
+                }
+
+                return null;
+            }
+        }
 
         public int? NumOfFeedback { get; set; }
 

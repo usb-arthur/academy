@@ -17,10 +17,10 @@
           <v-tab-item>
             <MyCourseList
               title="khoá học"
-              :currentPage="coursesPaging.page"
-              :length="coursesPaging.nPage"
+              :currentPage="subscribeCourses.page"
+              :length="subscribeCourses.nPage"
               @pageChange="coursePage = $event"
-              :courses="coursesPaging.content"
+              :courses="subscribeCourses.content"
             ></MyCourseList>
           </v-tab-item>
           <v-tab-item v-if="has('student')">
@@ -52,7 +52,7 @@ export default {
     tab: null,
     coursePage: 1,
     wishListPage: 1,
-    limit: constant.LIMIT
+    limit: constant.LIMIT,
   }),
   watch: {
     coursePage(val) {
@@ -66,7 +66,7 @@ export default {
     wishListPage(val) {
       if (!this.has("teacher"))
         this.getAllWishList({ page: val, limit: this.limit });
-    }
+    },
   },
   created() {
     if (this.has("teacher")) {
@@ -77,16 +77,16 @@ export default {
     }
   },
   computed: {
-    ...mapState("course", ["coursesPaging", "wishList"]),
-    ...mapState("auth", ["has"])
+    ...mapState("course", ["subscribeCourses", "wishList"]),
+    ...mapState("auth", ["has"]),
   },
   methods: {
     ...mapActions("course", [
       "getCoursesPaging",
       "getAllWishList",
-      "getSubscribeCourse"
-    ])
+      "getSubscribeCourse",
+    ]),
   },
-  components: { ChangePassword, DetailAccount, MyCourseList }
+  components: { ChangePassword, DetailAccount, MyCourseList },
 };
 </script>

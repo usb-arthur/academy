@@ -157,10 +157,10 @@
             :src="`https://localhost:5001/courses/${$route.params.id}/images`"
           ></v-img>
 
-          <div class="d-flex justify-content-between" >
+          <div class="d-flex justify-content-between">
             <v-card-title>{{ course.courseName }}</v-card-title>
-            <div  class="mt-3 mr-4">
-              <v-btn icon>
+            <div class="mt-3 mr-4">
+              <v-btn @click="handleAddToWishList(course.id)" icon>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
             </div>
@@ -190,8 +190,8 @@
           <v-divider class="my-0 mx-4"></v-divider>
 
           <v-card-title>
-            {{ price | currency }}
-            <span v-if="course.sale" class="text-decoration-line-through">
+            {{ course.actualPrice | currency }}
+            <span v-if="course.sale" class="mx-2 text-decoration-line-through">
               {{ course.courseFee | currency }}
             </span>
             <span v-if="course.sale"> {{ course.sale }}% </span>
@@ -272,6 +272,7 @@ export default {
       "getCourseById",
       "getCourseDetailByCourseId",
       "deleteCourseDetail",
+      "addToWishList",
     ]),
     ...mapActions("feedback", ["getFeedbacksByCourseId"]),
     closeDialog() {
@@ -282,6 +283,15 @@ export default {
           return e;
         });
       }
+    },
+    handleAddToWishList(coursId) {
+      this.addToWishList(coursId)
+        .then(() => {
+          this.text = "Thêm vào danh sách yêu thích";
+        })
+        .catch((err) => {
+          this.text = err.response.data.message;
+        });
     },
   },
 };

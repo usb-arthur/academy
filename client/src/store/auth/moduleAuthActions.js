@@ -19,6 +19,7 @@ export default {
               res.data.objResult.accessToken
             );
             localStorage.setItem(constant.ROLES, res.data.objResult.roles);
+            localStorage.setItem(constant.USER_INFOR, res.data.objResult.name);
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }

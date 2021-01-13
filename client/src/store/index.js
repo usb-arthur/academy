@@ -6,7 +6,7 @@ import user from "./modules/user.js";
 import paths from "./modules/path.js";
 import auth from "./auth/moduleAuth";
 import course from "./course/moduleCourse";
-import categories from "./categories/moduleCategory";
+import category from "./categories/moduleCategory";
 import account from "./account/accountModule";
 import feedback from "./feedback/moduleFeedback";
 
@@ -20,8 +20,8 @@ export default new Vuex.Store({
     paths,
     auth,
     course,
-    categories,
+    category,
     account,
-    feedback
-  }
+    feedback,
+  },
 });

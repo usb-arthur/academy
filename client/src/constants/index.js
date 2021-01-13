@@ -1,5 +1,6 @@
 export default {
   ACCESS_TOKEN: "accessToken",
   ROLES: "Roles",
-  LIMIT: 6
+  USER_INFOR: "UserInfo",
+  LIMIT: 6,
 };

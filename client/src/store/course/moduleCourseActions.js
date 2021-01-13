@@ -12,11 +12,11 @@ export default {
       }
       axios
         .get(url)
-        .then(res => {
+        .then((res) => {
           commit("SET_WISH_LIST", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -26,6 +26,8 @@ export default {
       let url = "/students/courses";
       if (payload.page) {
         url = url + "?page=" + payload.page;
+      } else {
+        url = `${url}?page=1`;
       }
       if (payload.limit) {
         url = url + "&limit=" + payload.limit;
@@ -33,11 +35,11 @@ export default {
       console.log(url, payload);
       axios
         .get(url)
-        .then(res => {
-          commit("SET_COURSES", res.data.objResult);
+        .then((res) => {
+          commit("SET_SUBSCRIBE_COURSES", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -46,11 +48,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get("/courses")
-        .then(res => {
+        .then((res) => {
           commit("SET_COURSES", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -66,11 +68,11 @@ export default {
       }
       axios
         .get(url)
-        .then(res => {
+        .then((res) => {
           commit("SET_COURSES_PAGING", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -79,11 +81,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(`/courses/${payload}`)
-        .then(res => {
+        .then((res) => {
           commit("SET_COURSE", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -110,13 +112,13 @@ export default {
       axios
         .put(`/courses/${id}`, formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         })
-        .then(res => {
+        .then((res) => {
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -125,11 +127,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .delete(`/courses/${payload}`)
-        .then(res => {
+        .then((res) => {
           dispatch("getAllCourses");
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -156,13 +158,13 @@ export default {
       axios
         .post("/courses", formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         })
-        .then(res => {
+        .then((res) => {
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -171,11 +173,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(`/course-details/courses/${payload}`)
-        .then(res => {
+        .then((res) => {
           commit("SET_COURSE_DETAILS", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -192,14 +194,14 @@ export default {
       axios
         .post("/course-details", formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         })
-        .then(res => {
+        .then((res) => {
           dispatch("getCourseDetailByCourseId", id);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -208,11 +210,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .delete(`/course-details/${payload.courseDetailId}`)
-        .then(res => {
+        .then((res) => {
           dispatch("getCourseDetailByCourseId", payload.courseId);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -228,13 +230,24 @@ export default {
       }
       axios
         .get(url)
-        .then(res => {
+        .then((res) => {
           commit("SET_COURSES_BY_CATEGORY", res.data.objResult);
           resolve(res);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
-  }
+  },
+  addToWishList: ({ dispatch }, payload) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post("/watch-lists", { courseId: payload })
+        .then((res) => {
+          dispatch("getAllWishList");
+          resolve(res);
+        })
+        .catch((err) => reject(err));
+    });
+  },
 };

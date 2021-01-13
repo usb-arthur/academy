@@ -1,8 +1,11 @@
 import constant from "@/constants";
 
 export default {
-  has: role => {
+  has: (role) => {
     var roles = localStorage.getItem(constant.ROLES);
     return roles.toLocaleLowerCase().includes(role);
-  }
+  },
+  isAuthenticated: () => localStorage.getItem(constant.USER_INFOR) != null,
+
+  userInfo: () => localStorage.getItem(constant.USER_INFOR),
 };
