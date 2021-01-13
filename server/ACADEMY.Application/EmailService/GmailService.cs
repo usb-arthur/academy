@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace ACADEMY.Application.EmailService
 {
-    public class IGmailService : IEmailService
+    public class GmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
 
-        public IGmailService(IConfiguration configuration)
+        public GmailService(IConfiguration configuration)
         {
             _configuration = configuration;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ACADEMY.Application.AutoMapper;
+using ACADEMY.Application.EmailService;
 using ACADEMY.Application.Implements;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.StorageService;
@@ -102,6 +103,8 @@ namespace ACADEMY.WebApi
             services.AddTransient<IStatisticService, StatisticService>();
             
             services.AddTransient<IFeedbackService, FeedbackService>();
+
+            services.AddTransient<IEmailService, GmailService>();
 
             #endregion
 
