@@ -1,102 +1,5 @@
 <template>
   <div>
-    <md-table
-      v-model="searched"
-      md-sort="name"
-      md-sort-order="asc"
-      @md-selected="onSelect"
-      md-card
-      md-fixed-header
-    >
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h1 class="md-title">LĨNH VỰC</h1>
-        </div>
-
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input
-            placeholder="Tìm theo tên..."
-            v-model="search"
-            @input="searchOnTable"
-          />
-
-          <v-btn @click="newUser">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </md-field>
-      </md-table-toolbar>
-
-      <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">Đã chọn {{ count }} lĩnh vực</div>
-
-        <div class="md-toolbar-section-end">
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="detailCatalog"
-          >
-            <md-icon>assignment</md-icon>
-          </md-button>
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="assignCatalog"
-          >
-            <md-icon>settings</md-icon>
-          </md-button>
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="renameCatalog"
-          >
-            <md-icon>create</md-icon>
-          </md-button>
-          <md-button class="md-icon-button" @click="deleteCatalog">
-            <md-icon>delete</md-icon>
-          </md-button>
-        </div>
-      </md-table-toolbar>
-
-      <md-table-empty-state
-        v-if="!isLoading"
-        md-label="Không tìm thấy lĩnh vực"
-        :md-description="
-          `Không tìm thấy lĩnh vực tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`
-        "
-      >
-        <md-button class="md-primary md-raised" @click="newUser"
-          >Tạo lĩnh vực mới</md-button
-        >
-      </md-table-empty-state>
-
-      <md-table-row
-        slot="md-table-row"
-        slot-scope="{ item }"
-        md-selectable="multiple"
-        md-auto-select
-      >
-        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{
-          item.id
-        }}</md-table-cell>
-        <md-table-cell md-label="Lĩnh vực" md-sort-by="categoryName">{{
-          item.categoryName
-        }}</md-table-cell>
-        <md-table-cell md-label="Tạo bởi" md-sort-by="createdBy">{{
-          item.createdBy
-        }}</md-table-cell>
-        <md-table-cell md-label="Cập nhật bởi" md-sort-by="updatedBy">{{
-          item.updatedBy
-        }}</md-table-cell>
-        <md-table-cell md-label="Ngày tạo" md-sort-by="createdDate">{{
-          item.createdDate
-        }}</md-table-cell>
-        <md-table-cell md-label="Ngày cập nhật" md-sort-by="updatedDate">{{
-          item.updatedDate
-        }}</md-table-cell>
-        <md-table-cell md-label="Thuộc">{{ item.parent }}</md-table-cell>
-      </md-table-row>
-    </md-table>
-
     <v-dialog v-model="addNewCatalog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -184,7 +87,7 @@
                 <tbody>
                   <tr v-for="item in selected" :key="item.id">
                     <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
+                    <td>{{ item.categoryName }}</td>
                     <td>{{ item.createdBy }}</td>
                     <td>{{ item.createdDate }}</td>
                   </tr>
@@ -204,6 +107,53 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-data-table
+    :headers="header"
+    :items="list"
+    :items-per-page="5"
+    :search="search"
+    class="elevation-1"
+  >
+  <template v-slot:top>
+    <v-toolbar flat>
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+        ></v-text-field>
+        <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              @click="newUser"
+            >
+              Thêm mới
+            </v-btn>
+            <v-spacer></v-spacer>
+            </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="renameCatalog(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+        small
+        @click="deleteCatalog(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+  </v-data-table>
+
+
+
+
+
   </div>
 </template>
 
@@ -220,7 +170,17 @@ export default {
     search: null,
     searched: [],
     selected: [],
-    list: []
+    list: [],
+    header: [
+      { text: 'ID', value: 'id' },
+      { text: 'Name', value: 'categoryName' },
+      { text: 'Tạo bởi', value: 'createdBy' },
+      { text: 'Cập nhật bởi', value: 'updatedBy' },
+      { text: 'Ngày tạo', value: 'createdDate' },
+      { text: 'Ngày cập nhật', value: 'updatedDate' },
+      { text: 'Thuộc', value: 'parent' },
+      { text: '', value: 'actions' },
+    ]
   }),
   computed: {
     dslinhvucs() {
@@ -230,7 +190,7 @@ export default {
           id: obj.id,
           categoryName: obj.categoryName,
           createdDate: obj.createdDate,
-          updateDate: obj.updatedDate,
+          updatedDate: obj.updatedDate,
           createdBy: obj.createdBy,
           updatedBy: obj.updatedBy,
           parent: null
@@ -240,7 +200,7 @@ export default {
             id: objc.id,
             categoryName: objc.categoryName,
             createdDate: objc.createdDate,
-            updateDate: objc.updatedDate,
+            updatedDate: objc.updatedDate,
             createdBy: objc.createdBy,
             updatedBy: objc.updatedBy,
             parent: obj.id + " - " + obj.categoryName
@@ -288,13 +248,12 @@ export default {
       this.addNewCatalog = !this.addNewCatalog;
     },
     async ConfirmAdd() {
-      if (this.ThuocLV == "") this.ThuocLV = null;
+      let temp = null;
+      if (this.ThuocLV != "") temp = parseInt(this.ThuocLV.substr(0, this.ThuocLV.indexOf("-")))
       await this.$store
         .dispatch("linhvuc/UploadCategory", {
           categoryName: this.search,
-          categoryId: parseInt(
-            this.ThuocLV.substr(0, this.ThuocLV.indexOf("-"))
-          )
+          categoryId: temp
         })
         .then(() => {
           this.search = null;
@@ -314,7 +273,9 @@ export default {
     activeCatalog() {
       window.alert("Active");
     },
-    renameCatalog() {
+    renameCatalog(item) {
+      this.selected.push(item);
+      this.newname = item.categoryName;
       this.rename = !this.rename;
     },
     async ConfirmRename() {
@@ -336,7 +297,8 @@ export default {
     detailCatalog() {
       window.alert("detail");
     },
-    deleteCatalog() {
+    deleteCatalog(item) {
+      this.selected.push(item);
       this.DeleteDialog = !this.DeleteDialog;
     },
     async ConfirmDelete() {
