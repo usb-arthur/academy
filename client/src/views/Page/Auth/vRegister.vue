@@ -72,7 +72,9 @@
             </v-btn>
           </div>
           <div class="mt-4">
-            <a class="span-reg-bottom" href="/dang-nhap">Bạn đã có tài khoản ?</a>
+            <a class="span-reg-bottom" href="/dang-nhap"
+              >Bạn đã có tài khoản ?</a
+            >
           </div>
         </div>
       </div>
@@ -87,16 +89,16 @@ export default {
     genders: [
       {
         id: 0,
-        value: "Nam"
+        value: "Nam",
       },
       {
         id: 1,
-        value: "Nữ"
+        value: "Nữ",
       },
       {
         id: 2,
-        value: "Khác"
-      }
+        value: "Khác",
+      },
     ],
     user: {
       name: "",
@@ -105,21 +107,37 @@ export default {
       phoneNumber: "",
       dateOfBirth: Date.now(),
       password: "",
-      confirmPassword: ""
-    }
+      confirmPassword: "",
+    },
+    text: '',
   }),
   methods: {
     ...mapActions("auth", ["registerUser"]),
     submit(user) {
-      this.registerUser(user)
-        .then(() => {
-          this.$router.push("/dang-nhap");
-        })
-        .catch(err => {
-          console.log(err.response.data.message);
-        });
-    }
-  }
+      console.log(user);
+      if (!user.name) {
+        this.text = "Vui lòng điền tên";
+      } else if (!user.email) {
+        this.text = "Vui lòng điền email";
+      } else if (!user.dateOfBirth) {
+        this.text = "Vui lòng điền ngày sinh";
+      } else if (!user.phoneNumber) {
+        this.text = "Vui lòng điền SDT";
+      } else if (!user.password) {
+        this.text = "Vui lòng điền mật khẩu";
+      } else if (!user.confirmPassword) {
+        this.text = "Vui lòng điền mật khẩu xác nhận";
+      } else {
+        this.registerUser(user)
+          .then(() => {
+            this.$router.push("/dang-nhap");
+          })
+          .catch((err) => {
+            console.log(err.response.data.message);
+          });
+      }
+    },
+  },
 };
 </script>
 

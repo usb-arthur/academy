@@ -10,7 +10,6 @@
             <v-text-field
               v-model="user.email"
               label="Email"
-              required
               type="email"
               append-icon="mdi-email"
                color="blue-grey lighten-3"
@@ -18,7 +17,11 @@
             <v-text-field
               v-model="user.password"
               label="Mật khẩu"
-              required
+              :rules="{
+                required: true,
+                digits: 7,
+                regex: '^(71|72|74|76|81|82|84|85|86|87|88|89)\\d{5}$'
+              }"
               type="password"
               append-icon="mdi-lock"
                color="blue-grey lighten-3"
