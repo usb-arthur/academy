@@ -144,7 +144,7 @@
                       >
                     </v-col>
                   </v-row>
-                  <div
+                  <div style=""
                     class="box-cmt"
                     v-for="(feedback, index) in feedbacks"
                     :key="feedback.id"
@@ -482,6 +482,7 @@ export default {
 }
 .content-cmt {
   height: 450px;
+  overflow: auto;
 }
 .title-detail-teacher {
   color: #333;
@@ -505,5 +506,6 @@ export default {
 .box-cmt-content {
   font-size: 0.8rem;
   font-weight: 400;
+  color: #333;
 }
 </style>
