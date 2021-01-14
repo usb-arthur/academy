@@ -36,7 +36,9 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
+                                :src="
+                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
+                                "
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -157,9 +159,9 @@
             :src="`https://localhost:5001/courses/${$route.params.id}/images`"
           ></v-img>
 
-          <div class="d-flex justify-content-between" >
+          <div class="d-flex justify-content-between">
             <v-card-title>{{ course.courseName }}</v-card-title>
-            <div  class="mt-3 mr-4">
+            <div class="mt-3 mr-4">
               <v-btn icon>
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
@@ -231,13 +233,13 @@ export default {
     id: -1,
     text: "",
     snackbar: false,
-    video: false,
+    video: false
   }),
   updated() {},
   watch: {
     text() {
       this.snackbar = true;
-    },
+    }
   },
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
@@ -259,7 +261,7 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    },
+    }
   },
   created() {
     const { id } = this.$route.params;
@@ -271,19 +273,19 @@ export default {
     ...mapActions("course", [
       "getCourseById",
       "getCourseDetailByCourseId",
-      "deleteCourseDetail",
+      "deleteCourseDetail"
     ]),
     ...mapActions("feedback", ["getFeedbacksByCourseId"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
           e.isPlaying = false;
           e.pause();
           return e;
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

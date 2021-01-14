@@ -9,7 +9,12 @@
 
       <v-slide-group class="pa-4">
         <v-slide-item v-for="course in list2[0]" :key="course.id">
-          <v-card class="ma-4" height="300" width="450">
+          <v-card
+            class="ma-4"
+            height="300"
+            width="450"
+            :to="`/chi-tiet-khoa-hoc/${course.id}`"
+          >
             <v-img
               height="150"
               width="450"
@@ -36,7 +41,12 @@
 
       <v-slide-group class="pa-4">
         <v-slide-item v-for="course in list2[1]" :key="course.id">
-          <v-card class="ma-4" height="300" width="450">
+          <v-card
+            class="ma-4"
+            height="300"
+            width="450"
+            :to="`/chi-tiet-khoa-hoc/${course.id}`"
+          >
             <v-img
               height="150"
               width="450"
@@ -63,7 +73,12 @@
 
       <v-slide-group class="pa-4">
         <v-slide-item v-for="course in list2[2]" :key="course.id">
-          <v-card class="ma-4" height="300" width="450">
+          <v-card
+            class="ma-4"
+            height="300"
+            width="450"
+            :to="`/chi-tiet-khoa-hoc/${course.id}`"
+          >
             <v-img
               height="150"
               width="450"
@@ -90,7 +105,12 @@
 
       <v-slide-group class="pa-4 stretch">
         <v-slide-item v-for="course in list2[3]" :key="course.id">
-          <v-card class="ma-4" height="300" width="450">
+          <v-card
+            class="ma-4"
+            height="300"
+            width="450"
+            :to="`/chi-tiet-khoa-hoc/${course.id}`"
+          >
             <v-img
               height="150"
               width="450"
@@ -117,13 +137,13 @@
 export default {
   data() {
     return {
-      list2: [],
+      list2: []
     };
   },
   computed: {
     dsCourse() {
       return this.$store.state.khoahoc.items;
-    },
+    }
   },
   methods: {},
   async created() {
@@ -132,16 +152,16 @@ export default {
       await this.$store
         .dispatch("khoahoc/GetStaticsCourse", {
           Payload: 10,
-          Criteria: i,
+          Criteria: i
         })
         .then(() => {
           temp = this.dsCourse;
           this.list2.push(temp);
         })
-        .catch((err) => console.log(err));
+        .catch(err => console.log(err));
     }
     console.log(this.list2);
-  },
+  }
 };
 </script>
 

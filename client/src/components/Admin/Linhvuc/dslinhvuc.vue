@@ -109,51 +109,34 @@
     </v-dialog>
 
     <v-data-table
-    :headers="header"
-    :items="list"
-    :items-per-page="5"
-    :search="search"
-    class="elevation-1"
-  >
-  <template v-slot:top>
-    <v-toolbar flat>
-        <v-text-field
-          v-model="search"
-          label="Search"
-          class="mx-4"
-        ></v-text-field>
-        <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              @click="newUser"
-            >
-              Thêm mới
-            </v-btn>
-            <v-spacer></v-spacer>
-            </v-toolbar>
+      :headers="header"
+      :items="list"
+      :items-per-page="5"
+      :search="search"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-text-field
+            v-model="search"
+            label="Search"
+            class="mx-4"
+          ></v-text-field>
+          <v-btn color="primary" dark class="mb-2" @click="newUser">
+            Thêm mới
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="renameCatalog(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteCatalog(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-  </v-data-table>
-
-
-
-
-
+        <v-icon small class="mr-2" @click="renameCatalog(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteCatalog(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -172,14 +155,14 @@ export default {
     selected: [],
     list: [],
     header: [
-      { text: 'ID', value: 'id' },
-      { text: 'Name', value: 'categoryName' },
-      { text: 'Tạo bởi', value: 'createdBy' },
-      { text: 'Cập nhật bởi', value: 'updatedBy' },
-      { text: 'Ngày tạo', value: 'createdDate' },
-      { text: 'Ngày cập nhật', value: 'updatedDate' },
-      { text: 'Thuộc', value: 'parent' },
-      { text: '', value: 'actions' },
+      { text: "ID", value: "id" },
+      { text: "Name", value: "categoryName" },
+      { text: "Tạo bởi", value: "createdBy" },
+      { text: "Cập nhật bởi", value: "updatedBy" },
+      { text: "Ngày tạo", value: "createdDate" },
+      { text: "Ngày cập nhật", value: "updatedDate" },
+      { text: "Thuộc", value: "parent" },
+      { text: "", value: "actions" }
     ]
   }),
   computed: {
@@ -249,7 +232,8 @@ export default {
     },
     async ConfirmAdd() {
       let temp = null;
-      if (this.ThuocLV != "") temp = parseInt(this.ThuocLV.substr(0, this.ThuocLV.indexOf("-")))
+      if (this.ThuocLV != "")
+        temp = parseInt(this.ThuocLV.substr(0, this.ThuocLV.indexOf("-")));
       await this.$store
         .dispatch("linhvuc/UploadCategory", {
           categoryName: this.search,
@@ -274,6 +258,7 @@ export default {
       window.alert("Active");
     },
     renameCatalog(item) {
+      this.selected = [];
       this.selected.push(item);
       this.newname = item.categoryName;
       this.rename = !this.rename;
@@ -298,6 +283,7 @@ export default {
       window.alert("detail");
     },
     deleteCatalog(item) {
+      this.selected = [];
       this.selected.push(item);
       this.DeleteDialog = !this.DeleteDialog;
     },

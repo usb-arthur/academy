@@ -1,97 +1,5 @@
 <template>
   <div>
-    <md-table
-      v-model="searched"
-      md-sort="name"
-      md-sort-order="asc"
-      @md-selected="onSelect"
-      md-card
-      md-fixed-header
-    >
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h1 class="md-title">NGƯỜI DÙNG</h1>
-        </div>
-
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input
-            placeholder="Tìm theo tên..."
-            v-model="search"
-            @input="searchOnTable"
-          />
-
-          <v-btn @click="newUser">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </md-field>
-      </md-table-toolbar>
-
-      <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">Đã chọn {{ count }} lĩnh vực</div>
-
-        <div class="md-toolbar-section-end">
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="detailCatalog"
-          >
-            <md-icon>assignment</md-icon>
-          </md-button>
-          <md-button v-if="morethanone" class="md-icon-button">
-            <md-icon>settings</md-icon>
-          </md-button>
-          <md-button
-            v-if="morethanone"
-            class="md-icon-button"
-            @click="renameUser"
-          >
-            <md-icon>create</md-icon>
-          </md-button>
-          <md-button class="md-icon-button" @click="deleteUser">
-            <md-icon>delete</md-icon>
-          </md-button>
-        </div>
-      </md-table-toolbar>
-
-      <md-table-empty-state
-        v-if="!isLoading"
-        md-label="Không tìm thấy người dùng"
-        :md-description="
-          `Không tìm thấy người dùng tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`
-        "
-      >
-        <md-button class="md-primary md-raised" @click="newUser"
-          >Tạo người dùng mới</md-button
-        >
-      </md-table-empty-state>
-
-      <md-table-row
-        slot="md-table-row"
-        slot-scope="{ item }"
-        md-selectable="multiple"
-        md-auto-select
-      >
-        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{
-          item.id
-        }}</md-table-cell>
-        <md-table-cell md-label="Tên" md-sort-by="name">{{
-          item.name
-        }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="email">{{
-          item.email
-        }}</md-table-cell>
-        <md-table-cell md-label="Giới tính" md-sort-by="gender">{{
-          item.gender
-        }}</md-table-cell>
-        <md-table-cell md-label="Ngày sinh" md-sort-by="dateOfBirth">{{
-          item.dateOfBirth
-        }}</md-table-cell>
-        <md-table-cell md-label="Số điện thoại" md-sort-by="phoneNumber">{{
-          item.phoneNumber
-        }}</md-table-cell>
-      </md-table-row>
-    </md-table>
-
     <v-dialog v-model="addNewUser" max-width="600px">
       <v-card>
         <v-card-title>
@@ -134,6 +42,7 @@
               v-model="userNew.dateOfBirth"
               :rules="[() => !!userNew.dateOfBirth || 'Không được để trống']"
               label="Ngày sinh"
+              type="date"
               required
             ></v-text-field>
 
@@ -182,8 +91,8 @@
             </v-radio-group>
 
             <v-text-field
-              v-model="userNew.contact"
-              :rules="[() => !!userNew.contact || 'Không được để trống']"
+              v-model="userNew.phoneNumber"
+              :rules="[() => !!userNew.phoneNumber || 'Không được để trống']"
               label="Contact"
               required
             ></v-text-field>
@@ -202,7 +111,7 @@
               class="mr-4"
               @click="validate1"
             >
-              Tạo
+              Xác nhận
             </v-btn>
           </v-form>
         </v-card-text>
@@ -253,6 +162,36 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-data-table
+      :headers="header"
+      :items="list"
+      :items-per-page="5"
+      :search="search"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-text-field
+            v-model="search"
+            label="Search"
+            class="mx-4"
+          ></v-text-field>
+          <v-btn color="primary" dark class="mb-2" @click="newUser">
+            Thêm mới
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="renameUser(item)">
+          mdi-pencil
+        </v-icon>
+        <v-icon small @click="deleteUser(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -278,7 +217,16 @@ export default {
     search: null,
     searched: [],
     selected: [],
-    list: []
+    list: [],
+    header: [
+      { text: "ID", value: "id" },
+      { text: "Tên", value: "name" },
+      { text: "Email", value: "email" },
+      { text: "Giới tính", value: "gender" },
+      { text: "Ngày sinh", value: "dateOfBirth" },
+      { text: "Số điện thoại", value: "phoneNumber" },
+      { text: "", value: "actions" }
+    ]
   }),
   computed: {
     dsUser() {
@@ -327,10 +275,10 @@ export default {
       if (this.$refs.form1.validate()) {
         await this.$store
           .dispatch("user/UpdateUser", {
-            id: this.searched[0].id,
+            id: this.userNew.id,
             name: this.userNew.name,
             gender: this.userNew.gender,
-            contact: this.userNew.contact,
+            phoneNumber: this.userNew.phoneNumber,
             dateOfBirth: this.userNew.dateOfBirth
           })
           .then(() => {
@@ -351,7 +299,10 @@ export default {
     activeCatalog() {
       window.alert("Active");
     },
-    renameUser() {
+    renameUser(item) {
+      this.selected = [];
+      this.selected.push(item);
+      Object.assign(this.userNew, item);
       this.patchUser = !this.patchUser;
     },
     assignCatalog() {
@@ -360,7 +311,9 @@ export default {
     detailCatalog() {
       window.alert("detail");
     },
-    deleteUser() {
+    deleteUser(item) {
+      this.selected = [];
+      this.selected.push(item);
       this.DeleteDialog = !this.DeleteDialog;
     },
     async ConfirmDelete() {
