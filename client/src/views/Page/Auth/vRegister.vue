@@ -13,6 +13,7 @@
               required
               type="email"
               append-icon="mdi-email"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-text-field
               v-model="user.name"
@@ -20,6 +21,7 @@
               required
               type="text"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-select
               v-model="user.gender"
@@ -29,6 +31,7 @@
               item-text="value"
               item-value="id"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-select>
             <v-text-field
               v-model="user.phoneNumber"
@@ -36,6 +39,7 @@
               required
               type="number"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-text-field
               v-model="user.dateOfBirth"
@@ -43,6 +47,7 @@
               required
               type="date"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-text-field
               v-model="user.password"
@@ -50,6 +55,7 @@
               required
               type="password"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-text-field
               v-model="user.confirmPassword"
@@ -57,6 +63,7 @@
               required
               type="password"
               append-icon="mdi-lock"
+              color="blue-grey lighten-3"
             ></v-text-field>
           </div>
           <div class="center">
@@ -118,7 +125,7 @@ export default {
 
 <style scoped>
 .main {
-  background-image: url("/src/assets/image/backround-reg.svg");
+  background-image: url("../../../assets/image/backround-login.svg");
   background-size: 100%;
 }
 .max-height {
@@ -142,14 +149,14 @@ export default {
 }
 .box--reg {
   width: 700px;
-  height: 470px;
+  height: 720px;
   border: 1px solid red;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
 }
 .form--reg {
   width: 540px;
-  height: 400px;
+  height: 580px;
 }
 .box__reg--title {
   font-family: Roboto;
