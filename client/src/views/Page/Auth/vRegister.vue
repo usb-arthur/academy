@@ -80,16 +80,16 @@ export default {
     genders: [
       {
         id: 0,
-        value: "Nam",
+        value: "Nam"
       },
       {
         id: 1,
-        value: "Nữ",
+        value: "Nữ"
       },
       {
         id: 2,
-        value: "Khác",
-      },
+        value: "Khác"
+      }
     ],
     user: {
       name: "",
@@ -98,8 +98,8 @@ export default {
       phoneNumber: "",
       dateOfBirth: Date.now(),
       password: "",
-      confirmPassword: "",
-    },
+      confirmPassword: ""
+    }
   }),
   methods: {
     ...mapActions("auth", ["registerUser"]),
@@ -108,11 +108,11 @@ export default {
         .then(() => {
           this.$router.push("/dang-nhap");
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err.response.data.message);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

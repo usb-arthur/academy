@@ -36,7 +36,9 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
+                                :src="
+                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
+                                "
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -49,7 +51,6 @@
                         </v-container>
                       </template>
                     </v-dialog>
-                    <v-icon small class="mr-2">mdi-pencil</v-icon>
                     <v-icon @click="removeItem(courseDetail.id)" small
                       >mdi-delete</v-icon
                     >
@@ -126,7 +127,22 @@
             >
               <v-chip>Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip>
             </v-chip-group>
-            <v-btn color="primary">Đánh dấu hoàn thành</v-btn>
+            <v-btn
+              v-if="course.courseStatus === courseStatus.INCOMPLETE"
+              block
+              @click="handleComplete(course.id, courseStatus.COMPLETED)"
+              class="mt-2"
+              color="primary"
+              >Đánh dấu hoàn thành</v-btn
+            >
+            <v-btn
+              v-if="course.courseStatus === courseStatus.COMPLETED"
+              block
+              @click="handleComplete(course.id, courseStatus.INCOMPLETE)"
+              class="mt-2"
+              color="primary"
+              >Đánh dấu chưa hoàn thành</v-btn
+            >
           </v-card-text>
         </v-card>
       </v-col>
@@ -159,6 +175,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import constant from "@/constants";
 import VAddCourseDetail from "@/components/Teacher/vAddCourseDetail";
 
 export default {
@@ -171,12 +188,20 @@ export default {
     text: "",
     snackbar: false,
     video: false,
+    courseStatus: constant.COURSE_STATUS
   }),
   updated() {},
   watch: {
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
     },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
+    }
   },
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
@@ -197,7 +222,7 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    },
+    }
   },
   created() {
     const { id } = this.$route.params;
@@ -209,10 +234,11 @@ export default {
       "getCourseById",
       "getCourseDetailByCourseId",
       "deleteCourseDetail",
+      "patchCourseStatus"
     ]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
           e.isPlaying = false;
           e.pause();
           return e;
@@ -228,13 +254,13 @@ export default {
     deleteCourseConfirm() {
       this.deleteCourseDetail({
         courseDetailId: this.id,
-        courseId: this.$route.params.id,
+        courseId: this.$route.params.id
       })
         .then(() => {
           this.text = "Thao tác thành công";
           this.closeDelete();
         })
-        .catch((err) => {
+        .catch(err => {
           alert(err);
           this.text =
             err.response.statusText ||
@@ -245,7 +271,14 @@ export default {
       this.id = id;
       this.dialogDelete = true;
     },
-  },
+    handleComplete(courseId, courseStatus) {
+      this.patchCourseStatus({ id: courseId, status: courseStatus })
+        .then(res => {
+          this.text = `Khoá học này đã được đánh dấu ${res.data.objResult.status.toLowerCase()}`;
+        })
+        .catch(err => (this.text = err.response.data.message));
+    }
+  }
 };
 </script>
 

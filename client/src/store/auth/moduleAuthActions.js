@@ -9,9 +9,9 @@ export default {
         .post("/auth/sign-in", {
           email: payload.email,
           password: payload.password,
-          rememberMe: payload.rememberMe,
+          rememberMe: payload.rememberMe
         })
-        .then((res) => {
+        .then(res => {
           if (res.status === 200) {
             router.push(router.currentRoute.query.to || "/");
             localStorage.setItem(
@@ -20,11 +20,15 @@ export default {
             );
             localStorage.setItem(constant.ROLES, res.data.objResult.roles);
             localStorage.setItem(constant.USER_INFOR, res.data.objResult.name);
+            localStorage.setItem(
+              constant.USER,
+              JSON.stringify(res.data.objResult)
+            );
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -34,5 +38,5 @@ export default {
   },
   registerUser(_, payload) {
     return axios.post("/auth/register", payload);
-  },
+  }
 };

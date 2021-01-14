@@ -92,6 +92,28 @@ namespace ACADEMY.WebApi.Controllers
             return StatusCode((int) result.StatusCode, result);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("statistic/categories/{id}")]
+        public async Task<IActionResult> GetRelativeCourse(long id, [FromQuery] int payload)
+        {
+            var result = await _courseService.GetRelativeCourse(id, payload);
+
+            return StatusCode((int) result.StatusCode, result);
+        }
+        
+        [HttpPatch]
+        [Route("{id}/status")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> PatchCourse(long id, [FromBody] PatchCourseRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
+            var result = await _courseService.UpdateStatusAsync(id, request);
+
+            return StatusCode((int) result.StatusCode, result);
+        }
+
         [HttpGet("{id}/images")]
         [AllowAnonymous]
         public async Task<IActionResult> GetImageByCourseId(long id)

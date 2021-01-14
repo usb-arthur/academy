@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.Requests.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,6 @@ namespace ACADEMY.WebApi.Controllers
 {
     [ApiController]
     [Route("students")]
-    [Authorize(Roles = "Student,Admin,Teacher")]
     public class StudentsController : ControllerBase
     {
         private readonly IStudentService _studentService;
@@ -23,6 +23,8 @@ namespace ACADEMY.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("information")]
+        [Authorize(Roles = "Student,Admin,Teacher")]
+
         public async Task<IActionResult> GetInformation()
         {
             var response = await _studentService.GetInformationAsync();
@@ -35,6 +37,8 @@ namespace ACADEMY.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("courses")]
+        [Authorize(Roles = "Student,Admin,Teacher")]
+
         public async Task<IActionResult> GetRegisteredCourses([FromQuery] GetCoursesPagingRequest request)
         {
             var response = await _studentService.GetRegisteredCourseAsync(request);
@@ -43,11 +47,10 @@ namespace ACADEMY.WebApi.Controllers
         }
 
 
-        [Authorize]
-        [HttpGet("courses/{id}")]
-        public async Task<IActionResult> IsInCourse(long id)
+        [HttpPost("courses/{id}/is-in-course")]
+        public async Task<IActionResult> IsInCourse(long id, [FromBody] IsInCourseRequest request)
         {
-            var isInCourse = await _studentService.IsInCourseAsync(id);
+            var isInCourse = await _studentService.IsInCourseAsync(id, request);
 
             return Ok(isInCourse);
         }
@@ -58,6 +61,8 @@ namespace ACADEMY.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("courses/{id:long}")]
+        [Authorize(Roles = "Student,Admin,Teacher")]
+
         public async Task<IActionResult> SubscribeCourse(long id)
         {
             var result = await _studentService.SubscribeCourseAsync(id);
@@ -66,6 +71,8 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpDelete("courses/{id:long}")]
+        [Authorize(Roles = "Student,Admin,Teacher")]
+
         public async Task<IActionResult> UnsubscribeCourse(long id)
         {
             var result = await _studentService.UnsubscribeCourseAsync(id);

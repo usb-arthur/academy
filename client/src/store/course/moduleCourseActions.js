@@ -1,4 +1,5 @@
 import axios from "@/http/axios";
+import constant from "@/constants";
 
 export default {
   getAllWishList: ({ commit }, payload) => {
@@ -12,11 +13,11 @@ export default {
       }
       axios
         .get(url)
-        .then((res) => {
+        .then(res => {
           commit("SET_WISH_LIST", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -35,11 +36,11 @@ export default {
       console.log(url, payload);
       axios
         .get(url)
-        .then((res) => {
+        .then(res => {
           commit("SET_SUBSCRIBE_COURSES", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -48,11 +49,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get("/courses")
-        .then((res) => {
+        .then(res => {
           commit("SET_COURSES", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -68,11 +69,11 @@ export default {
       }
       axios
         .get(url)
-        .then((res) => {
+        .then(res => {
           commit("SET_COURSES_PAGING", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -81,11 +82,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(`/courses/${payload}`)
-        .then((res) => {
+        .then(res => {
           commit("SET_COURSE", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -112,13 +113,13 @@ export default {
       axios
         .put(`/courses/${id}`, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         })
-        .then((res) => {
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -127,11 +128,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .delete(`/courses/${payload}`)
-        .then((res) => {
+        .then(res => {
           dispatch("getAllCourses");
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -158,13 +159,13 @@ export default {
       axios
         .post("/courses", formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         })
-        .then((res) => {
+        .then(res => {
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -173,11 +174,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(`/course-details/courses/${payload}`)
-        .then((res) => {
+        .then(res => {
           commit("SET_COURSE_DETAILS", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -194,14 +195,14 @@ export default {
       axios
         .post("/course-details", formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         })
-        .then((res) => {
+        .then(res => {
           dispatch("getCourseDetailByCourseId", id);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -210,11 +211,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .delete(`/course-details/${payload.courseDetailId}`)
-        .then((res) => {
+        .then(res => {
           dispatch("getCourseDetailByCourseId", payload.courseId);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -230,11 +231,11 @@ export default {
       }
       axios
         .get(url)
-        .then((res) => {
+        .then(res => {
           commit("SET_COURSES_BY_CATEGORY", res.data.objResult);
           resolve(res);
         })
-        .catch((err) => {
+        .catch(err => {
           reject(err);
         });
     });
@@ -243,11 +244,49 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .post("/watch-lists", { courseId: payload })
-        .then((res) => {
+        .then(res => {
           dispatch("getAllWishList");
           resolve(res);
         })
-        .catch((err) => reject(err));
+        .catch(err => reject(err));
     });
   },
+  patchCourseStatus: ({ commit }, payload) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .patch(`/courses/${payload.id}/status`, { status: payload.status })
+        .then(res => {
+          commit("SET_COURSE", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => reject(err));
+    });
+  },
+  getIsInCourse({ commit }, payload) {
+    const user = JSON.parse(localStorage.getItem(constant.USER));
+    if (!user) {
+      commit("SET_IS_IN_COURSE", false);
+      return new Promise(resolve => resolve(false));
+    }
+    return new Promise((resolve, reject) => {
+      axios
+        .post(`/students/courses/${payload}/is-in-course`, { userId: user.id })
+        .then(res => {
+          commit("SET_IS_IN_COURSE", res.data);
+          resolve(res);
+        })
+        .catch(err => reject(err));
+    });
+  },
+  getRelativeCourse({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(`/courses/statistic/categories/${payload}?payload=5`)
+        .then(res => {
+          commit("SET_RELATIVE_COURSE", res.data.objResult);
+          resolve(res);
+        })
+        .catch(err => reject(err));
+    });
+  }
 };

@@ -4,12 +4,6 @@
       <v-col cols="6">
         <v-row>
           <v-col cols="12">
-            <v-card>
-              <v-card-title>Mô tả khóa học</v-card-title>
-              <v-card-text v-html="course.detailDescription"></v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12">
             <v-card color="content-course">
               <v-card-title> Nội dung khóa học </v-card-title>
               <v-card-text>
@@ -21,6 +15,7 @@
                     <span>{{ courseDetail.content }}</span>
                     <v-spacer></v-spacer>
                     <v-dialog
+                      v-if="isInCourse || courseDetail.isReview"
                       transition="dialog-bottom-transition"
                       max-width="900"
                     >
@@ -36,7 +31,9 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
+                                :src="
+                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
+                                "
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -106,106 +103,167 @@
           <v-col cols="12">
             <v-card class="content-cmt">
               <v-card-title> Bình luận </v-card-title>
-              <div class="grey--text ml-4">
-                <div
-                  class="box-cmt"
-                  v-for="feedback in feedbacks"
-                  :key="feedback.id"
-                >
-                  <div class="mt-2 ml-2">
-                    <span class="box-cmt-name">{{
-                      feedback.student.name
-                    }}</span>
-                  </div>
-                  <div class="mt-2 ml-2">
-                    <v-rating
-                      :value="feedback.rate / 2"
-                      color="amber"
-                      dense
-                      half-increments
-                      readonly
-                      size="14"
-                    ></v-rating>
-                  </div>
-                  <div class="mt-2 ml-2">
-                    <span class="box-cmt-content">
-                      {{ feedback.content }}
-                    </span>
+              <v-card-text>
+                <div class="grey--text ml-4">
+                  <v-row v-if="isInCourse">
+                    <v-col cols="7">
+                      <v-text-field
+                        outlined
+                        flat
+                        v-model="feedbackSend.content"
+                        dense
+                        label="Cảm nghĩ của bạn về khoá học này"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-select
+                        :items="rating"
+                        item-value="value"
+                        item-text="text"
+                        outlined
+                        v-model="feedbackSend.rate"
+                        flat
+                        dense
+                        label="Đánh giá"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="2">
+                      <v-btn
+                        @click="sendFeedback(feedbackSend)"
+                        block
+                        color="primary"
+                        >Gửi</v-btn
+                      >
+                    </v-col>
+                  </v-row>
+                  <div
+                    class="box-cmt"
+                    v-for="(feedback, index) in feedbacks"
+                    :key="feedback.id"
+                  >
+                    <div class="mt-2 ml-2">
+                      <span class="box-cmt-name">{{
+                        feedback.student.name
+                      }}</span>
+                    </div>
+                    <div class="mt-2 ml-2">
+                      <v-rating
+                        :value="feedback.rate / 2"
+                        color="amber"
+                        dense
+                        half-increments
+                        readonly
+                        size="14"
+                      ></v-rating>
+                    </div>
+                    <div class="mt-2 ml-2">
+                      <span class="box-cmt-content">
+                        {{ feedback.content }}
+                      </span>
+                    </div>
+                    <v-divider v-if="index != feedbacks.length - 1"></v-divider>
                   </div>
                 </div>
-              </div>
+              </v-card-text>
             </v-card>
           </v-col>
         </v-row>
       </v-col>
       <v-col cols="6">
-        <v-card
-          :loading="loading"
-          max-width="600"
-          class="mx-auto position-fixed"
-        >
-          <template slot="progress">
-            <v-progress-linear
-              color="deep-purple"
-              height="10"
-              indeterminate
-            ></v-progress-linear>
-          </template>
+        <v-row>
+          <v-col cols="12">
+            <v-card :loading="loading">
+              <template slot="progress">
+                <v-progress-linear
+                  color="deep-purple"
+                  height="10"
+                  indeterminate
+                ></v-progress-linear>
+              </template>
 
-          <v-img
-            height="250"
-            :src="`https://localhost:5001/courses/${$route.params.id}/images`"
-          ></v-img>
+              <v-img
+                height="250"
+                :src="
+                  `https://localhost:5001/courses/${$route.params.id}/images`
+                "
+              ></v-img>
 
-          <div class="d-flex justify-content-between">
-            <v-card-title>{{ course.courseName }}</v-card-title>
-            <div class="mt-3 mr-4">
-              <v-btn @click="handleAddToWishList(course.id)" icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-            </div>
-          </div>
-          <v-card-text>
-            <v-row align="center" class="mx-0">
-              <v-rating
-                :value="rate"
-                color="amber"
-                dense
-                half-increments
-                readonly
-                size="14"
-              ></v-rating>
-
-              <div class="grey--text ml-4">
-                {{ rate }} ({{ numOfFeedback }} người đánh giá) và có
-                {{ numOfStudent }} người theo học
+              <div class="d-flex justify-content-between">
+                <v-card-title>{{ course.courseName }}</v-card-title>
+                <div class="mt-3 mr-4">
+                  <v-btn @click="handleAddToWishList(course.id)" icon>
+                    <v-icon>mdi-heart</v-icon>
+                  </v-btn>
+                </div>
               </div>
-            </v-row>
+              <v-card-text>
+                <v-row align="center" class="mx-0">
+                  <v-rating
+                    :value="rate"
+                    color="amber"
+                    dense
+                    half-increments
+                    readonly
+                    size="14"
+                  ></v-rating>
 
-            <div class="my-4 subtitle-1">
-              {{ course.briefDescription }}
-            </div>
-          </v-card-text>
+                  <div class="grey--text ml-4">
+                    {{ rate }} ({{ numOfFeedback }} người đánh giá) và có
+                    {{ numOfStudent }} người theo học
+                  </div>
+                </v-row>
 
-          <v-divider class="my-0 mx-4"></v-divider>
+                <div class="my-4 subtitle-1">
+                  {{ course.briefDescription }}
+                </div>
+              </v-card-text>
 
+              <v-divider class="my-0 mx-4"></v-divider>
+
+              <v-card-title>
+                {{ course.actualPrice | currency }}
+                <span
+                  v-if="course.sale"
+                  class="mx-2 text-decoration-line-through"
+                >
+                  {{ course.courseFee | currency }}
+                </span>
+                <span v-if="course.sale"> {{ course.sale }}% </span>
+              </v-card-title>
+
+              <v-card-text>
+                <v-chip-group
+                  v-model="selection"
+                  active-class="deep-purple accent-4 white--text"
+                  column
+                  v-if="course.sale"
+                >
+                  <v-chip
+                    >Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip
+                  >
+                </v-chip-group>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-card>
+              <v-card-title>Mô tả khóa học</v-card-title>
+              <v-card-text v-html="course.detailDescription"></v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12">
+        <v-card>
           <v-card-title>
-            {{ course.actualPrice | currency }}
-            <span v-if="course.sale" class="mx-2 text-decoration-line-through">
-              {{ course.courseFee | currency }}
-            </span>
-            <span v-if="course.sale"> {{ course.sale }}% </span>
+            <h1>Các khoá học tương tự</h1>
           </v-card-title>
-
           <v-card-text>
-            <v-chip-group
-              v-model="selection"
-              active-class="deep-purple accent-4 white--text"
-              column
-              v-if="course.sale"
-            >
-              <v-chip>Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip>
-            </v-chip-group>
+            <v-slide-group class="pa-4">
+              <v-slide-item v-for="course in relativeCourse" :key="course.id">
+                <v-course-detail :course="course"></v-course-detail>
+              </v-slide-item>
+            </v-slide-group>
           </v-card-text>
         </v-card>
       </v-col>
@@ -223,8 +281,10 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import vCourseDetail from "../../../components/Course/vCourseDetail.vue";
 
 export default {
+  components: { vCourseDetail },
   data: () => ({
     loading: false,
     selection: 1,
@@ -232,15 +292,57 @@ export default {
     text: "",
     snackbar: false,
     video: false,
+    rating: [
+      {
+        value: 0,
+        text: "Quá tệ (0)"
+      },
+      {
+        value: 1,
+        text: "Tệ (1)"
+      },
+      {
+        value: 2,
+        text: "Bình thường (2)"
+      },
+      {
+        value: 3,
+        text: "Tạm được (3)"
+      },
+      {
+        value: 4,
+        text: "Tốt (4)"
+      },
+      {
+        value: 5,
+        text: "Rất tốt (5)"
+      }
+    ],
+    feedbackSend: {
+      content: "",
+      rate: -1
+    }
   }),
   updated() {},
   watch: {
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
     },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
+    }
   },
   computed: {
-    ...mapState("course", ["course", "courseDetails"]),
+    ...mapState("course", [
+      "course",
+      "courseDetails",
+      "isInCourse",
+      "relativeCourse"
+    ]),
     ...mapState("feedback", ["feedbacks"]),
     rate() {
       return this.course.rate / 2 || 0;
@@ -259,11 +361,15 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    },
+    }
   },
   created() {
     const { id } = this.$route.params;
-    this.getCourseById(id);
+    this.getIsInCourse(id);
+    this.feedbackSend.courseId = id;
+    this.getCourseById(id).then(res => {
+      this.getRelativeCourse(res.data.objResult.category.id);
+    });
     this.getCourseDetailByCourseId(id);
     this.getFeedbacksByCourseId(id);
   },
@@ -273,27 +379,38 @@ export default {
       "getCourseDetailByCourseId",
       "deleteCourseDetail",
       "addToWishList",
+      "getIsInCourse",
+      "getRelativeCourse"
     ]),
-    ...mapActions("feedback", ["getFeedbacksByCourseId"]),
+    ...mapActions("feedback", ["getFeedbacksByCourseId", "createFeedback"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
           e.isPlaying = false;
           e.pause();
           return e;
         });
       }
     },
+    sendFeedback(feedback) {
+      this.createFeedback(feedback)
+        .then(() => {
+          this.text = "Thêm đánh giá thành công";
+          this.feedbackSend.content = "";
+          this.feedbackSend.rate = -1;
+        })
+        .catch(err => (this.text = err.response.data.message));
+    },
     handleAddToWishList(coursId) {
       this.addToWishList(coursId)
         .then(() => {
           this.text = "Thêm vào danh sách yêu thích";
         })
-        .catch((err) => {
+        .catch(err => {
           this.text = err.response.data.message;
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

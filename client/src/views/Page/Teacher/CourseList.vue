@@ -95,8 +95,15 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
     }
   },
   computed: {

@@ -1,13 +1,23 @@
 <template>
-  <v-card max-width="500" min-height="500" max-height="500" class="ma-4">
+  <v-card max-width="550" min-height="550" max-height="550" class="ma-4">
     <v-img
       height="250"
       :src="`https://localhost:5001/courses/${course.id}/images`"
     ></v-img>
 
     <router-link :to="`/chi-tiet-khoa-hoc/${course.id}`">
-      <v-card-title>{{ course.courseName }}</v-card-title>
+      <v-card-title>{{ course.courseName }} </v-card-title>
     </router-link>
+    <v-card-subtitle style="padding-top: 0; padding-bottom: 0">
+      <v-chip-group
+        v-if="course.new || course.bestSeller"
+        active-class="deep-purple accent-4 white--text"
+        column
+      >
+        <v-chip color="error" v-if="course.new">Mới</v-chip>
+        <v-chip color="primary" v-if="course.bestSeller">Bán chạy</v-chip>
+      </v-chip-group>
+    </v-card-subtitle>
     <v-card-subtitle style="padding-top: 0">
       {{ course.category.categoryName }}
     </v-card-subtitle>
@@ -42,7 +52,9 @@
 
     <v-card-text v-if="course.sale">
       <v-chip-group active-class="deep-purple accent-4 white--text" column>
-        <v-chip>Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip>
+        <v-chip v-if="course.sale"
+          >Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip
+        >
       </v-chip-group>
     </v-card-text>
   </v-card>
@@ -52,11 +64,10 @@
 export default {
   props: {
     course: {
-      type: Object,
-    },
-  },
+      type: Object
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

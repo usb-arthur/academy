@@ -13,7 +13,7 @@ import PageContent from "./HomePageContent.vue";
 export default {
   components: {
     NavBar,
-    PageContent,
-  },
+    PageContent
+  }
 };
 </script>

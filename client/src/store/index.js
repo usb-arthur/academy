@@ -23,5 +23,6 @@ export default new Vuex.Store({
     category,
     account,
     feedback,
-  },
+    categories: category
+  }
 });

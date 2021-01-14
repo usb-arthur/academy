@@ -16,7 +16,12 @@
           <v-btn text light v-bind="attrs" v-on="on">Danh sách lĩnh vực</v-btn>
         </template>
         <v-list dense nav>
-          <v-list-item v-for="category in categories" :key="category.id">
+          <v-list-item
+            link
+            :to="`/danh-sach-khoa-hoc/${category.id}`"
+            v-for="category in categories"
+            :key="category.id"
+          >
             <v-list-item-content>
               <v-menu style="width: 100%" offset-x open-on-hover>
                 <template v-slot:activator="{ on, attrs }">
@@ -94,16 +99,15 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState("auth", ["has", "userInfo", "isAuthenticated"]),
-    ...mapState("category", ["categories"]),
+    ...mapState("category", ["categories"])
   },
   created() {
     this.getAllCategories();
   },
   methods: {
-    ...mapActions("category", ["getAllCategories"]),
-  },
+    ...mapActions("category", ["getAllCategories"])
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

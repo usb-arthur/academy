@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import navbar from "../../../components/NavBar/vNavBar.vue"
+import navbar from "../../../components/NavBar/vNavBar.vue";
 export default {
   data: () => ({
     drawer: false,
     group: null
   }),
-  components:{
-    navbar,
+  components: {
+    navbar
   }
 };
 </script>

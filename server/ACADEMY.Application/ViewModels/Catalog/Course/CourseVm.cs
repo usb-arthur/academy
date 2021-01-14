@@ -1,6 +1,7 @@
 ﻿using System;
 using ACADEMY.Application.ViewModels.Catalog.Category;
 using ACADEMY.Application.ViewModels.System;
+using ACADEMY.Data.Enums;
 
 namespace ACADEMY.Application.ViewModels.Catalog.Course
 {
@@ -23,6 +24,10 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
         public double? Rate { get; set; }
 
         public CategoryVm Category { get; set; }
+
+        public bool New { get; set; }
+
+        public bool BestSeller => NumOfStudent > 10;
 
         public double ActualPrice
         {
@@ -59,6 +64,8 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
         public UserVm User { get; set; }
         
         public string Status { get; set; }
+
+        public CourseStatus CourseStatus { get; set; }
 
         public string CreatedDate { get; set; }
 

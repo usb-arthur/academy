@@ -29,18 +29,18 @@ export default {
     courses: Array,
     currentPage: Number,
     length: Number,
-    title: String,
+    title: String
   },
   watch: {
     page(val) {
       this.$emit("pageChange", val);
-    },
+    }
   },
   data: () => ({
-    page: 0,
+    page: 0
   }),
   created() {
     this.page = this.currentPage;
-  },
+  }
 };
 </script>

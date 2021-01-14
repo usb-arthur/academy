@@ -1,6 +1,7 @@
 ﻿using ACADEMY.Application.Requests.Catalog.Category;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.Application.Requests.Common;
+using ACADEMY.Application.Requests.Student;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Data.Entities;
 using ACADEMY.Data.Enums;
@@ -28,6 +29,9 @@ namespace ACADEMY.Application.AutoMapper
             CreateMap<PutCourseRequest, Course>()
                 .ForAllMembers(options => options.UseDestinationValue());
 
+            CreateMap<PatchCourseRequest, Course>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
             CreateMap<PostCategoryRequest, Category>()
                 .ForAllMembers(options => options.UseDestinationValue());
 
@@ -41,6 +45,9 @@ namespace ACADEMY.Application.AutoMapper
                 .ForAllMembers(options => options.UseDestinationValue());
 
             CreateMap<PostWatchListRequest, WatchList>()
+                .ForAllMembers(options => options.UseDestinationValue());
+            
+            CreateMap<PostFeedbackRequest, Feedback>()
                 .ForAllMembers(options => options.UseDestinationValue());
         }
     }
