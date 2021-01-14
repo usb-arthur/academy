@@ -70,6 +70,8 @@ namespace ACADEMY.Application.Implements
             course.NumOfView += 1;
             course = await _courseRepository.UpdateAsync(course);
 
+            await _unitOfWork.CommitAsync();
+
             return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
@@ -158,9 +160,9 @@ namespace ACADEMY.Application.Implements
                 courses = request.SortBy switch
                 {
                     CourseSort.Name => courses.OrderBy(e => e.CourseName),
-                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 1))),
+                    CourseSort.Price => courses.OrderBy(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderBy(e => e.Sale),
-                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderBy(e => e.NumOfView),
                     _ => courses.OrderBy(e => e.CourseName)
                 };
             }
@@ -171,7 +173,7 @@ namespace ACADEMY.Application.Implements
                     CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
                     CourseSort.Price => courses.OrderByDescending(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
-                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderByDescending(e => e.NumOfView),
                     _ => courses.OrderByDescending(e => e.CourseName)
                 };
             }
@@ -210,9 +212,9 @@ namespace ACADEMY.Application.Implements
                 courses = request.SortBy switch
                 {
                     CourseSort.Name => courses.OrderBy(e => e.CourseName),
-                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Price => courses.OrderBy(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderBy(e => e.Sale),
-                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderBy(e => e.NumOfView),
                     _ => courses.OrderBy(e => e.CourseName)
                 };
             }
@@ -221,9 +223,9 @@ namespace ACADEMY.Application.Implements
                 courses = request.SortBy switch
                 {
                     CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
-                    CourseSort.Price => courses.OrderByDescending(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Price => courses.OrderByDescending(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
-                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderByDescending(e => e.NumOfView),
                     _ => courses.OrderByDescending(e => e.CourseName)
                 };
             }
@@ -287,9 +289,9 @@ namespace ACADEMY.Application.Implements
                 courses = request.SortBy switch
                 {
                     CourseSort.Name => courses.OrderBy(e => e.CourseName),
-                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Price => courses.OrderBy(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderBy(e => e.Sale),
-                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderBy(e => e.NumOfView),
                     _ => courses.OrderBy(e => e.CourseName)
                 };
             }
@@ -298,9 +300,9 @@ namespace ACADEMY.Application.Implements
                 courses = request.SortBy switch
                 {
                     CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
-                    CourseSort.Price => courses.OrderByDescending(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Price => courses.OrderByDescending(e => e.CourseFee),
                     CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
-                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    CourseSort.View => courses.OrderByDescending(e => e.NumOfView),
                     _ => courses.OrderByDescending(e => e.CourseName)
                 };
             }

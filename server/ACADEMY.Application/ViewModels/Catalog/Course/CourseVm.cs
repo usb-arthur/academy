@@ -35,7 +35,7 @@ namespace ACADEMY.Application.ViewModels.Catalog.Course
             {
                 if (Sale != null && !string.IsNullOrEmpty(SaleDate))
                 {
-                    return CourseFee * Sale.Value / 100;
+                    return CourseFee - (CourseFee * Sale.Value / 100);
                 }
 
                 return CourseFee;

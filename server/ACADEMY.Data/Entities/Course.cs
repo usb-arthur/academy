@@ -26,6 +26,23 @@ namespace ACADEMY.Data.Entities
         public CourseStatus Status { get; set; }
 
         [NotMapped]
+        public int NumOfFeedback => Feedbacks.Count;
+
+        [NotMapped]
+        public double ActualFee
+        {
+            get
+            {
+                if (Sale != null && SaleDate != null)
+                {
+                    return CourseFee - (CourseFee * Sale.Value / 100);
+                }
+
+                return CourseFee;
+            }
+        }
+
+        [NotMapped]
         public bool New => Math.Abs((CreatedDate - DateTime.Now).Days) < 10;
         
         public long? CategoryId { get; set; }

@@ -36,9 +36,7 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="
-                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
-                                "
+                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -111,7 +109,7 @@
           <v-divider class="my-0 mx-4"></v-divider>
 
           <v-card-title>
-            {{ price | currency }}
+            {{ course.actualPrice | currency }}
             <span v-if="course.sale" class="mx-2 text-decoration-line-through">
               {{ course.courseFee | currency }}
             </span>
@@ -188,7 +186,7 @@ export default {
     text: "",
     snackbar: false,
     video: false,
-    courseStatus: constant.COURSE_STATUS
+    courseStatus: constant.COURSE_STATUS,
   }),
   updated() {},
   watch: {
@@ -201,7 +199,7 @@ export default {
       if (!val) {
         this.text = "";
       }
-    }
+    },
   },
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
@@ -222,7 +220,7 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    }
+    },
   },
   created() {
     const { id } = this.$route.params;
@@ -234,11 +232,11 @@ export default {
       "getCourseById",
       "getCourseDetailByCourseId",
       "deleteCourseDetail",
-      "patchCourseStatus"
+      "patchCourseStatus",
     ]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
           e.isPlaying = false;
           e.pause();
           return e;
@@ -254,13 +252,13 @@ export default {
     deleteCourseConfirm() {
       this.deleteCourseDetail({
         courseDetailId: this.id,
-        courseId: this.$route.params.id
+        courseId: this.$route.params.id,
       })
         .then(() => {
           this.text = "Thao tác thành công";
           this.closeDelete();
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err);
           this.text =
             err.response.statusText ||
@@ -273,12 +271,12 @@ export default {
     },
     handleComplete(courseId, courseStatus) {
       this.patchCourseStatus({ id: courseId, status: courseStatus })
-        .then(res => {
+        .then((res) => {
           this.text = `Khoá học này đã được đánh dấu ${res.data.objResult.status.toLowerCase()}`;
         })
-        .catch(err => (this.text = err.response.data.message));
-    }
-  }
+        .catch((err) => (this.text = err.response.data.message));
+    },
+  },
 };
 </script>
 
