@@ -1,79 +1,5 @@
 <template>
   <div>
-    <md-table
-      v-model="searched"
-      md-sort="name"
-      md-sort-order="asc"
-      @md-selected="onSelect"
-      md-card
-      md-fixed-header
-    >
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h1 class="md-title">KHÓA HỌC</h1>
-        </div>
-
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input
-            placeholder="Tìm theo tên..."
-            v-model="search"
-            @input="searchOnTable"
-          />
-        </md-field>
-      </md-table-toolbar>
-
-      <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
-        <div class="md-toolbar-section-start">Đã chọn {{ count }} khóa học</div>
-
-        <div class="md-toolbar-section-end">
-          <md-button class="md-icon-button" @click="deletekh">
-            <md-icon>delete</md-icon>
-          </md-button>
-        </div>
-      </md-table-toolbar>
-
-      <md-table-empty-state
-        v-if="!isLoading"
-        md-label="Không tìm thấy khóa học"
-        :md-description="
-          `Không tìm thấy khóa học tên '${search}'. Thử tìm theo tên khác hoặc tạo mới.`
-        "
-      >
-        <md-button class="md-primary md-raised" @click="newUser"
-          >Tạo khóa học mới</md-button
-        >
-      </md-table-empty-state>
-
-      <md-table-row
-        slot="md-table-row"
-        slot-scope="{ item }"
-        md-selectable="multiple"
-        md-auto-select
-      >
-        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{
-          item.id
-        }}</md-table-cell>
-        <md-table-cell md-label="Tên khóa học" md-sort-by="courseName">{{
-          item.courseName
-        }}</md-table-cell>
-        <md-table-cell md-label="Mô tả">{{
-          item.briefDescription
-        }}</md-table-cell>
-        <md-table-cell md-label="Ngày tạo" md-sort-by="createdDate">{{
-          item.createdDate
-        }}</md-table-cell>
-        <md-table-cell md-label="Ngày chỉnh sửa" md-sort-by="updatedDate">{{
-          item.updatedDate
-        }}</md-table-cell>
-        <md-table-cell md-label="Số học viên" md-sort-by="numOfStudent">{{
-          item.numOfStudent
-        }}</md-table-cell>
-        <md-table-cell md-label="Tình trạng" md-sort-by="status">{{
-          item.status
-        }}</md-table-cell>
-      </md-table-row>
-    </md-table>
-
     <v-dialog v-model="DeleteDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
@@ -126,6 +52,30 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-data-table
+      :headers="header"
+      :items="list"
+      :items-per-page="5"
+      :search="search"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-text-field
+            v-model="search"
+            label="Search"
+            class="mx-4"
+          ></v-text-field>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small @click="deletekh(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -138,7 +88,17 @@ export default {
     list: [],
     search: null,
     searched: [],
-    selected: []
+    selected: [],
+    header: [
+      { text: "ID", value: "id" },
+      { text: "Tên khóa học", value: "courseName" },
+      { text: "Mô tả", value: "briefDescription" },
+      { text: "Ngày tạo", value: "createdDate" },
+      { text: "Ngày cập nhật", value: "updatedDate" },
+      { text: "Số học viên", value: "numOfStudent" },
+      { text: "Tình trạng", value: "status" },
+      { text: "", value: "actions" }
+    ]
   }),
   computed: {
     dskhoahoc() {
@@ -175,7 +135,9 @@ export default {
     onSelect(items) {
       this.selected = items;
     },
-    deletekh() {
+    deletekh(item) {
+      this.selected = [];
+      this.selected.push(item);
       this.DeleteDialog = !this.DeleteDialog;
     },
     async ConfirmDelete() {

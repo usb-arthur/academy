@@ -70,7 +70,7 @@ const actions = {
         .patch("/Users/" + lid.id, {
           name: lid.name,
           gender: parseInt(lid.gender),
-          contact: lid.contact,
+          phoneNumber: lid.phoneNumber,
           dateOfBirth: lid.dateOfBirth
         })
         .then(() => {
