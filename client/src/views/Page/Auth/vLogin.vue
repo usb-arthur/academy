@@ -1,5 +1,5 @@
 <template>
-  <div class="center max-height max-width main  ">
+  <div class="center max-height max-width main">
     <div class="center max-height">
       <div class="box--login center">
         <div class="form--login">
@@ -24,7 +24,7 @@
           </div>
           <a class="link-forgot" href="">Quên mật khẩu ?</a>
           <div class="center">
-            <v-btn class="btn-submit mr-4 mt-4" v-on:click="loginJWT(user)">
+            <v-btn class="btn-submit mr-4 mt-4" v-on:click="handleLogin(user)">
               Đăng nhập
             </v-btn>
           </div>
@@ -36,7 +36,7 @@
             ></v-checkbox>
           </div>
           <div class="row">
-            <div class="col-6 ">
+            <div class="col-6">
               <span class="span-login-bottom">Đăng Ký Hoặc Đăng Nhập Với</span>
             </div>
             <div class="col-6 d-flex justify-content-around">
@@ -113,6 +113,14 @@
         </div>
       </div>
     </div>
+    <v-snackbar v-model="snackbar" timeout="2000">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -124,12 +132,31 @@ export default {
     user: {
       email: "",
       password: "",
-      rememberMe: false
-    }
+      rememberMe: false,
+    },
+    text: "",
+    snackbar: false,
   }),
+  watch: {
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
+    },
+  },
   methods: {
-    ...mapActions(["loginJWT"])
-  }
+    ...mapActions(["loginJWT"]),
+    handleLogin(user) {
+      this.loginJWT(user).catch(
+        (err) => (this.text = err.response.data.message)
+      );
+    },
+  },
 };
 </script>
 

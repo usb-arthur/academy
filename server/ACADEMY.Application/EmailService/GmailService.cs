@@ -27,7 +27,8 @@ namespace ACADEMY.Application.EmailService
             {
                 Credentials = new System.Net.NetworkCredential(_configuration["EmailSettings:Sender"], _configuration["EmailSettings:Password"]),
                 Host = _configuration["EmailSettings:MailServer"],
-                Port = int.Parse(_configuration["EmailSettings:587"])
+                Port = int.Parse(_configuration["EmailSettings:MailPort"]),
+                EnableSsl = true
             };
             
             await client.SendMailAsync(mailMessage);

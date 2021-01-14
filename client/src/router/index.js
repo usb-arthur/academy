@@ -9,7 +9,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: HomePageLayout
+    component: HomePageLayout,
   },
   {
     path: "",
@@ -17,16 +17,16 @@ const routes = [
     children: [
       {
         path: "/chi-tiet-khoa-hoc/:id",
-        component: () => import("@/views/Page/Shared/CourseDetailShared")
+        component: () => import("@/views/Page/Shared/CourseDetailShared"),
       },
       {
         path: "/danh-sach-khoa-hoc/:id",
-        component: () => import("@/views/Page/Shared/ListCouser")
+        component: () => import("@/views/Page/Shared/ListCouser"),
       },
       {
         path: "/khoa-hoc/tim-kiem",
         name: "Search",
-        component: () => import("@/views/Page/Shared/vSearch")
+        component: () => import("@/views/Page/Shared/vSearch"),
       },
       {
         path: "/giang-vien",
@@ -36,7 +36,7 @@ const routes = [
           {
             name: "Course",
             path: "khoa-hoc",
-            component: Course
+            component: Course,
           },
           {
             name: "CreateCourse",
@@ -44,7 +44,7 @@ const routes = [
             component: () =>
               import(
                 /* webpackChunkName: "CreateCourse" */ "../views/Page/Teacher/CreateCourse"
-              )
+              ),
           },
           {
             name: "UpdateCourse",
@@ -52,7 +52,7 @@ const routes = [
             component: () =>
               import(
                 /* webpackChunkName: "UpdateCourse" */ "../views/Page/Teacher/UpdateCourse"
-              )
+              ),
           },
           {
             name: "CourseDetail",
@@ -60,9 +60,9 @@ const routes = [
             component: () =>
               import(
                 /* webpackChunkName: "UpdateCourse" */ "../views/Page/Teacher/CourseDetail"
-              )
-          }
-        ]
+              ),
+          },
+        ],
       },
       {
         path: "/thong-tin-ca-nhan",
@@ -75,21 +75,21 @@ const routes = [
           {
             path: "",
             name: "DetailAccount",
-            component: () => import("../views/Page/Account/DetailAccount")
+            component: () => import("../views/Page/Account/DetailAccount"),
           },
           {
             path: "doi-mat-khau",
             name: "ChangePassword",
-            component: () => import("../views/Page/Account/ChangePassword")
+            component: () => import("../views/Page/Account/ChangePassword"),
           },
           {
             path: "khoa-hoc-cua-toi",
             name: "MyCourseList",
-            component: () => import("../views/Page/Teacher/MyCourseList")
-          }
-        ]
-      }
-    ]
+            component: () => import("../views/Page/Teacher/MyCourseList"),
+          },
+        ],
+      },
+    ],
   },
   {
     path: "",
@@ -100,10 +100,14 @@ const routes = [
       ),
     children: [
       {
+        path: "/xac-nhan-email",
+        component: () => import("../views/Page/Auth/vEmailConfirm"),
+      },
+      {
         path: "/dang-nhap",
         name: "Login",
         component: () =>
-          import(/* webpackChunkName: "Login" */ "../views/Page/Auth/vLogin")
+          import(/* webpackChunkName: "Login" */ "../views/Page/Auth/vLogin"),
       },
       {
         path: "/dang-ky",
@@ -111,9 +115,9 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "Register" */ "../views/Page/Auth/vRegister"
-          )
-      }
-    ]
+          ),
+      },
+    ],
   },
   {
     path: "/admin",
@@ -126,7 +130,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
-          )
+          ),
       },
       {
         path: "khoahoc",
@@ -134,7 +138,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
-          )
+          ),
       },
       {
         path: "user",
@@ -142,9 +146,9 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
-          )
-      }
-    ]
+          ),
+      },
+    ],
   },
   {
     path: "/test",
@@ -161,7 +165,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliLinhVuc.vue"
-          )
+          ),
       },
       {
         path: "khoahoc",
@@ -169,7 +173,7 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliKhoaHoc.vue"
-          )
+          ),
       },
       {
         path: "user",
@@ -177,10 +181,10 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "demo" */ "../views/Page/Admin/QuanliDanhSachHocVien.vue"
-          )
-      }
-    ]
-  }
+          ),
+      },
+    ],
+  },
 ];
 
 const linkActiveClass = "my-link-active-class";
@@ -188,7 +192,7 @@ const linkActiveClass = "my-link-active-class";
 const router = new VueRouter({
   mode: "history",
   routes,
-  linkActiveClass
+  linkActiveClass,
 });
 
 export default router;
