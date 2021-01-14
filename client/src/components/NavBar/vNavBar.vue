@@ -80,7 +80,7 @@
               <v-list-item-title>Thông tin cá nhân</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link to="/admin">
+          <v-list-item v-if="has('admin')" link to="/admin">
             <v-list-item-content>
               <v-list-item-title>Đi tới trang admin</v-list-item-title>
             </v-list-item-content>
@@ -102,11 +102,11 @@
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
-    search: ""
+    search: "",
   }),
   computed: {
     ...mapState("auth", ["has", "userInfo", "isAuthenticated"]),
-    ...mapState("category", ["categories"])
+    ...mapState("category", ["categories"]),
   },
   created() {
     this.getAllCategories();
@@ -115,9 +115,9 @@ export default {
     ...mapActions("category", ["getAllCategories"]),
     ...mapActions("auth", ["logout"]),
     handleSearch(search) {
-      this.$router.push({ name: "Search", query: { search } });
-    }
-  }
+      if (search) this.$router.push({ name: "Search", query: { search } });
+    },
+  },
 };
 </script>
 

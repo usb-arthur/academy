@@ -180,7 +180,7 @@ export default {
   methods: {
     ...mapActions("course", ["getCoursesByCategory"]),
     handleSearch(search) {
-      this.$router.push({ query: { search } });
+      if (search) this.$router.push({ query: { search } });
     },
   },
 };
