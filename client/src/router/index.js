@@ -24,6 +24,11 @@ const routes = [
         component: () => import("@/views/Page/Shared/ListCouser")
       },
       {
+        path: "/khoa-hoc/tim-kiem",
+        name: "Search",
+        component: () => import("@/views/Page/Shared/vSearch")
+      },
+      {
         path: "/giang-vien",
         redirect: { name: "Course" },
         component: TeacherLayout,

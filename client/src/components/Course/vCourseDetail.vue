@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="550" min-height="550" max-height="550" class="ma-4">
+  <v-card max-width="600" min-height="600" max-height="600" class="ma-4">
     <v-img
       height="250"
       :src="`https://localhost:5001/courses/${course.id}/images`"
@@ -50,21 +50,79 @@
       <span class="mx-2" v-if="course.sale"> {{ course.sale }}% </span>
     </v-card-title>
 
-    <v-card-text v-if="course.sale">
-      <v-chip-group active-class="deep-purple accent-4 white--text" column>
+    <v-card-text>
+      <v-chip-group
+        v-if="course.sale"
+        active-class="deep-purple accent-4 white--text"
+        column
+      >
         <v-chip v-if="course.sale"
           >Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip
         >
       </v-chip-group>
+      <v-btn
+        @click="handleRemove(course.id)"
+        class="mt-3"
+        v-if="wishList"
+        block
+        color="error"
+        >Xoá khỏi danh sách yêu thích</v-btn
+      >
     </v-card-text>
+    <v-snackbar v-model="snackbar" timeout="2000">
+      {{ text }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Đóng
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-card>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     course: {
       type: Object
+    },
+    wishList: {
+      type: Boolean,
+      default: false
+    },
+    page: {
+      type: Number,
+      default: 1
+    }
+  },
+  data: () => ({
+    text: "",
+    snackbar: ""
+  }),
+  watch: {
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
+    }
+  },
+  methods: {
+    ...mapActions("course", ["removeWishList"]),
+    handleRemove(id) {
+      this.removeWishList({ id, page: this.page })
+        .then(() => {
+          this.text =
+            "Thành công xoá khoá học này ra khỏi danh sách yêu thích của bạn";
+        })
+        .catch(err => {
+          this.text = err.response.data.message;
+        });
     }
   }
 };

@@ -48,15 +48,15 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-autocomplete
-        cache-items
+      <v-text-field
         class="mx-4"
+        v-model="search"
         flat
-        hide-no-data
         hide-details
-        label="Bạn đang tìm kiếm gì ?"
+        label="Bạn đang tìm kiếm gì?"
+        @keyup.enter="handleSearch(search)"
         solo-inverted
-      ></v-autocomplete>
+      ></v-text-field>
       <v-spacer></v-spacer>
       <div class="mr-2" title="giỏ hàng">
         <v-btn icon>
@@ -80,6 +80,11 @@
               <v-list-item-title>Thông tin cá nhân</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item link to="/admin">
+            <v-list-item-content>
+              <v-list-item-title>Đi tới trang admin</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-divider></v-divider>
           <v-list-item @click="logout()">
             <v-list-item-content>
@@ -96,10 +101,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
-  data: () => ({}),
+  data: () => ({
+    search: ""
+  }),
   computed: {
     ...mapState("auth", ["has", "userInfo", "isAuthenticated"]),
-    ...mapState("category", ["categories"]),
+    ...mapState("category", ["categories"])
   },
   created() {
     this.getAllCategories();
@@ -107,7 +114,10 @@ export default {
   methods: {
     ...mapActions("category", ["getAllCategories"]),
     ...mapActions("auth", ["logout"]),
-  },
+    handleSearch(search) {
+      this.$router.push({ name: "Search", query: { search } });
+    }
+  }
 };
 </script>
 

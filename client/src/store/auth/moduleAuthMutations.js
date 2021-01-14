@@ -7,5 +7,5 @@ export default {
   SET_IS_AUTHENTICATED(state) {
     state.isAuthenticated = () =>
       localStorage.getItem(constant.USER_INFOR) != null;
-  },
+  }
 };

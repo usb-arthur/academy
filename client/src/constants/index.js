@@ -7,5 +7,15 @@ export default {
   COURSE_STATUS: {
     COMPLETED: 0,
     INCOMPLETE: 1
+  },
+  COURSE_ORDER: {
+    ASCENDING: 0,
+    DESCENDING: 1
+  },
+  COURSE_SORT: {
+    NAME: 0,
+    PRICE: 1,
+    SALE: 2,
+    VIEW: 3
   }
 };

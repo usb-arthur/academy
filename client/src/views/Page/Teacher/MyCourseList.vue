@@ -5,7 +5,11 @@
       <v-card-text v-if="courses && courses.length > 0">
         <v-row>
           <v-col v-for="course in courses" :key="course.id" cols="4">
-            <v-course-detail :course="course"></v-course-detail>
+            <v-course-detail
+              :wishList="wishList"
+              :course="course"
+              :page="currentPage"
+            ></v-course-detail>
           </v-col>
         </v-row>
       </v-card-text>
@@ -29,7 +33,11 @@ export default {
     courses: Array,
     currentPage: Number,
     length: Number,
-    title: String
+    title: String,
+    wishList: {
+      type: Boolean,
+      default: false
+    }
   },
   watch: {
     page(val) {

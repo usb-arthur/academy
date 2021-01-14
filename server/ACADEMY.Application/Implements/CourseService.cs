@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ACADEMY.Application.Enums.Course;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
 using ACADEMY.Application.StorageService;
@@ -50,7 +51,7 @@ namespace ACADEMY.Application.Implements
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
-            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId, e => e.Category,
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId && !e.IsDeleted, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(
@@ -116,7 +117,9 @@ namespace ACADEMY.Application.Implements
             if (course == null)
                 return new ApiErrorResponse<bool>($"Không tìm thấy khoá học nào với id {id}", HttpStatusCode.NotFound);
 
-            await _courseRepository.RemoveAsync(course);
+            course.IsDeleted = true;
+            
+            await _courseRepository.UpdateAsync(course);
             await _unitOfWork.CommitAsync();
 
             await _storageService.DeleteFileAsync("Courses", $"{id}.jpg");
@@ -126,16 +129,16 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<ICollection<CourseVm>>> GetAllAsync()
         {
-            var courses = await _courseRepository.FindAllAsync(e => e.Category,
+            var courses = await _courseRepository.FindAllAsync(e => !e.IsDeleted, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(await courses
                 .ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
-        public async Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(long categoryId, GetCoursesPagingRequest request)
+        public async Task<ApiResponse<PagedResult<CourseVm>>> GetByCategoryIdPagingAsync(long categoryId, GetCoursesPagingRequest request)
         {
-            var courses = await _courseRepository.FindAllAsync(e => e.Teacher, e => e.Category, e => e.Feedbacks,
+            var courses = await _courseRepository.FindAllAsync(e => !e.IsDeleted,e => e.Teacher, e => e.Category, e => e.Feedbacks,
                 e => e.StudentCourses);
 
             var category = await _categoryRepository.FindByIdAsync(categoryId);
@@ -145,10 +148,33 @@ namespace ACADEMY.Application.Implements
             if (!string.IsNullOrEmpty(request.Search))
             {
                 courses = courses.Where(e =>
-                    e.CourseName.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+                    e.CourseName.Contains(request.Search) || e.BriefDescription.Contains(request.Search) ||
+                    e.DetailDescription.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
             }
 
             var total = await courses.CountAsync();
+            if (request.Order == CourseOrder.Ascending)
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderBy(e => e.CourseName),
+                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 1))),
+                    CourseSort.Sale => courses.OrderBy(e => e.Sale),
+                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    _ => courses.OrderBy(e => e.CourseName)
+                };
+            }
+            else
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
+                    CourseSort.Price => courses.OrderByDescending(e => e.CourseFee),
+                    CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
+                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    _ => courses.OrderByDescending(e => e.CourseName)
+                };
+            }
 
             courses = courses.Skip((request.Page - 1) * request.Limit)
                 .Take(request.Limit);
@@ -168,15 +194,39 @@ namespace ACADEMY.Application.Implements
         {
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
-            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId,
+            var courses = await _courseRepository.FindAllAsync(e => e.TeacherId == userId && !e.IsDeleted,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
             if (!string.IsNullOrEmpty(request.Search))
             {
                 courses = courses.Where(e =>
-                    e.CourseName.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+                    e.CourseName.Contains(request.Search) || e.BriefDescription.Contains(request.Search) ||
+                    e.DetailDescription.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
             }
 
             var total = await courses.CountAsync();
+
+            if (request.Order == CourseOrder.Ascending)
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderBy(e => e.CourseName),
+                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Sale => courses.OrderBy(e => e.Sale),
+                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    _ => courses.OrderBy(e => e.CourseName)
+                };
+            }
+            else
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
+                    CourseSort.Price => courses.OrderByDescending(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
+                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    _ => courses.OrderByDescending(e => e.CourseName)
+                };
+            }
 
             courses = courses.Skip((request.Page - 1) * request.Limit)
                 .Take(request.Limit);
@@ -210,13 +260,63 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, long courseId, int payload)
         {
-            var courses = await _courseRepository.FindAllAsync(e=>e.CategoryId==categoryId && e.Id != courseId, e => e.Category,
+            var courses = await _courseRepository.FindAllAsync(e=>e.CategoryId==categoryId && e.Id != courseId && !e.IsDeleted, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
             courses = courses.OrderByDescending(e => e.StudentCourses.Count).Take(payload);
 
             return new ApiSucceedResponse<ICollection<CourseVm>>(
                 await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
+        }
+
+        public async Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(GetCoursesPagingRequest request)
+        {
+            var courses = await _courseRepository.FindAllAsync(e => !e.IsDeleted,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            if (!string.IsNullOrEmpty(request.Search))
+            {
+                courses = courses.Where(e =>
+                    e.CourseName.Contains(request.Search) || e.BriefDescription.Contains(request.Search) ||
+                    e.DetailDescription.Contains(request.Search) || e.Category.CategoryName.Contains(request.Search));
+            }
+
+            var total = await courses.CountAsync();
+
+            if (request.Order == CourseOrder.Ascending)
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderBy(e => e.CourseName),
+                    CourseSort.Price => courses.OrderBy(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Sale => courses.OrderBy(e => e.Sale),
+                    CourseSort.View => courses.OrderBy(e => e.StudentCourses.Count),
+                    _ => courses.OrderBy(e => e.CourseName)
+                };
+            }
+            else
+            {
+                courses = request.SortBy switch
+                {
+                    CourseSort.Name => courses.OrderByDescending(e => e.CourseName),
+                    CourseSort.Price => courses.OrderByDescending(e => (e.CourseFee * (e.Sale ?? 100) / 100)),
+                    CourseSort.Sale => courses.OrderByDescending(e => e.Sale),
+                    CourseSort.View => courses.OrderByDescending(e => e.StudentCourses.Count),
+                    _ => courses.OrderByDescending(e => e.CourseName)
+                };
+            }
+
+            courses = courses.Skip((request.Page - 1) * request.Limit)
+                .Take(request.Limit);
+
+            var result = new PagedResult<CourseVm>
+            {
+                Content = await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync(),
+                Limit = request.Limit,
+                Page = request.Page,
+                Total = total
+            };
+
+            return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
         }
 
         private static string GetFileName(IFormFile file, long id)

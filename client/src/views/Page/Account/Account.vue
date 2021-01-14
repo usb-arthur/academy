@@ -24,7 +24,7 @@
               :courses="coursesPaging.content"
             ></MyCourseList>
           </v-tab-item>
-          <v-tab-item v-else>
+          <v-tab-item v-if="has('student')">
             <MyCourseList
               title="khoá học"
               :currentPage="subscribeCourses.page"
@@ -40,6 +40,7 @@
               :length="wishList.nPage"
               @pageChange="wishListPage = $event"
               :courses="wishList.content"
+              :wishList="true"
             ></MyCourseList>
           </v-tab-item>
           <v-tab-item>
@@ -84,7 +85,7 @@ export default {
         page: this.teacherCoursePage,
         limit: this.limit
       });
-    } else {
+    } else if (this.has("student")) {
       this.getSubscribeCourse({
         page: this.studentCoursePage,
         limit: this.limit

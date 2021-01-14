@@ -1,6 +1,6 @@
 <template>
   <v-container class="text-left">
-    <v-card v-if="coursesByCategory.total > 0">
+    <v-card v-if="courseBySearch.total > 0">
       <v-card-title style="font-size: 40px" class="mb-4">
         <v-row>
           <v-col cols="2">
@@ -28,15 +28,6 @@
             >
             </v-select>
           </v-col>
-          <v-col cols="5" offset="3">
-            <v-text-field
-              outlined
-              dense
-              v-model="search"
-              @keyup.enter="handleSearch(search)"
-              label="Tìm kiếm"
-            ></v-text-field>
-          </v-col>
         </v-row>
       </v-card-title>
       <v-item-group>
@@ -44,7 +35,7 @@
           <v-row>
             <v-col
               cols="4"
-              v-for="course in coursesByCategory.content"
+              v-for="course in courseBySearch.content"
               :key="course.id"
             >
               <v-course-detail :course="course"></v-course-detail>
@@ -55,7 +46,7 @@
       <div class="text-center mt-6">
         <v-pagination
           v-model="page"
-          :length="coursesByCategory.nPage"
+          :length="courseBySearch.nPage"
         ></v-pagination>
       </div>
     </v-card>
@@ -79,7 +70,6 @@ export default {
     limit: constant.LIMIT,
     sort: constant.COURSE_SORT.NAME,
     order: constant.COURSE_ORDER.ASCENDING,
-    search: "",
     sorts: [
       {
         text: "Tên",
@@ -104,10 +94,8 @@ export default {
   updated() {},
   watch: {
     sort(val) {
-      const { id } = this.$route.params;
       const search = this.$route.query.search || "";
-      this.getCoursesByCategory({
-        id,
+      this.getCoursesBySearch({
         page: this.page,
         limit: this.limit,
         order: this.order,
@@ -116,10 +104,8 @@ export default {
       });
     },
     order(val) {
-      const { id } = this.$route.params;
       const search = this.$route.query.search || "";
-      this.getCoursesByCategory({
-        id,
+      this.getCoursesBySearch({
         page: this.page,
         limit: this.limit,
         order: val,
@@ -128,10 +114,8 @@ export default {
       });
     },
     page(val) {
-      const { id } = this.$route.params;
       const search = this.$route.query.search || "";
-      this.getCoursesByCategory({
-        id,
+      this.getCoursesBySearch({
         page: val,
         limit: this.limit,
         order: this.order,
@@ -140,10 +124,8 @@ export default {
       });
     },
     $route(to) {
-      const { id } = to.params;
       const search = to.query.search || "";
-      this.getCoursesByCategory({
-        id,
+      this.getCoursesBySearch({
         page: this.page,
         limit: this.limit,
         order: this.order,
@@ -153,14 +135,11 @@ export default {
     }
   },
   computed: {
-    ...mapState("course", ["coursesByCategory"])
+    ...mapState("course", ["courseBySearch"])
   },
   created() {
-    const { id } = this.$route.params;
     const search = this.$route.query.search || "";
-    console.log(search);
-    this.getCoursesByCategory({
-      id,
+    this.getCoursesBySearch({
       page: this.page,
       limit: this.limit,
       order: this.order,
@@ -169,10 +148,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions("course", ["getCoursesByCategory"]),
-    handleSearch(search) {
-      this.$router.push({ query: { search } });
-    }
+    ...mapActions("course", ["getCoursesBySearch"])
   }
 };
 </script>

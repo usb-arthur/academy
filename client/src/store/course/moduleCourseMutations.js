@@ -26,5 +26,8 @@ export default {
   },
   SET_RELATIVE_COURSE: (state, payload) => {
     state.relativeCourse = payload;
+  },
+  SET_COURSE_BY_SEARCH: (state, payload) => {
+    state.courseBySearch = payload;
   }
 };

@@ -130,7 +130,7 @@ namespace ACADEMY.Application.Implements
             var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
 
             var watchList =
-                await _watchListRepository.FindSingleAsync(e => e.Id == id && e.StudentId == userId);
+                await _watchListRepository.FindSingleAsync(e => e.CourseId == id && e.StudentId == userId);
 
             if (watchList == null)
                 return new ApiErrorResponse<bool>("Khoá học này hiện đang không có trong danh sách yêu thích của bạn",

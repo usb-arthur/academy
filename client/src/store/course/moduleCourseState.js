@@ -7,5 +7,6 @@ export default {
   coursesByCategory: [],
   subscribeCourses: [],
   isInCourse: false,
-  relativeCourse: []
+  relativeCourse: [],
+  courseBySearch: []
 };
