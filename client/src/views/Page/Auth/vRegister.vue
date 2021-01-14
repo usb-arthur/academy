@@ -72,7 +72,7 @@
             </v-btn>
           </div>
           <div class="mt-4">
-            <span class="span-reg-bottom">Bạn đã có tài khoản</span>
+            <a class="span-reg-bottom" href="/dang-nhap">Bạn đã có tài khoản ?</a>
           </div>
         </div>
       </div>

@@ -24,7 +24,10 @@
                color="blue-grey lighten-3"
             ></v-text-field>
           </div>
-          <a class="link-forgot" href="">Quên mật khẩu ?</a>
+          <div style="display:flex;justify-content: space-between;">
+            <a class="link-forgot" href="">Quên mật khẩu ?</a>
+            <a class="link-forgot" href="/dang-ky">Đăng ký ?</a>
+          </div>
           <div class="center">
             <v-btn class="btn-submit mr-4 mt-4" v-on:click="loginJWT(user)">
               Đăng nhập

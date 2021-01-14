@@ -11,9 +11,9 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-toolbar-title>ACADEMY</v-toolbar-title>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn text light v-bind="attrs" v-on="on">Danh sách lĩnh vực</v-btn>
+      <v-menu offset-y >
+        <template  v-slot:activator="{ on, attrs }">
+          <v-btn class="ml-4" text light v-bind="attrs" v-on="on">Danh sách lĩnh vực</v-btn>
         </template>
         <v-list dense nav>
           <v-list-item

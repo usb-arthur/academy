@@ -12,6 +12,21 @@ const routes = [
     component: HomePageLayout
   },
   {
+    path: "/err",
+    name: "err",
+    component: () => import("@/views/Page/err/Err")
+  },
+  {
+    path: "/forbbiden",
+    name: "forbbiden",
+    component: () => import("@/views/Page/err/Forbidden")
+  },
+  {
+    path: "/404-err",
+    name: "404-err",
+    component: () => import("@/views/Page/err/404-err")
+  },
+  {
     path: "",
     component: Layout,
     children: [

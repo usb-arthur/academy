@@ -16,7 +16,7 @@
             <v-list-item-avatar>
               <v-icon>mdi-account-outline</v-icon>
             </v-list-item-avatar>
-            <v-list-item-content class="text-truncate">
+            <v-list-item-content class="text-truncate" style="font-size:12px">
               USER NAME PLACEHOLDING
             </v-list-item-content>
           </v-list-item>
