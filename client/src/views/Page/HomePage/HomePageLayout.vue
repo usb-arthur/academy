@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import NavBar from "../../../components/NavBar/NavBar.vue";
+import NavBar from "../../../components/NavBar/vNavBar.vue";
 import PageContent from "./HomePageContent.vue";
 export default {
   components: {

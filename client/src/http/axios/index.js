@@ -44,6 +44,8 @@ axios.interceptors.response.use(
         });
     } else if (error.response.status === 401 && originalRequest._retry) {
       router.push("/dang-nhap");
+    } else if (error.response.status === 500) {
+      router.push("/error");
     }
     return Promise.reject(error);
   }

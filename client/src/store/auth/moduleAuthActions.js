@@ -9,9 +9,9 @@ export default {
         .post("/auth/sign-in", {
           email: payload.email,
           password: payload.password,
-          rememberMe: payload.rememberMe
+          rememberMe: payload.rememberMe,
         })
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             router.push(router.currentRoute.query.to || "/");
             localStorage.setItem(
@@ -19,11 +19,16 @@ export default {
               res.data.objResult.accessToken
             );
             localStorage.setItem(constant.ROLES, res.data.objResult.roles);
+            localStorage.setItem(constant.USER_INFOR, res.data.objResult.name);
+            localStorage.setItem(
+              constant.USER,
+              JSON.stringify(res.data.objResult)
+            );
             commit("SET_BEARER", res.data.objResult.accessToken);
             resolve(res);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -33,5 +38,12 @@ export default {
   },
   registerUser(_, payload) {
     return axios.post("/auth/register", payload);
-  }
+  },
+  logout({ commit }) {
+    localStorage.removeItem(constant.ACCESS_TOKEN);
+    localStorage.removeItem(constant.ROLES);
+    localStorage.removeItem(constant.USER_INFOR);
+    localStorage.removeItem(constant.USER);
+    commit("SET_IS_AUTHENTICATED", false);
+  },
 };

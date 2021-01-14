@@ -17,5 +17,14 @@ export default {
   },
   SET_COURSES_BY_CATEGORY: (state, payload) => {
     state.coursesByCategory = payload;
+  },
+  SET_SUBSCRIBE_COURSES: (state, payload) => {
+    state.subscribeCourses = payload;
+  },
+  SET_IS_IN_COURSE: (state, payload) => {
+    state.isInCourse = payload;
+  },
+  SET_RELATIVE_COURSE: (state, payload) => {
+    state.relativeCourse = payload;
   }
 };

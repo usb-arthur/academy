@@ -94,8 +94,15 @@ export default {
     ]
   }),
   watch: {
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
     }
   },
   created() {

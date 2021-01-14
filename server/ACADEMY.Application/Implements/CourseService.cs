@@ -25,6 +25,8 @@ namespace ACADEMY.Application.Implements
     {
         private readonly IRepository<Course, long> _courseRepository;
 
+        private readonly IRepository<Category, long> _categoryRepository;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly IMapper _mapper;
@@ -34,13 +36,14 @@ namespace ACADEMY.Application.Implements
         private readonly IUnitOfWork _unitOfWork;
 
         public CourseService(IRepository<Course, long> courseRepository, IMapper mapper, IUnitOfWork unitOfWork,
-            IHttpContextAccessor httpContextAccessor, IStorageService storageService)
+            IHttpContextAccessor httpContextAccessor, IStorageService storageService, IRepository<Category, long> categoryRepository)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _storageService = storageService;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<ApiResponse<ICollection<CourseVm>>> GetByTeacherAsync()
@@ -132,8 +135,13 @@ namespace ACADEMY.Application.Implements
 
         public async Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(long categoryId, GetCoursesPagingRequest request)
         {
-            var courses = await _courseRepository.FindAllAsync(e => e.CategoryId == categoryId,
-                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+            var courses = await _courseRepository.FindAllAsync(e => e.Teacher, e => e.Category, e => e.Feedbacks,
+                e => e.StudentCourses);
+
+            var category = await _categoryRepository.FindByIdAsync(categoryId);
+
+            courses = category.CategoryId != null ? courses.Where(e => e.CategoryId == categoryId) : courses.Where(e => e.Category.CategoryId == categoryId);
+
             if (!string.IsNullOrEmpty(request.Search))
             {
                 courses = courses.Where(e =>
@@ -182,6 +190,33 @@ namespace ACADEMY.Application.Implements
             };
 
             return new ApiSucceedResponse<PagedResult<CourseVm>>(result);
+        }
+
+        public async Task<ApiResponse<CourseVm>> UpdateStatusAsync(long id, PatchCourseRequest request)
+        {
+            var course = await _courseRepository.FindByIdAsync(id);
+            if (course == null)
+                return new ApiErrorResponse<CourseVm>($"Không tìm thấy khoá học nào với id {id}",
+                    HttpStatusCode.NotFound);
+
+            course = _mapper.Map(request, course);
+            course.UpdatedDate = DateTime.Now;
+            course.UpdatedBy = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            course = await _courseRepository.UpdateAsync(course);
+            await _unitOfWork.CommitAsync();
+
+            return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
+        }
+
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, long courseId, int payload)
+        {
+            var courses = await _courseRepository.FindAllAsync(e=>e.CategoryId==categoryId && e.Id != courseId, e => e.Category,
+                e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
+
+            courses = courses.OrderByDescending(e => e.StudentCourses.Count).Take(payload);
+
+            return new ApiSucceedResponse<ICollection<CourseVm>>(
+                await courses.ProjectTo<CourseVm>(_mapper.ConfigurationProvider).ToListAsync());
         }
 
         private static string GetFileName(IFormFile file, long id)

@@ -25,6 +25,8 @@ namespace ACADEMY.Application.AutoMapper
             CreateMap<Course, CourseVm>()
                 .ForMember(des => des.Status,
                     options => options.MapFrom(src => src.Status.GetAttribute<DisplayAttribute>().Name))
+                .ForMember(des => des.CourseStatus,
+                    options => options.MapFrom(src => src.Status))
                 .ForMember(des => des.Rate, options =>
                 {
                     options.Condition(src => src.Feedbacks != null && src.Feedbacks.Count > 0);

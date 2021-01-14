@@ -82,9 +82,7 @@
           </v-col>
           <v-col cols="12" class="text-right">
             <router-link to="/giang-vien/khoa-hoc">
-              <v-btn color="success" class="mr-4">
-                Quay lại
-              </v-btn>
+              <v-btn color="success" class="mr-4"> Quay lại </v-btn>
             </router-link>
 
             <v-btn @click="createCourse(course)" color="primary">
@@ -135,8 +133,15 @@ export default {
         this.course.sale = this.course.saleDate = null;
       }
     },
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
     }
   },
   computed: {

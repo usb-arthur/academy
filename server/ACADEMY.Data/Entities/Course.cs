@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using ACADEMY.Data.Enums;
 using ACADEMY.Data.Interfaces;
 using ACADEMY.Infrastructure.SharedKernel;
@@ -24,7 +25,10 @@ namespace ACADEMY.Data.Entities
 
         public CourseStatus Status { get; set; }
 
-        public long CategoryId { get; set; }
+        [NotMapped]
+        public bool New => Math.Abs((CreatedDate - DateTime.Now).Days) < 10;
+        
+        public long? CategoryId { get; set; }
 
         public Guid TeacherId { get; set; }
 

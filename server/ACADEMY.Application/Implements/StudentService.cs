@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.Requests.Student;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
@@ -112,9 +113,10 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResponse<bool>(true);
         }
 
-        public async Task<bool> IsInCourseAsync(long id)
+        public async Task<bool> IsInCourseAsync(long id, IsInCourseRequest request)
         {
-            var userId = Guid.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Sid));
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+            var userId = user.Id;
 
             return await _context.StudentCourses.CountAsync(e => e.CourseId == id && e.StudentId == userId) > 0;
         }

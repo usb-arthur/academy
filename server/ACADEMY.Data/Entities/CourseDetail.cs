@@ -24,6 +24,8 @@ namespace ACADEMY.Data.Entities
 
         public DateTime UpdatedDate { get; set; }
 
+        public bool Done { get; set; }
+
         #endregion
     }
 }

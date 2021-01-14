@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ACADEMY.Application.Requests.Catalog.Course;
+using ACADEMY.Application.Requests.Student;
 using ACADEMY.Application.ViewModels.Catalog.Course;
 using ACADEMY.Application.ViewModels.Common;
 using ACADEMY.Application.ViewModels.System;
@@ -16,6 +17,6 @@ namespace ACADEMY.Application.Interfaces
 
         Task<ApiResponse<StudentCourse>> SubscribeCourseAsync(long courseId);
         Task<ApiResponse<bool>> UnsubscribeCourseAsync(long courseId);
-        Task<bool> IsInCourseAsync(long id);
+        Task<bool> IsInCourseAsync(long id, IsInCourseRequest request);
     }
 }

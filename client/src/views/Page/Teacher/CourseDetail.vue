@@ -11,9 +11,7 @@
           </v-col>
           <v-col cols="12">
             <v-card>
-              <v-card-title>
-                Nội dung khóa học
-              </v-card-title>
+              <v-card-title> Nội dung khóa học </v-card-title>
               <v-card-text>
                 <v-list>
                   <v-list-item
@@ -53,7 +51,6 @@
                         </v-container>
                       </template>
                     </v-dialog>
-                    <v-icon small class="mr-2">mdi-pencil</v-icon>
                     <v-icon @click="removeItem(courseDetail.id)" small
                       >mdi-delete</v-icon
                     >
@@ -115,10 +112,10 @@
 
           <v-card-title>
             {{ price | currency }}
-            <span v-if="course.sale" class="text-decoration-line-through">
+            <span v-if="course.sale" class="mx-2 text-decoration-line-through">
               {{ course.courseFee | currency }}
             </span>
-            <span v-if="course.sale"> {{ course.sale }}% </span>
+            <span class="mx-2" v-if="course.sale"> {{ course.sale }}% </span>
           </v-card-title>
 
           <v-card-text>
@@ -130,7 +127,22 @@
             >
               <v-chip>Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip>
             </v-chip-group>
-            <v-btn color="primary">Đánh dấu hoàn thành</v-btn>
+            <v-btn
+              v-if="course.courseStatus === courseStatus.INCOMPLETE"
+              block
+              @click="handleComplete(course.id, courseStatus.COMPLETED)"
+              class="mt-2"
+              color="primary"
+              >Đánh dấu hoàn thành</v-btn
+            >
+            <v-btn
+              v-if="course.courseStatus === courseStatus.COMPLETED"
+              block
+              @click="handleComplete(course.id, courseStatus.INCOMPLETE)"
+              class="mt-2"
+              color="primary"
+              >Đánh dấu chưa hoàn thành</v-btn
+            >
           </v-card-text>
         </v-card>
       </v-col>
@@ -163,6 +175,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import constant from "@/constants";
 import VAddCourseDetail from "@/components/Teacher/vAddCourseDetail";
 
 export default {
@@ -174,12 +187,20 @@ export default {
     id: -1,
     text: "",
     snackbar: false,
-    video: false
+    video: false,
+    courseStatus: constant.COURSE_STATUS
   }),
   updated() {},
   watch: {
-    text() {
-      this.snackbar = true;
+    text(val) {
+      if (!this.snackbar && val != "") {
+        this.snackbar = true;
+      }
+    },
+    snackbar(val) {
+      if (!val) {
+        this.text = "";
+      }
     }
   },
   computed: {
@@ -212,7 +233,8 @@ export default {
     ...mapActions("course", [
       "getCourseById",
       "getCourseDetailByCourseId",
-      "deleteCourseDetail"
+      "deleteCourseDetail",
+      "patchCourseStatus"
     ]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
@@ -248,6 +270,13 @@ export default {
     removeItem(id) {
       this.id = id;
       this.dialogDelete = true;
+    },
+    handleComplete(courseId, courseStatus) {
+      this.patchCourseStatus({ id: courseId, status: courseStatus })
+        .then(res => {
+          this.text = `Khoá học này đã được đánh dấu ${res.data.objResult.status.toLowerCase()}`;
+        })
+        .catch(err => (this.text = err.response.data.message));
     }
   }
 };

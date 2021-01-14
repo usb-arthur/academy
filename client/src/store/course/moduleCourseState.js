@@ -4,5 +4,8 @@ export default {
   course: {},
   courseDetails: [],
   wishList: [],
-  coursesByCategory: []
+  coursesByCategory: [],
+  subscribeCourses: [],
+  isInCourse: false,
+  relativeCourse: []
 };

@@ -9,6 +9,7 @@
         public string CreatedDate { get; set; }
 
         public string UpdatedDate { get; set; }
+        public bool Done { get; set; }
 
         public bool IsReview { get; set; }
 
