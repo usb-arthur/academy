@@ -17,5 +17,6 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<CourseDetailVm>> UpdateAsync(long id, PutCourseDetailRequest request);
 
         Task<ApiResponse<bool>> DeleteAsync(long id);
+        Task<ApiResponse<bool>> UpdateDoneAsync(long id);
     }
 }

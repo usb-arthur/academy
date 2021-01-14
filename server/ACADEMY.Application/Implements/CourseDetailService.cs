@@ -152,5 +152,17 @@ namespace ACADEMY.Application.Implements
 
             return new ApiSucceedResponse<bool>(true);
         }
+
+        public async Task<ApiResponse<bool>> UpdateDoneAsync(long id)
+        {
+            var courseDetail = await _courseDetailRepository.FindByIdAsync(id);
+            if (courseDetail == null)
+                return new ApiErrorResponse<bool>("Không tồn tại chương này", HttpStatusCode.NotFound);
+            courseDetail.Done = true;
+            await _courseDetailRepository.UpdateAsync(courseDetail);
+            await _unitOfWork.CommitAsync();
+
+            return new ApiSucceedResponse<bool>(true);
+        }
     }
 }

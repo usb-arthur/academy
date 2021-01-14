@@ -94,10 +94,10 @@ namespace ACADEMY.WebApi.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("statistic/categories/{id}")]
-        public async Task<IActionResult> GetRelativeCourse(long id, [FromQuery] int payload)
+        [Route("{courseId}/statistic/categories/{id}")]
+        public async Task<IActionResult> GetRelativeCourse(long id, long courseId, [FromQuery] int payload)
         {
-            var result = await _courseService.GetRelativeCourse(id, payload);
+            var result = await _courseService.GetRelativeCourse(id, courseId, payload);
 
             return StatusCode((int) result.StatusCode, result);
         }

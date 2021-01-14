@@ -208,9 +208,9 @@ namespace ACADEMY.Application.Implements
             return new ApiSucceedResponse<CourseVm>(_mapper.Map<Course, CourseVm>(course));
         }
 
-        public async Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, int payload)
+        public async Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, long courseId, int payload)
         {
-            var courses = await _courseRepository.FindAllAsync(e=>e.CategoryId==categoryId, e => e.Category,
+            var courses = await _courseRepository.FindAllAsync(e=>e.CategoryId==categoryId && e.Id != courseId, e => e.Category,
                 e => e.Teacher, e => e.Feedbacks, e => e.StudentCourses);
 
             courses = courses.OrderByDescending(e => e.StudentCourses.Count).Take(payload);

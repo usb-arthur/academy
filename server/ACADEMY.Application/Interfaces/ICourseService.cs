@@ -22,6 +22,6 @@ namespace ACADEMY.Application.Interfaces
         Task<ApiResponse<PagedResult<CourseVm>>> GetPagingAsync(long categoryId, GetCoursesPagingRequest request);
         Task<ApiResponse<PagedResult<CourseVm>>> GetPagingByTeacherAsync(GetCoursesPagingRequest request);
         Task<ApiResponse<CourseVm>> UpdateStatusAsync(long id, PatchCourseRequest request);
-        Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, int payload);
+        Task<ApiResponse<ICollection<CourseVm>>> GetRelativeCourse(long categoryId, long courseId, int payload);
     }
 }

@@ -5,14 +5,22 @@
         <v-row>
           <v-col cols="12">
             <v-card color="content-course">
-              <v-card-title> Nội dung khóa học </v-card-title>
+              <v-card-title>
+                <span>Nội dung khóa học</span> <v-spacer></v-spacer
+                ><v-icon @click="refresh()">refresh</v-icon></v-card-title
+              >
               <v-card-text>
                 <v-list>
                   <v-list-item
                     :key="courseDetail.id"
                     v-for="courseDetail in courseDetails"
                   >
+                    <v-icon v-if="courseDetail.done" class="mr-2">
+                      check_circle_outline
+                    </v-icon>
+                    <v-icon v-else class="mr-2">error_outline</v-icon>
                     <span>{{ courseDetail.content }}</span>
+
                     <v-spacer></v-spacer>
                     <v-dialog
                       v-if="isInCourse || courseDetail.isReview"
@@ -31,9 +39,7 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="
-                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
-                                "
+                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -183,9 +189,7 @@
 
               <v-img
                 height="250"
-                :src="
-                  `https://localhost:5001/courses/${$route.params.id}/images`
-                "
+                :src="`https://localhost:5001/courses/${$route.params.id}/images`"
               ></v-img>
 
               <div class="d-flex justify-content-between">
@@ -240,8 +244,14 @@
                 >
                   <v-chip
                     >Thời gian còn lại {{ course.dateLeft }} day(s)</v-chip
-                  >
-                </v-chip-group>
+                  > </v-chip-group
+                ><v-btn
+                  v-if="!isInCourse"
+                  block
+                  color="primary"
+                  @click="handleRegisterCourse(course.id)"
+                  >Tham gia khoá học</v-btn
+                >
               </v-card-text>
             </v-card>
           </v-col>
@@ -288,6 +298,7 @@ export default {
   data: () => ({
     loading: false,
     selection: 1,
+    dialog: false,
     id: -1,
     text: "",
     snackbar: false,
@@ -295,36 +306,49 @@ export default {
     rating: [
       {
         value: 0,
-        text: "Quá tệ (0)"
+        text: "Quá tệ (0)",
       },
       {
         value: 1,
-        text: "Tệ (1)"
+        text: "Tệ (1)",
       },
       {
         value: 2,
-        text: "Bình thường (2)"
+        text: "Bình thường (2)",
       },
       {
         value: 3,
-        text: "Tạm được (3)"
+        text: "Tạm được (3)",
       },
       {
         value: 4,
-        text: "Tốt (4)"
+        text: "Tốt (4)",
       },
       {
         value: 5,
-        text: "Rất tốt (5)"
-      }
+        text: "Rất tốt (5)",
+      },
     ],
     feedbackSend: {
       content: "",
-      rate: -1
-    }
+      rate: -1,
+    },
   }),
   updated() {},
   watch: {
+    $route(to) {
+      const { id } = to.params;
+      this.getIsInCourse(id);
+      this.feedbackSend.courseId = id;
+      this.getCourseById(id).then((res) => {
+        this.getRelativeCourse({
+          courseId: id,
+          categoryId: res.data.objResult.category.id,
+        });
+      });
+      this.getCourseDetailByCourseId(id);
+      this.getFeedbacksByCourseId(id);
+    },
     text(val) {
       if (!this.snackbar && val != "") {
         this.snackbar = true;
@@ -334,14 +358,15 @@ export default {
       if (!val) {
         this.text = "";
       }
-    }
+    },
   },
   computed: {
+    ...mapState("auth", ["isAuthenticated"]),
     ...mapState("course", [
       "course",
       "courseDetails",
       "isInCourse",
-      "relativeCourse"
+      "relativeCourse",
     ]),
     ...mapState("feedback", ["feedbacks"]),
     rate() {
@@ -361,14 +386,17 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    }
+    },
   },
   created() {
     const { id } = this.$route.params;
     this.getIsInCourse(id);
     this.feedbackSend.courseId = id;
-    this.getCourseById(id).then(res => {
-      this.getRelativeCourse(res.data.objResult.category.id);
+    this.getCourseById(id).then((res) => {
+      this.getRelativeCourse({
+        courseId: id,
+        categoryId: res.data.objResult.category.id,
+      });
     });
     this.getCourseDetailByCourseId(id);
     this.getFeedbacksByCourseId(id);
@@ -380,17 +408,31 @@ export default {
       "deleteCourseDetail",
       "addToWishList",
       "getIsInCourse",
-      "getRelativeCourse"
+      "getRelativeCourse",
+      "registerCourse",
     ]),
     ...mapActions("feedback", ["getFeedbacksByCourseId", "createFeedback"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
           e.isPlaying = false;
           e.pause();
           return e;
         });
       }
+    },
+    refresh() {
+      const { id } = this.$route.params;
+      this.getIsInCourse(id);
+      this.feedbackSend.courseId = id;
+      this.getCourseById(id).then((res) => {
+        this.getRelativeCourse({
+          courseId: id,
+          categoryId: res.data.objResult.category.id,
+        });
+      });
+      this.getCourseDetailByCourseId(id);
+      this.getFeedbacksByCourseId(id);
     },
     sendFeedback(feedback) {
       this.createFeedback(feedback)
@@ -399,18 +441,27 @@ export default {
           this.feedbackSend.content = "";
           this.feedbackSend.rate = -1;
         })
-        .catch(err => (this.text = err.response.data.message));
+        .catch((err) => (this.text = err.response.data.message));
     },
     handleAddToWishList(coursId) {
       this.addToWishList(coursId)
         .then(() => {
           this.text = "Thêm vào danh sách yêu thích";
         })
-        .catch(err => {
+        .catch((err) => {
           this.text = err.response.data.message;
         });
-    }
-  }
+    },
+    handleRegisterCourse(id) {
+      this.registerCourse(id)
+        .then(() => {
+          this.text = "Đăng ký thành công";
+        })
+        .catch((err) => {
+          this.text = err.response.data.message;
+        });
+    },
+  },
 };
 </script>
 

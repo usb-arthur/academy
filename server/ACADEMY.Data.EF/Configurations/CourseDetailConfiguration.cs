@@ -21,6 +21,8 @@ namespace ACADEMY.Data.EF.Configurations
             builder.Property(e => e.CreatedDate).HasDefaultValueSql("GetDate()");
 
             builder.Property(e => e.UpdatedDate).HasDefaultValueSql("GetDate()");
+
+            builder.Property(e => e.Done).HasDefaultValue(false);
         }
     }
 }

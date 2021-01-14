@@ -58,6 +58,11 @@ namespace ACADEMY.WebApi.Controllers
         [HttpGet("{id}/videos")]
         public async Task<IActionResult> GetCourseDetailVideo(long id)
         {
+            var response = await _courseDetailService.UpdateDoneAsync(id);
+            if (!response.Succeeded)
+            {
+                return StatusCode((int) response.StatusCode, response);
+            }
             var videoPath = await _storageService.GetFilePathAsync("CourseDetails", $"{id}.mp4");
             if (!System.IO.File.Exists(videoPath)) return NotFound("Không tìm thấy video");
             var video = System.IO.File.OpenRead(videoPath);

@@ -81,7 +81,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item link to="/dang-nhap">
+          <v-list-item @click="logout()">
             <v-list-item-content>
               <v-list-item-title>Đăng xuất</v-list-item-title>
             </v-list-item-content>
@@ -99,14 +99,15 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState("auth", ["has", "userInfo", "isAuthenticated"]),
-    ...mapState("category", ["categories"])
+    ...mapState("category", ["categories"]),
   },
   created() {
     this.getAllCategories();
   },
   methods: {
-    ...mapActions("category", ["getAllCategories"])
-  }
+    ...mapActions("category", ["getAllCategories"]),
+    ...mapActions("auth", ["logout"]),
+  },
 };
 </script>
 
