@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.System;
+using ACADEMY.WebApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,7 +61,7 @@ namespace ACADEMY.WebApi.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> PutUser(Guid id, [FromBody] PutUserRequest request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
 
             var result = await _userService.UpdateAsync(id, request);
 

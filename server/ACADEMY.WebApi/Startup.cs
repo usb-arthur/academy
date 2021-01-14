@@ -58,6 +58,7 @@ namespace ACADEMY.WebApi
                         options.Password.RequireUppercase = true;
                         options.Password.RequireNonAlphanumeric = false;
                         options.Password.RequiredLength = 8;
+                        options.SignIn.RequireConfirmedEmail = true;
                     })
                 .AddEntityFrameworkStores<AcademyDbContext>()
                 .AddDefaultTokenProviders();

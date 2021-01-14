@@ -83,23 +83,31 @@ export default {
     sorts: [
       {
         text: "Tên",
-        value: constant.COURSE_SORT.NAME
+        value: constant.COURSE_SORT.NAME,
+      },
+      {
+        text: "Giá",
+        value: constant.COURSE_SORT.PRICE,
       },
       {
         text: "Sale",
-        value: constant.COURSE_SORT.SALE
-      }
+        value: constant.COURSE_SORT.SALE,
+      },
+      {
+        text: "Lượt xem",
+        value: constant.COURSE_SORT.VIEW,
+      },
     ],
     orders: [
       {
         text: "Tăng dần",
-        value: constant.COURSE_ORDER.ASCENDING
+        value: constant.COURSE_ORDER.ASCENDING,
       },
       {
         text: "Giảm dần",
-        value: constant.COURSE_ORDER.DESCENDING
-      }
-    ]
+        value: constant.COURSE_ORDER.DESCENDING,
+      },
+    ],
   }),
   updated() {},
   watch: {
@@ -112,10 +120,11 @@ export default {
         limit: this.limit,
         order: this.order,
         sort: val,
-        search
+        search,
       });
     },
     order(val) {
+      console.log(val);
       const { id } = this.$route.params;
       const search = this.$route.query.search || "";
       this.getCoursesByCategory({
@@ -124,7 +133,7 @@ export default {
         limit: this.limit,
         order: val,
         sort: this.sort,
-        search
+        search,
       });
     },
     page(val) {
@@ -136,7 +145,7 @@ export default {
         limit: this.limit,
         order: this.order,
         sort: this.sort,
-        search
+        search,
       });
     },
     $route(to) {
@@ -148,12 +157,12 @@ export default {
         limit: this.limit,
         order: this.order,
         sort: this.sort,
-        search
+        search,
       });
-    }
+    },
   },
   computed: {
-    ...mapState("course", ["coursesByCategory"])
+    ...mapState("course", ["coursesByCategory"]),
   },
   created() {
     const { id } = this.$route.params;
@@ -165,15 +174,15 @@ export default {
       limit: this.limit,
       order: this.order,
       sort: this.sort,
-      search
+      search,
     });
   },
   methods: {
     ...mapActions("course", ["getCoursesByCategory"]),
     handleSearch(search) {
-      this.$router.push({ query: { search } });
-    }
-  }
+      if (search) this.$router.push({ query: { search } });
+    },
+  },
 };
 </script>
 

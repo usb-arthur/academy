@@ -75,6 +75,17 @@ namespace ACADEMY.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromBody] VerifyEmailRequest request)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessage());
+
+            var response = await _authService.VerifyEmailAsync(request);
+
+            return StatusCode((int) response.StatusCode, response);
+        }
+
+        [HttpPost]
         [Route("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {

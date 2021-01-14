@@ -81,17 +81,17 @@ export default {
     gender: [
       {
         id: 0,
-        value: "Male"
+        value: "Male",
       },
       {
         id: 1,
-        value: "Female"
+        value: "Female",
       },
       {
         id: 2,
-        value: "Other"
-      }
-    ]
+        value: "Other",
+      },
+    ],
   }),
   watch: {
     text(val) {
@@ -103,13 +103,13 @@ export default {
       if (!val) {
         this.text = "";
       }
-    }
+    },
   },
   created() {
     this.getUserInformation();
   },
   computed: {
-    ...mapState("account", ["user"])
+    ...mapState("account", ["user"]),
   },
   methods: {
     ...mapActions("account", ["getUserInformation", "patchUser"]),
@@ -118,10 +118,10 @@ export default {
         .then(() => {
           this.text = "Cập nhật thành công";
         })
-        .catch(err => {
-          this.text = err.response.statusText.message || "Có lỗi xảy ra";
+        .catch((err) => {
+          this.text = err.response.data.message || "Có lỗi xảy ra";
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using ACADEMY.Application.EmailService;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.Common;
@@ -57,10 +58,17 @@ namespace ACADEMY.Application.Implements
                     "Tài khoản của bạn hiện tại đang bị khoá. Vui lòng liên hệ admin để mở khoá tài khoản",
                     HttpStatusCode.BadRequest);
 
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return new ApiErrorResponse<AuthVm>("Tài khoản của bạn chưa xác thực email", HttpStatusCode.BadRequest);
+            }
+            
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, request.RememberMe, true);
 
             if (!result.Succeeded)
-                return new ApiErrorResponse<AuthVm>("Password không đúng", HttpStatusCode.BadRequest);
+            {
+                return new ApiErrorResponse<AuthVm>("Mật khẩu nhập vào không đúng", HttpStatusCode.BadRequest);
+            }
 
             var token = await Sign(user);
 
@@ -145,12 +153,20 @@ namespace ACADEMY.Application.Implements
 
             result = await _userManager.AddToRoleAsync(user, "Student");
 
-            if (result.Succeeded)
-                return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user))
-                    {StatusCode = HttpStatusCode.Created};
+            if (!result.Succeeded)
+                return new ApiErrorResponse<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}",
+                    HttpStatusCode.InternalServerError);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var uriBuilder = new UriBuilder("http://localhost:8080/xac-nhan-email");
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+            query["userId"] = user.Id.ToString();
+            query["token"] = token;
+            uriBuilder.Query = query.ToString();
+            await _emailService.SendMailAsync(user.Email, "Xác nhận email", $"<p>{uriBuilder.ToString()}</p>");
+                
+            return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user))
+                {StatusCode = HttpStatusCode.Created};
 
-            return new ApiErrorResponse<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}",
-                HttpStatusCode.InternalServerError);
         }
 
         public async Task<ApiResponse<bool>> ResetPasswordAsync(ResetPasswordRequest request)
@@ -179,7 +195,21 @@ namespace ACADEMY.Application.Implements
 
             return new ApiSucceedResponse<bool>(true);
         }
-        
+
+        public async Task<ApiResponse<bool>> VerifyEmailAsync(VerifyEmailRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            
+            if (user == null)
+            {
+                return new ApiErrorResponse<bool>($"Người dùng không tồn tại", HttpStatusCode.NotFound);
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, request.Token);
+
+            return new ApiSucceedResponse<bool>(result.Succeeded);
+        }
+
         public async Task<ApiResponse<string>> GeneratePasswordResetTokenAsync(ForgotPasswordRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
