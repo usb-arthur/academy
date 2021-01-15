@@ -13,18 +13,17 @@
               type="email"
               append-icon="mdi-email"
                color="blue-grey lighten-3"
+               :rules="[v => !!v || 'Email không được để trống']"
+                required
             ></v-text-field>
             <v-text-field
               v-model="user.password"
-              label="Mật khẩu"
-              :rules="{
-                required: true,
-                digits: 7,
-                regex: '^(71|72|74|76|81|82|84|85|86|87|88|89)\\d{5}$'
-              }"
+              label="Mật khẩu"              
               type="password"
               append-icon="mdi-lock"
                color="blue-grey lighten-3"
+               :rules="[v => !!v || 'Password không được để trống']"
+                required
             ></v-text-field>
           </div>
           <div style="display:flex;justify-content: space-between;">
@@ -57,7 +56,7 @@ export default {
     user: {
       email: "",
       password: "",
-      rememberMe: false
+      rememberMe: false,
     }
   }),
   methods: {
