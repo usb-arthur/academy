@@ -39,9 +39,7 @@
                               <vue-core-video-player
                                 type="video/webm"
                                 ref="videoPlayer"
-                                :src="
-                                  `https://localhost:5001/course-details/${courseDetail.id}/videos`
-                                "
+                                :src="`https://localhost:5001/course-details/${courseDetail.id}/videos`"
                               ></vue-core-video-player>
                             </v-col>
                           </v-row>
@@ -144,7 +142,8 @@
                       >
                     </v-col>
                   </v-row>
-                  <div style=""
+                  <div
+                    style=""
                     class="box-cmt"
                     v-for="(feedback, index) in feedbacks"
                     :key="feedback.id"
@@ -156,7 +155,7 @@
                     </div>
                     <div class="mt-2 ml-2">
                       <v-rating
-                        :value="feedback.rate / 2"
+                        :value="feedback.rate"
                         color="amber"
                         dense
                         half-increments
@@ -191,9 +190,7 @@
 
               <v-img
                 height="250"
-                :src="
-                  `https://localhost:5001/courses/${$route.params.id}/images`
-                "
+                :src="`https://localhost:5001/courses/${$route.params.id}/images`"
               ></v-img>
 
               <div class="d-flex justify-content-between">
@@ -310,33 +307,33 @@ export default {
     rating: [
       {
         value: 0,
-        text: "Quá tệ (0)"
+        text: "Quá tệ (0)",
       },
       {
         value: 1,
-        text: "Tệ (1)"
+        text: "Tệ (1)",
       },
       {
         value: 2,
-        text: "Bình thường (2)"
+        text: "Bình thường (2)",
       },
       {
         value: 3,
-        text: "Tạm được (3)"
+        text: "Tạm được (3)",
       },
       {
         value: 4,
-        text: "Tốt (4)"
+        text: "Tốt (4)",
       },
       {
         value: 5,
-        text: "Rất tốt (5)"
-      }
+        text: "Rất tốt (5)",
+      },
     ],
     feedbackSend: {
       content: "",
-      rate: -1
-    }
+      rate: -1,
+    },
   }),
   updated() {},
   watch: {
@@ -344,10 +341,10 @@ export default {
       const { id } = to.params;
       this.getIsInCourse(id);
       this.feedbackSend.courseId = id;
-      this.getCourseById(id).then(res => {
+      this.getCourseById(id).then((res) => {
         this.getRelativeCourse({
           courseId: id,
-          categoryId: res.data.objResult.category.id
+          categoryId: res.data.objResult.category.id,
         });
       });
       this.getCourseDetailByCourseId(id);
@@ -362,7 +359,7 @@ export default {
       if (!val) {
         this.text = "";
       }
-    }
+    },
   },
   computed: {
     ...mapState("auth", ["isAuthenticated"]),
@@ -370,11 +367,11 @@ export default {
       "course",
       "courseDetails",
       "isInCourse",
-      "relativeCourse"
+      "relativeCourse",
     ]),
     ...mapState("feedback", ["feedbacks"]),
     rate() {
-      return this.course.rate / 2 || 0;
+      return this.course.rate || 0;
     },
     numOfFeedback() {
       return this.course.numOfFeedback || 0;
@@ -390,16 +387,16 @@ export default {
     },
     player() {
       return this.$refs.videoPlayer;
-    }
+    },
   },
   created() {
     const { id } = this.$route.params;
     this.getIsInCourse(id);
     this.feedbackSend.courseId = id;
-    this.getCourseById(id).then(res => {
+    this.getCourseById(id).then((res) => {
       this.getRelativeCourse({
         courseId: id,
-        categoryId: res.data.objResult.category.id
+        categoryId: res.data.objResult.category.id,
       });
     });
     this.getCourseDetailByCourseId(id);
@@ -413,12 +410,12 @@ export default {
       "addToWishList",
       "getIsInCourse",
       "getRelativeCourse",
-      "registerCourse"
+      "registerCourse",
     ]),
     ...mapActions("feedback", ["getFeedbacksByCourseId", "createFeedback"]),
     closeDialog() {
       if (this.$refs.videoPlayer) {
-        this.$refs.videoPlayer = this.$refs.videoPlayer.map(e => {
+        this.$refs.videoPlayer = this.$refs.videoPlayer.map((e) => {
           e.isPlaying = false;
           e.pause();
           return e;
@@ -429,10 +426,10 @@ export default {
       const { id } = this.$route.params;
       this.getIsInCourse(id);
       this.feedbackSend.courseId = id;
-      this.getCourseById(id).then(res => {
+      this.getCourseById(id).then((res) => {
         this.getRelativeCourse({
           courseId: id,
-          categoryId: res.data.objResult.category.id
+          categoryId: res.data.objResult.category.id,
         });
       });
       this.getCourseDetailByCourseId(id);
@@ -445,14 +442,14 @@ export default {
           this.feedbackSend.content = "";
           this.feedbackSend.rate = -1;
         })
-        .catch(err => (this.text = err.response.data.message));
+        .catch((err) => (this.text = err.response.data.message));
     },
     handleAddToWishList(coursId) {
       this.addToWishList(coursId)
         .then(() => {
           this.text = "Thêm vào danh sách yêu thích";
         })
-        .catch(err => {
+        .catch((err) => {
           this.text = err.response.data.message;
         });
     },
@@ -461,11 +458,11 @@ export default {
         .then(() => {
           this.text = "Đăng ký thành công";
         })
-        .catch(err => {
+        .catch((err) => {
           this.text = err.response.data.message;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

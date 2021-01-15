@@ -18,19 +18,18 @@
 import { mapActions } from "vuex";
 export default {
   data: () => ({
-    isSucceed: false,
+    isSucceed: false
   }),
   created() {
     var { userId, token } = this.$route.query;
-    this.verifyEmail({ userId, token }).then((res) => {
+    this.verifyEmail({ userId, token }).then(res => {
       this.isSucceed = res;
     });
   },
   methods: {
-    ...mapActions("auth", ["verifyEmail"]),
-  },
+    ...mapActions("auth", ["verifyEmail"])
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>
