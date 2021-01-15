@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
+using ACADEMY.Application.EmailService;
 using ACADEMY.Application.Interfaces;
 using ACADEMY.Application.Requests.System;
 using ACADEMY.Application.ViewModels.Common;
@@ -24,12 +26,13 @@ namespace ACADEMY.Application.Implements
 
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-
-        public UserService(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        private readonly IEmailService _emailService;
+        public UserService(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
         }
 
         public async Task<ApiResponse<UserVm>> AddAsync(PostUserRequest request)
@@ -61,13 +64,28 @@ namespace ACADEMY.Application.Implements
 
             if (!result.Succeeded)
                 return new ApiErrorResponse<UserVm>("Thao tác tạo user không thành công",
-                    HttpStatusCode.InternalServerError);
+                    HttpStatusCode.BadRequest);
 
             result = await _userManager.AddToRoleAsync(user, "Teacher");
 
             if (result.Succeeded)
-                return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user))
-                    {StatusCode = HttpStatusCode.Created};
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var uri = new UriBuilder("http://localhost:8080/xac-nhan-email");
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                query["userId"] = user.Id.ToString();
+                query["token"] = token;
+                uri.Query = query.ToString();
+
+                var html = $"<p>Email: {user.Email}</p>" +
+                           $"<p>Password: {password}</p>" +
+                           $"<p>Xác nhận tại đây: ${uri.ToString()}";
+
+                await _emailService.SendMailAsync(user.Email, "Xác nhận email", html);
+
+                return new ApiSucceedResponse<UserVm>(_mapper.Map<User, UserVm>(user));
+            }
 
             return new ApiErrorResponse<UserVm>($"Không thể khởi tạo role cho người dùng {user.Email}",
                 HttpStatusCode.InternalServerError);

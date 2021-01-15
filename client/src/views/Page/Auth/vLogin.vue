@@ -1,5 +1,5 @@
 <template>
-  <div class="center max-height max-width main  ">
+  <div class="center max-height max-width main">
     <div class="center max-height">
       <div class="box--login center">
         <div class="form--login">
@@ -12,7 +12,7 @@
               label="Email"
               type="email"
               append-icon="mdi-email"
-               color="blue-grey lighten-3"
+              color="blue-grey lighten-3"
             ></v-text-field>
             <v-text-field
               v-model="user.password"
@@ -20,16 +20,20 @@
               :rules="{
                 required: true,
                 digits: 7,
-                regex: '^(71|72|74|76|81|82|84|85|86|87|88|89)\\d{5}$'
+                regex: '^(71|72|74|76|81|82|84|85|86|87|88|89)\\d{5}$',
               }"
               type="password"
               append-icon="mdi-lock"
-               color="blue-grey lighten-3"
+              color="blue-grey lighten-3"
             ></v-text-field>
           </div>
-          <div style="display:flex;justify-content: space-between;">
-            <a class="link-forgot" href="">Quên mật khẩu ?</a>
-            <a class="link-forgot" href="/dang-ky">Đăng ký ?</a>
+          <div style="display: flex; justify-content: space-between">
+            <router-link>
+              <a class="link-forgot">Quên mật khẩu ?</a>
+            </router-link>
+            <router-link to="/dang-ky">
+              <a class="link-forgot">Đăng ký ?</a>
+            </router-link>
           </div>
           <div class="center">
             <v-btn class="btn-submit mr-4 mt-4" v-on:click="loginJWT(user)">
@@ -57,12 +61,12 @@ export default {
     user: {
       email: "",
       password: "",
-      rememberMe: false
-    }
+      rememberMe: false,
+    },
   }),
   methods: {
-    ...mapActions(["loginJWT"])
-  }
+    ...mapActions(["loginJWT"]),
+  },
 };
 </script>
 
@@ -107,7 +111,7 @@ export default {
   font-weight: normal;
   font-size: 35px;
   line-height: 47px;
-  color: rgb(0 0 0 / 53%);;
+  color: rgb(0 0 0 / 53%);
 }
 .btn-submit {
   height: 69px;

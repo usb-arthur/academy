@@ -72,9 +72,9 @@
             </v-btn>
           </div>
           <div class="mt-4">
-            <a class="span-reg-bottom" href="/dang-nhap"
-              >Bạn đã có tài khoản ?</a
-            >
+            <router-link to="/dang-nhap">
+              <a class="span-reg-bottom">Bạn đã có tài khoản ?</a>
+            </router-link>
           </div>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default {
       password: "",
       confirmPassword: "",
     },
-    text: '',
+    text: "",
   }),
   methods: {
     ...mapActions("auth", ["registerUser"]),

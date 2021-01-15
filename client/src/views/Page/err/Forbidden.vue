@@ -1,19 +1,16 @@
 <template>
-  <div class="backround">    
-  </div>
+  <div class="backround"></div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-.backround{
-    width: 100%;
-    height: 100%;
-    background-image: url("../../../assets/image/forbidden.jpg");
+.backround {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../../assets/image/forbidden.jpg");
   background-size: 100%;
 }
 </style>

@@ -204,7 +204,7 @@ export default {
   computed: {
     ...mapState("course", ["course", "courseDetails"]),
     rate() {
-      return this.course.rate / 2 || 0;
+      return this.course.rate || 0;
     },
     numOfFeedback() {
       return this.course.numOfFeedback || 0;

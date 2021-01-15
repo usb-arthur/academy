@@ -11,9 +11,11 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-toolbar-title>ACADEMY</v-toolbar-title>
-      <v-menu offset-y >
-        <template  v-slot:activator="{ on, attrs }">
-          <v-btn class="ml-4" text light v-bind="attrs" v-on="on">Danh sách lĩnh vực</v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="ml-4" text light v-bind="attrs" v-on="on"
+            >Danh sách lĩnh vực</v-btn
+          >
         </template>
         <v-list dense nav>
           <v-list-item
@@ -102,11 +104,11 @@
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
-    search: "",
+    search: ""
   }),
   computed: {
     ...mapState("auth", ["has", "userInfo", "isAuthenticated"]),
-    ...mapState("category", ["categories"]),
+    ...mapState("category", ["categories"])
   },
   created() {
     this.getAllCategories();
@@ -116,8 +118,8 @@ export default {
     ...mapActions("auth", ["logout"]),
     handleSearch(search) {
       if (search) this.$router.push({ name: "Search", query: { search } });
-    },
-  },
+    }
+  }
 };
 </script>
 
