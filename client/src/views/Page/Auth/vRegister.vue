@@ -14,6 +14,7 @@
               type="email"
               append-icon="mdi-email"
               color="blue-grey lighten-3"
+              :rules="[v => !!v || 'Email không được để trống']"               
             ></v-text-field>
             <v-text-field
               v-model="user.name"
@@ -22,6 +23,7 @@
               type="text"
               append-icon="mdi-lock"
               color="blue-grey lighten-3"
+              :rules="[v => !!v || 'Tên không được để trống']"               
             ></v-text-field>
             <v-select
               v-model="user.gender"
@@ -40,6 +42,7 @@
               type="number"
               append-icon="mdi-lock"
               color="blue-grey lighten-3"
+              :rules="[v => !!v || 'Số điện thoại không được để trống']" 
             ></v-text-field>
             <v-text-field
               v-model="user.dateOfBirth"
@@ -48,6 +51,7 @@
               type="date"
               append-icon="mdi-lock"
               color="blue-grey lighten-3"
+              :rules="[v => !!v || 'Ngày sinh không được để trống']"
             ></v-text-field>
             <v-text-field
               v-model="user.password"
@@ -56,6 +60,7 @@
               type="password"
               append-icon="mdi-lock"
               color="blue-grey lighten-3"
+              :rules="[v => !!v || 'Mật khẩu không được để trống']"
             ></v-text-field>
             <v-text-field
               v-model="user.confirmPassword"
@@ -64,6 +69,7 @@
               type="password"
               append-icon="mdi-lock"
               color="blue-grey lighten-3"
+               :rules="[v => !!v || 'Mật khẩu không được để trống']"
             ></v-text-field>
           </div>
           <div class="center">

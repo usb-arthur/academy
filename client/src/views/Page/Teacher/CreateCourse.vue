@@ -6,8 +6,9 @@
           <v-col cols="4">
             <v-text-field
               v-model="course.courseName"
-              required
               label="Tên khóa học"
+              required
+              :rules="[v => !!v || 'Tên khóa học không được để trống']"
             >
             </v-text-field>
           </v-col>
@@ -17,6 +18,7 @@
               v-model="course.courseFee"
               required
               label="Giá khóa học"
+              :rules="[v => !!v || 'Giá khóa học không được để trống']"
             >
             </v-text-field>
           </v-col>
@@ -54,6 +56,7 @@
               v-model="course.briefDescription"
               required
               label="Mô tả ngắn gọn khóa học"
+              :rules="[v => !!v || 'Mô tả không được để trống']"
             ></v-textarea>
           </v-col>
           <v-col cols="12">

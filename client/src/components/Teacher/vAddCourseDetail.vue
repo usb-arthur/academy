@@ -18,6 +18,7 @@
                 required
                 v-model="courseDetail.content"
                 hide-details
+                :rules="[v => !!v || 'Nội dung không được để trống']"
               ></v-text-field>
             </v-col>
             <v-col cols="6">
@@ -71,6 +72,7 @@ export default {
   methods: {
     ...mapActions("course", ["createCourseDetail"]),
     createNewCourseDetail(id, courseDetail) {
+      this.courseDetail={};
       this.createCourseDetail({ id, courseDetail })
         .then(() => {
           this.dialog = false;
